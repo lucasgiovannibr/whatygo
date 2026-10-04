@@ -66,7 +66,7 @@ func (r *Routes) AssignRoutes(eng *gin.Engine) {
 
 	routes := eng.Group("/instance")
 	{
-		routes.Use(r.authMiddleware.AuthAdmin)
+		routes.Use(r.authMiddleware.AuthAdmin, auth_middleware.ValidInstanceID())
 		{
 			routes.POST("/create", r.instanceHandler.Create)
 			routes.GET("/all", r.instanceHandler.All)
@@ -98,7 +98,7 @@ func (r *Routes) AssignRoutes(eng *gin.Engine) {
 	// Advanced settings: global API key, or the token of that same instance (#81).
 	routes = eng.Group("/instance")
 	{
-		routes.Use(r.authMiddleware.AuthInstanceScoped)
+		routes.Use(r.authMiddleware.AuthInstanceScoped, auth_middleware.ValidInstanceID())
 		{
 			routes.GET("/:instanceId/advanced-settings", r.instanceHandler.GetAdvancedSettings)
 			routes.PUT("/:instanceId/advanced-settings", r.instanceHandler.UpdateAdvancedSettings)

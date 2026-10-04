@@ -174,7 +174,33 @@ func (lm *LoggerManager) RemoveFiles(instanceId string) error {
 	return os.RemoveAll(filepath.Join(lm.config.LogDirectory, instanceId))
 }
 
+// safeLoggerID reports whether id may name a log directory: letters, digits, dot, dash and
+// underscore only, and not "." or "..". The id comes from the instances (UUIDs), from the
+// process's own loggers ("system", the CLIENT_NAME) and, through the routes, from the URL:
+// ".." used to write /app/instance.log outside the log directory, and any other string made
+// a directory, a file and a goroutine that were never freed.
+func safeLoggerID(id string) bool {
+	if id == "" || len(id) > 128 || id == "." || id == ".." {
+		return false
+	}
+	for _, r := range id {
+		switch {
+		case r >= 'a' && r <= 'z', r >= 'A' && r <= 'Z', r >= '0' && r <= '9', r == '-', r == '_', r == '.':
+		default:
+			return false
+		}
+	}
+	return true
+}
+
 func (lm *LoggerManager) GetLogger(instanceId string) *Logger {
+	if instanceId == "" {
+		instanceId = "system" // no CLIENT_NAME: the process's own log
+	}
+	if !safeLoggerID(instanceId) {
+		return lm.discard // console only, no file
+	}
+
 	lm.mu.RLock()
 	logger, exists := lm.loggers[instanceId]
 	_, isReleased := lm.released[instanceId]

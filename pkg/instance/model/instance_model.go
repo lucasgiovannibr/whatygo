@@ -72,12 +72,14 @@ func (i Instance) MarshalJSON() ([]byte, error) {
 // AdvancedSettings representa as configurações avançadas de uma instância.
 // Bool fields are pointers so omitted JSON keys are not written as false on PUT.
 type AdvancedSettings struct {
-	AlwaysOnline  *bool  `json:"alwaysOnline"`
-	RejectCall    *bool  `json:"rejectCall"`
-	MsgRejectCall string `json:"msgRejectCall"`
-	ReadMessages  *bool  `json:"readMessages"`
-	IgnoreGroups  *bool  `json:"ignoreGroups"`
-	IgnoreStatus  *bool  `json:"ignoreStatus"`
+	AlwaysOnline *bool `json:"alwaysOnline"`
+	RejectCall   *bool `json:"rejectCall"`
+	// MsgRejectCall is a pointer so that a PUT can tell "not sent" (nil, left alone) from ""
+	// (clear the message).
+	MsgRejectCall *string `json:"msgRejectCall"`
+	ReadMessages  *bool   `json:"readMessages"`
+	IgnoreGroups  *bool   `json:"ignoreGroups"`
+	IgnoreStatus  *bool   `json:"ignoreStatus"`
 	// CallsEnabled: see Instance.CallsEnabled. Takes effect on the next connection.
 	CallsEnabled *bool `json:"callsEnabled"`
 }

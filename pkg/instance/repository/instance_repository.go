@@ -221,7 +221,7 @@ func (i *instanceRepository) GetAdvancedSettings(instanceId string) (*instance_m
 	settings := &instance_model.AdvancedSettings{
 		AlwaysOnline:  instance_model.BoolPtr(instance.AlwaysOnline),
 		RejectCall:    instance_model.BoolPtr(instance.RejectCall),
-		MsgRejectCall: instance.MsgRejectCall,
+		MsgRejectCall: &instance.MsgRejectCall,
 		ReadMessages:  instance_model.BoolPtr(instance.ReadMessages),
 		IgnoreGroups:  instance_model.BoolPtr(instance.IgnoreGroups),
 		IgnoreStatus:  instance_model.BoolPtr(instance.IgnoreStatus),
@@ -252,7 +252,7 @@ func (i *instanceRepository) UpdateAdvancedSettings(instanceId string, settings 
 }
 
 // buildAdvancedSettingsUpdates only includes fields explicitly provided (*bool != nil).
-// MsgRejectCall is always written on PUT so an empty string can clear the reject message.
+// MsgRejectCall is written when it is present, even empty: that is how the reject message is cleared.
 func buildAdvancedSettingsUpdates(settings *instance_model.AdvancedSettings) map[string]interface{} {
 	updates := map[string]interface{}{}
 	if settings == nil {
@@ -276,8 +276,8 @@ func buildAdvancedSettingsUpdates(settings *instance_model.AdvancedSettings) map
 	if settings.CallsEnabled != nil {
 		updates["calls_enabled"] = *settings.CallsEnabled
 	}
-	if settings.MsgRejectCall != "" {
-		updates["msg_reject_call"] = settings.MsgRejectCall
+	if settings.MsgRejectCall != nil {
+		updates["msg_reject_call"] = *settings.MsgRejectCall
 	}
 	return updates
 }
