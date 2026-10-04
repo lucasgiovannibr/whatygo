@@ -954,15 +954,16 @@ func (w whatsmeowService) StartClient(cd *ClientData) {
 			release() // free the slot so the restarted run can take it
 			go w.StartClient(cd)
 			return
-		default:
+		case <-time.After(time.Second):
 			// This client was replaced (ReconnectClient removed it and started a new
 			// one): nothing left to supervise, end quietly without touching the
-			// state that now belongs to the new client.
+			// state that now belongs to the new client. (The loop used to poll the kill
+			// channel with a default case and a sleep, so a kill waited for the next
+			// poll; now it is received at once.)
 			if w.clientPointer.Get(cd.Instance.Id) != client {
 				w.loggerWrapper.GetLogger(cd.Instance.Id).LogInfo("[%s] Client was replaced, ending its supervisor loop", cd.Instance.Id)
 				return
 			}
-			time.Sleep(1000 * time.Millisecond)
 		}
 	}
 }

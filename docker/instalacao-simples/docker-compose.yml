@@ -34,6 +34,10 @@ services:
       - "${BIND_ADDRESS:-127.0.0.1}:${HTTP_PORT:-4000}:4000"
     security_opt:
       - no-new-privileges:true
+    # Limite de memória do contêiner (0 = sem limite). Com um limite, o servidor ajusta o coletor de
+    # lixo do Go a 80 % dele (MEMORY_LIMIT_RATIO) para não ser morto por falta de memória numa
+    # rajada de mídia. Exemplo: MEM_LIMIT=1g no .env
+    mem_limit: ${MEM_LIMIT:-0}
     cap_drop:
       - ALL
     cap_add: # só o que o entrypoint usa para acertar os volumes e baixar os privilégios
