@@ -1,6 +1,7 @@
 package utils
 
 import (
+	"bytes"
 	"errors"
 	"fmt"
 	"io"
@@ -52,14 +53,20 @@ func DownloadBytes(rawURL string, maxBytes int64) ([]byte, error) {
 		return nil, fmt.Errorf("%w: %d bytes (limit %d)", ErrDownloadTooLarge, resp.ContentLength, maxBytes)
 	}
 
-	data, err := io.ReadAll(io.LimitReader(resp.Body, maxBytes+1))
-	if err != nil {
+	// io.ReadAll grows its buffer by doubling, so a 100 MB file took ~200 MB while it was read:
+	// when the server says how long the body is (already checked against maxBytes), the buffer
+	// is made that size at once.
+	var buf bytes.Buffer
+	if resp.ContentLength > 0 {
+		buf.Grow(int(resp.ContentLength) + 1) // + 1: the read that finds the end
+	}
+	if _, err := buf.ReadFrom(io.LimitReader(resp.Body, maxBytes+1)); err != nil {
 		return nil, fmt.Errorf("%w: failed to read %s: %w", ErrDownloadFailed, rawURL, err)
 	}
-	if int64(len(data)) > maxBytes {
+	if int64(buf.Len()) > maxBytes {
 		return nil, fmt.Errorf("%w: more than %d bytes", ErrDownloadTooLarge, maxBytes)
 	}
-	return data, nil
+	return buf.Bytes(), nil
 }
 
 // compile-time check that the client used above is the shared one
