@@ -8,9 +8,9 @@ import (
 	"strings"
 	"time"
 
+	"github.com/google/uuid"
 	logger_wrapper "github.com/lucasgiovannibr/whatygo/pkg/logger"
 	"github.com/lucasgiovannibr/whatygo/pkg/poll/model"
-	"github.com/google/uuid"
 	waProto "go.mau.fi/whatsmeow/proto/waE2E"
 	"go.mau.fi/whatsmeow/types"
 )

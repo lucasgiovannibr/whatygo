@@ -24,12 +24,12 @@ import (
 	"time"
 
 	"github.com/chai2010/webp"
+	"github.com/gabriel-vasile/mimetype"
 	config "github.com/lucasgiovannibr/whatygo/pkg/config"
 	instance_model "github.com/lucasgiovannibr/whatygo/pkg/instance/model"
 	logger_wrapper "github.com/lucasgiovannibr/whatygo/pkg/logger"
 	"github.com/lucasgiovannibr/whatygo/pkg/utils"
 	whatsmeow_service "github.com/lucasgiovannibr/whatygo/pkg/whatsmeow/service"
-	"github.com/gabriel-vasile/mimetype"
 	"go.mau.fi/whatsmeow"
 	waBinary "go.mau.fi/whatsmeow/binary"
 	"go.mau.fi/whatsmeow/proto/waE2E"

@@ -3,9 +3,9 @@ package instance_repository
 import (
 	"fmt"
 
-	instance_model "github.com/lucasgiovannibr/whatygo/pkg/instance/model"
 	"github.com/gomessguii/logger"
 	"github.com/google/uuid"
+	instance_model "github.com/lucasgiovannibr/whatygo/pkg/instance/model"
 	"gorm.io/gorm"
 
 	label_model "github.com/lucasgiovannibr/whatygo/pkg/label/model"

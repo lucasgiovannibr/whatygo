@@ -3,10 +3,10 @@ package chat_handler
 import (
 	"net/http"
 
+	"github.com/gin-gonic/gin"
 	"github.com/lucasgiovannibr/whatygo/pkg/apierror"
 	chat_service "github.com/lucasgiovannibr/whatygo/pkg/chat/service"
 	instance_model "github.com/lucasgiovannibr/whatygo/pkg/instance/model"
-	"github.com/gin-gonic/gin"
 )
 
 type ChatHandler interface {

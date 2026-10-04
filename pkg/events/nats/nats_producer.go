@@ -5,9 +5,9 @@ import (
 	"strings"
 	"time"
 
+	"github.com/gomessguii/logger"
 	producer_interfaces "github.com/lucasgiovannibr/whatygo/pkg/events/interfaces"
 	logger_wrapper "github.com/lucasgiovannibr/whatygo/pkg/logger"
-	"github.com/gomessguii/logger"
 	"github.com/nats-io/nats.go"
 )
 

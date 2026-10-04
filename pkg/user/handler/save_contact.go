@@ -6,10 +6,10 @@ package user_handler
 import (
 	"net/http"
 
+	"github.com/gin-gonic/gin"
 	"github.com/lucasgiovannibr/whatygo/pkg/apierror"
 	instance_model "github.com/lucasgiovannibr/whatygo/pkg/instance/model"
 	user_service "github.com/lucasgiovannibr/whatygo/pkg/user/service"
-	"github.com/gin-gonic/gin"
 )
 
 // Save a contact to the device addressbook

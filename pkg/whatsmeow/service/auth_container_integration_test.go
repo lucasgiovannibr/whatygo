@@ -5,8 +5,8 @@ import (
 	"os"
 	"testing"
 
-	"github.com/lucasgiovannibr/whatygo/pkg/config"
 	_ "github.com/lib/pq"
+	"github.com/lucasgiovannibr/whatygo/pkg/config"
 )
 
 // Integration test, skipped unless WHATYGO_TEST_POSTGRES_DSN points at an empty

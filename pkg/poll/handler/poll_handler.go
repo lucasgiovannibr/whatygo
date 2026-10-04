@@ -5,11 +5,11 @@ import (
 	"errors"
 	"net/http"
 
+	"github.com/gin-gonic/gin"
 	"github.com/lucasgiovannibr/whatygo/pkg/apierror"
 	logger_wrapper "github.com/lucasgiovannibr/whatygo/pkg/logger"
 	poll_model "github.com/lucasgiovannibr/whatygo/pkg/poll/model"
 	poll_service "github.com/lucasgiovannibr/whatygo/pkg/poll/service"
-	"github.com/gin-gonic/gin"
 )
 
 // Keep poll_model referenced so the package import is not dropped

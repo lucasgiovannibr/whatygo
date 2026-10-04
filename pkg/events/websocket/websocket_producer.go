@@ -7,9 +7,9 @@ import (
 	"sync"
 	"time"
 
-	logger_wrapper "github.com/lucasgiovannibr/whatygo/pkg/logger"
 	"github.com/gomessguii/logger"
 	"github.com/gorilla/websocket"
+	logger_wrapper "github.com/lucasgiovannibr/whatygo/pkg/logger"
 )
 
 // writeTimeout bounds a single frame write so one stalled subscriber cannot

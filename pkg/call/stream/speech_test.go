@@ -5,9 +5,9 @@ import (
 	"testing"
 	"time"
 
+	"github.com/gorilla/websocket"
 	call_engine "github.com/lucasgiovannibr/whatygo/pkg/call/engine"
 	"github.com/lucasgiovannibr/whatygo/pkg/call/engine/enginetest"
-	"github.com/gorilla/websocket"
 )
 
 func speechRig(t *testing.T, binary bool) (*rig, *enginetest.Fake, *websocket.Conn) {

@@ -13,9 +13,9 @@ package handler
 import (
 	"net/http"
 
+	"github.com/gin-gonic/gin"
 	"github.com/lucasgiovannibr/whatygo/pkg/apierror"
 	whatsmeow_service "github.com/lucasgiovannibr/whatygo/pkg/whatsmeow/service"
-	"github.com/gin-gonic/gin"
 	"go.mau.fi/whatsmeow/types"
 )
 

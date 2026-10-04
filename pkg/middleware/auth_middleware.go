@@ -4,10 +4,10 @@ import (
 	"crypto/subtle"
 	"net/http"
 
+	"github.com/gin-gonic/gin"
 	"github.com/lucasgiovannibr/whatygo/pkg/apierror"
 	"github.com/lucasgiovannibr/whatygo/pkg/config"
 	instance_service "github.com/lucasgiovannibr/whatygo/pkg/instance/service"
-	"github.com/gin-gonic/gin"
 )
 
 type Middleware interface {

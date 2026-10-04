@@ -11,6 +11,7 @@ import (
 	"strings"
 	"testing"
 
+	"github.com/gin-gonic/gin"
 	call_engine "github.com/lucasgiovannibr/whatygo/pkg/call/engine"
 	"github.com/lucasgiovannibr/whatygo/pkg/call/engine/enginetest"
 	call_history "github.com/lucasgiovannibr/whatygo/pkg/call/history"
@@ -18,7 +19,6 @@ import (
 	call_stream "github.com/lucasgiovannibr/whatygo/pkg/call/stream"
 	instance_model "github.com/lucasgiovannibr/whatygo/pkg/instance/model"
 	whatsmeow_service "github.com/lucasgiovannibr/whatygo/pkg/whatsmeow/service"
-	"github.com/gin-gonic/gin"
 	"go.mau.fi/whatsmeow"
 	"go.mau.fi/whatsmeow/store"
 )

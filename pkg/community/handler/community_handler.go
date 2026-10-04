@@ -3,10 +3,10 @@ package community_handler
 import (
 	"net/http"
 
+	"github.com/gin-gonic/gin"
 	"github.com/lucasgiovannibr/whatygo/pkg/apierror"
 	community_service "github.com/lucasgiovannibr/whatygo/pkg/community/service"
 	instance_model "github.com/lucasgiovannibr/whatygo/pkg/instance/model"
-	"github.com/gin-gonic/gin"
 )
 
 type CommunityHandler interface {

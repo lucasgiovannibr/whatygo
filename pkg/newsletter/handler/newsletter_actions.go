@@ -3,10 +3,10 @@ package newsletter_handler
 import (
 	"net/http"
 
+	"github.com/gin-gonic/gin"
 	"github.com/lucasgiovannibr/whatygo/pkg/apierror"
 	instance_model "github.com/lucasgiovannibr/whatygo/pkg/instance/model"
 	newsletter_service "github.com/lucasgiovannibr/whatygo/pkg/newsletter/service"
-	"github.com/gin-gonic/gin"
 )
 
 // bindChannelAction runs the common part of the channel actions: the instance, the

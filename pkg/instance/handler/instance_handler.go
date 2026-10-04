@@ -5,9 +5,9 @@ import (
 	"net/http"
 	"time"
 
-	"github.com/lucasgiovannibr/whatygo/pkg/apierror"
 	"github.com/gin-gonic/gin"
 	"github.com/google/uuid"
+	"github.com/lucasgiovannibr/whatygo/pkg/apierror"
 	"gorm.io/gorm"
 
 	config "github.com/lucasgiovannibr/whatygo/pkg/config"

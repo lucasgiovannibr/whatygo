@@ -9,11 +9,11 @@ import (
 	"strings"
 	"time"
 
+	"github.com/gin-gonic/gin"
 	instance_model "github.com/lucasgiovannibr/whatygo/pkg/instance/model"
 	logger_wrapper "github.com/lucasgiovannibr/whatygo/pkg/logger"
 	"github.com/lucasgiovannibr/whatygo/pkg/utils"
 	whatsmeow_service "github.com/lucasgiovannibr/whatygo/pkg/whatsmeow/service"
-	"github.com/gin-gonic/gin"
 	"github.com/vincent-petithory/dataurl"
 	"go.mau.fi/whatsmeow"
 	"go.mau.fi/whatsmeow/types"

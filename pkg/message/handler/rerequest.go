@@ -3,10 +3,10 @@ package message_handler
 import (
 	"net/http"
 
+	"github.com/gin-gonic/gin"
 	"github.com/lucasgiovannibr/whatygo/pkg/apierror"
 	instance_model "github.com/lucasgiovannibr/whatygo/pkg/instance/model"
 	message_service "github.com/lucasgiovannibr/whatygo/pkg/message/service"
-	"github.com/gin-gonic/gin"
 )
 
 // Ask the phone to resend a message that did not arrive

@@ -10,8 +10,8 @@ import (
 	"sync/atomic"
 	"time"
 
-	"github.com/lucasgiovannibr/whatygo/pkg/config"
 	"github.com/gomessguii/logger"
+	"github.com/lucasgiovannibr/whatygo/pkg/config"
 	"gopkg.in/natefinch/lumberjack.v2"
 )
 

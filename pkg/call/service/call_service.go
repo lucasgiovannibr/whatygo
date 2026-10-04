@@ -12,10 +12,10 @@ import (
 	"github.com/lucasgiovannibr/whatygo/pkg/utils"
 	"strings"
 
+	"github.com/gomessguii/logger"
 	instance_model "github.com/lucasgiovannibr/whatygo/pkg/instance/model"
 	logger_wrapper "github.com/lucasgiovannibr/whatygo/pkg/logger"
 	whatsmeow_service "github.com/lucasgiovannibr/whatygo/pkg/whatsmeow/service"
-	"github.com/gomessguii/logger"
 	"go.mau.fi/whatsmeow"
 	"go.mau.fi/whatsmeow/types"
 )
