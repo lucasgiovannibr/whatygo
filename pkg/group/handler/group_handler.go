@@ -50,7 +50,8 @@ func (g *groupHandler) ListGroups(ctx *gin.Context) {
 		return
 	}
 
-	resp, err := g.groupService.ListGroups(instance)
+	// ?participants=false leaves out the members of each group (they are the bulk of the answer).
+	resp, err := g.groupService.ListGroups(instance, ctx.Query("participants") != "false")
 	if err != nil {
 		apierror.Respond(ctx, err)
 		return

@@ -20,7 +20,9 @@ import (
 )
 
 type GroupService interface {
-	ListGroups(instance *instance_model.Instance) ([]*types.GroupInfo, error)
+	// ListGroups lists the groups of the account; includeParticipants=false leaves out the member
+	// list of each (the bulk of the answer for an account with large groups).
+	ListGroups(instance *instance_model.Instance, includeParticipants bool) ([]*types.GroupInfo, error)
 	GetGroupInfo(data *GetGroupInfoStruct, instance *instance_model.Instance) (*types.GroupInfo, error)
 	GetGroupInviteLink(data *GetGroupInviteLinkStruct, instance *instance_model.Instance) (string, error)
 	SetGroupPhoto(data *SetGroupPhotoStruct, instance *instance_model.Instance) (string, error)
@@ -122,7 +124,7 @@ func (g *groupService) ensureClientConnected(instanceId string) (*whatsmeow.Clie
 	return utils.ClientProvider{Clients: g.clientPointer, Starter: g.whatsmeowService, Gate: true}.Ensure(context.Background(), instanceId, g.loggerWrapper.GetLogger(instanceId))
 }
 
-func (g *groupService) ListGroups(instance *instance_model.Instance) ([]*types.GroupInfo, error) {
+func (g *groupService) ListGroups(instance *instance_model.Instance, includeParticipants bool) ([]*types.GroupInfo, error) {
 	client, err := g.ensureClientConnected(instance.Id)
 	if err != nil {
 		return nil, err
@@ -134,16 +136,21 @@ func (g *groupService) ListGroups(instance *instance_model.Instance) ([]*types.G
 		return nil, err
 	}
 
-	gc := new(GroupCollection)
-	for _, info := range resp {
-		simpleGroup := SimpleGroupInfo{
-			JID:       info.JID,
-			GroupName: info.GroupName.Name,
-		}
-		gc.Groups = append(gc.Groups, simpleGroup)
+	if !includeParticipants {
+		withoutParticipants(resp)
 	}
 
 	return resp, nil
+}
+
+// withoutParticipants drops the member list of every group (a group of 1000 members is ~100 KB
+// of the answer, and ListGroups sends every group of the account).
+func withoutParticipants(groups []*types.GroupInfo) {
+	for _, info := range groups {
+		if info != nil {
+			info.Participants = nil
+		}
+	}
 }
 
 func (g *groupService) GetGroupInfo(data *GetGroupInfoStruct, instance *instance_model.Instance) (*types.GroupInfo, error) {

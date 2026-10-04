@@ -59,6 +59,7 @@ import (
 	passkey_handler "github.com/lucasgiovannibr/whatygo/pkg/passkey/handler"
 	poll_handler "github.com/lucasgiovannibr/whatygo/pkg/poll/handler"
 	routes "github.com/lucasgiovannibr/whatygo/pkg/routes"
+	"github.com/lucasgiovannibr/whatygo/pkg/runtimetune"
 	"github.com/lucasgiovannibr/whatygo/pkg/safemap"
 	send_handler "github.com/lucasgiovannibr/whatygo/pkg/sendMessage/handler"
 	send_service "github.com/lucasgiovannibr/whatygo/pkg/sendMessage/service"
@@ -462,6 +463,7 @@ func main() {
 	}
 
 	logger.LogInfo("Starting WhatyGo version %s", version)
+	runtimetune.Apply(logger.LogInfo)
 	utils.WarnIfEnvProxyIgnored(logger.LogWarn)
 
 	db, err := cfg.CreateUsersDB()
