@@ -35,7 +35,12 @@ import (
 // receiver drains quickly instead of costing minutes per event.
 //
 // Tuning (environment): WEBHOOK_QUEUE_MAX_EVENTS (default 1000), WEBHOOK_QUEUE_MAX_MB
-// (default 64) and WEBHOOK_QUEUE_WORKERS (default 4; 1 delivers strictly in order).
+// (default 64, per destination), WEBHOOK_QUEUE_GLOBAL_MB (default 256, all destinations
+// together) and WEBHOOK_QUEUE_WORKERS (default 4; 1 delivers strictly in order).
+//
+// The limit per destination alone allowed N x 64 MB for N destinations: a server whose
+// instances each have their own, dead, receiver could hold gigabytes of events. The global
+// limit takes the oldest events of the destination that holds the most.
 
 const (
 	// webhookRequestTimeout bounds one delivery attempt. The client used to have no
@@ -50,8 +55,20 @@ const (
 
 	defaultMaxEvents = 1000
 	defaultMaxMB     = 64
+	defaultGlobalMB  = 256
 	defaultWorkers   = 4
 )
+
+// retryable reports whether a failed delivery is worth trying again. A refusal that says "this is
+// wrong" (400, 404, 410, 422...) will say the same next time: it used to be retried five times,
+// two and a half minutes per event, and then the destination was marked as down. Timeouts, rate
+// limits and server errors, and failures to connect (status 0), are retried.
+func retryable(status int) bool {
+	if status >= 400 && status < 500 {
+		return status == http.StatusRequestTimeout || status == http.StatusTooEarly || status == http.StatusTooManyRequests
+	}
+	return true
+}
 
 // defaultBackoff is the wait before each retry: 5 attempts in total, as before, but
 // growing instead of a flat 30 s.
@@ -79,11 +96,14 @@ type webhookProducer struct {
 
 	maxEvents int
 	maxBytes  int64
-	workers   int
-	backoff   []time.Duration
+	// globalMaxBytes bounds the events waiting in every destination together (0: no limit).
+	globalMaxBytes int64
+	workers        int
+	backoff        []time.Duration
 
-	mu     sync.Mutex
-	queues map[string]*destQueue
+	mu         sync.Mutex
+	queues     map[string]*destQueue
+	totalBytes int64 // bytes waiting in all queues
 
 	sent    uint64
 	failed  uint64
@@ -111,16 +131,17 @@ func NewWebhookProducer(
 	loggerWrapper *logger_wrapper.LoggerManager,
 ) producer_interfaces.Producer {
 	return &webhookProducer{
-		url:           url,
-		loggerWrapper: loggerWrapper,
-		httpClient:    utils.NewWebhookClient(webhookRequestTimeout),
-		maxEvents:     envInt("WEBHOOK_QUEUE_MAX_EVENTS", defaultMaxEvents),
-		maxBytes:      int64(envInt("WEBHOOK_QUEUE_MAX_MB", defaultMaxMB)) << 20,
-		workers:       envInt("WEBHOOK_QUEUE_WORKERS", defaultWorkers),
-		backoff:       defaultBackoff,
-		queues:        map[string]*destQueue{},
-		draining:      make(chan struct{}),
-		stop:          make(chan struct{}),
+		url:            url,
+		loggerWrapper:  loggerWrapper,
+		httpClient:     utils.NewWebhookClient(webhookRequestTimeout),
+		maxEvents:      envInt("WEBHOOK_QUEUE_MAX_EVENTS", defaultMaxEvents),
+		maxBytes:       int64(envInt("WEBHOOK_QUEUE_MAX_MB", defaultMaxMB)) << 20,
+		globalMaxBytes: int64(envInt("WEBHOOK_QUEUE_GLOBAL_MB", defaultGlobalMB)) << 20,
+		workers:        envInt("WEBHOOK_QUEUE_WORKERS", defaultWorkers),
+		backoff:        defaultBackoff,
+		queues:         map[string]*destQueue{},
+		draining:       make(chan struct{}),
+		stop:           make(chan struct{}),
 	}
 }
 
@@ -181,13 +202,21 @@ func (p *webhookProducer) enqueue(url string, body []byte, userID string) {
 
 	var droppedNow int
 	for len(q.events) > 0 && (len(q.events) >= p.maxEvents || q.bytes+size > p.maxBytes) {
-		q.bytes -= int64(len(q.events[0].body))
-		q.events[0] = webhookEvent{} // release the payload
-		q.events = q.events[1:]
+		p.dropOldest(q)
+		droppedNow++
+	}
+	// All destinations together: the oldest events of the one that holds the most make room.
+	for p.globalMaxBytes > 0 && p.totalBytes+size > p.globalMaxBytes {
+		biggest := p.biggestQueue()
+		if biggest == nil || len(biggest.events) == 0 {
+			break
+		}
+		p.dropOldest(biggest)
 		droppedNow++
 	}
 	q.events = append(q.events, webhookEvent{body: body, userID: userID})
 	q.bytes += size
+	p.totalBytes += size
 	p.dropped += uint64(droppedNow)
 
 	// One more worker per waiting event, up to the limit.
@@ -203,6 +232,26 @@ func (p *webhookProducer) enqueue(url string, body []byte, userID string) {
 	if start {
 		go p.worker(url, q)
 	}
+}
+
+// dropOldest discards the oldest event of the queue (callers hold p.mu).
+func (p *webhookProducer) dropOldest(q *destQueue) {
+	n := int64(len(q.events[0].body))
+	q.bytes -= n
+	p.totalBytes -= n
+	q.events[0] = webhookEvent{} // release the payload
+	q.events = q.events[1:]
+}
+
+// biggestQueue is the destination that holds the most bytes (callers hold p.mu).
+func (p *webhookProducer) biggestQueue() *destQueue {
+	var biggest *destQueue
+	for _, q := range p.queues {
+		if len(q.events) > 0 && (biggest == nil || q.bytes > biggest.bytes) {
+			biggest = q
+		}
+	}
+	return biggest
 }
 
 // worker delivers events of one destination until its queue is empty.
@@ -221,6 +270,7 @@ func (p *webhookProducer) worker(url string, q *destQueue) {
 		q.events[0] = webhookEvent{}
 		q.events = q.events[1:]
 		q.bytes -= int64(len(ev.body))
+		p.totalBytes -= int64(len(ev.body))
 		if len(q.events) == 0 {
 			q.events = nil // let the backing array go
 		}
@@ -263,6 +313,11 @@ func (p *webhookProducer) sendWithRetry(url string, body []byte, attempts int, u
 			return true
 		}
 		p.loggerWrapper.GetLogger(userID).LogWarn("[%s] webhook failed - url: %s, attempt: %d, error: %v", userID, url, i+1, err)
+
+		if !retryable(statusCode) {
+			p.loggerWrapper.GetLogger(userID).LogError("[%s] webhook refused with status %d, not retrying - url: %s", userID, statusCode, url)
+			return false
+		}
 
 		// No point waiting after the last attempt.
 		if i < attempts-1 {
