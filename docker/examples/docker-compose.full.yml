@@ -1,24 +1,41 @@
-version: '3.8'
-
+# Exemplo completo: servidor + PostgreSQL + RabbitMQ + MinIO.
+#
+# Antes de subir, crie um arquivo ".env" ao lado deste (modelo em .env.example) com
+#   GLOBAL_API_KEY=...     chave de administrador (openssl rand -hex 32)
+#   POSTGRES_PASSWORD=...  senha do banco (inventada por você)
+#   RABBITMQ_PASSWORD=...  senha do RabbitMQ (usuário "whatygo")
+#   MINIO_PASSWORD=...     senha do MinIO (usuário "whatygo", mínimo 8 caracteres)
+# O "docker compose up" recusa começar sem elas: não há senha padrão.
+#
+# As portas ficam presas ao próprio computador (127.0.0.1): quem acessa de fora é um proxy
+# reverso com HTTPS. Para publicar a API direto, ponha BIND_ADDRESS=0.0.0.0 no .env.
 services:
   whatygo:
-    image: ghcr.io/lucasgiovannibr/whatygo:latest
+    image: ghcr.io/lucasgiovannibr/whatygo:${IMAGE_TAG:-latest}
     container_name: whatygo
     restart: unless-stopped
     stop_grace_period: 30s # time to disconnect clients and flush queues on stop
     ports:
-      - "4000:4000"
+      - "${BIND_ADDRESS:-127.0.0.1}:${HTTP_PORT:-4000}:4000"
+    security_opt:
+      - no-new-privileges:true
+    cap_drop:
+      - ALL
+    cap_add: # só o que o entrypoint usa para acertar os volumes e baixar os privilégios
+      - CHOWN
+      - SETUID
+      - SETGID
     environment:
       # Servidor
       SERVER_PORT: 4000
       CLIENT_NAME: "whatygo"
 
       # Segurança
-      GLOBAL_API_KEY: "sua-chave-api-segura-aqui"
+      GLOBAL_API_KEY: ${GLOBAL_API_KEY:?defina GLOBAL_API_KEY no arquivo .env}
 
       # Banco de Dados PostgreSQL
-      POSTGRES_AUTH_DB: "postgresql://postgres:postgres@postgres:5432/whatygo_auth?sslmode=disable"
-      POSTGRES_USERS_DB: "postgresql://postgres:postgres@postgres:5432/whatygo_users?sslmode=disable"
+      POSTGRES_AUTH_DB: "postgresql://postgres:${POSTGRES_PASSWORD:?defina POSTGRES_PASSWORD no arquivo .env}@postgres:5432/whatygo_auth?sslmode=disable"
+      POSTGRES_USERS_DB: "postgresql://postgres:${POSTGRES_PASSWORD}@postgres:5432/whatygo_users?sslmode=disable"
       DATABASE_SAVE_MESSAGES: "true"
 
       # Logs e Debug
@@ -41,9 +58,9 @@ services:
       WEBHOOK_URL: "https://seu-webhook.com/endpoint"
 
       # RabbitMQ
-      AMQP_URL: "amqp://admin:admin@rabbitmq:5672/default"
+      AMQP_URL: "amqp://whatygo:${RABBITMQ_PASSWORD:?defina RABBITMQ_PASSWORD no arquivo .env}@rabbitmq:5672/default"
       AMQP_GLOBAL_ENABLED: "true"
-      AMQP_GLOBAL_EVENTS: "messages.upsert,messages.update,connection.update"
+      AMQP_GLOBAL_EVENTS: "MESSAGE,CONNECTION" # grupos de eventos (MESSAGE, SEND_MESSAGE, READ_RECEIPT, CONNECTION...)
       AMQP_SPECIFIC_EVENTS: ""
 
       # NATS
@@ -54,8 +71,8 @@ services:
       # MinIO
       MINIO_ENABLED: "true"
       MINIO_ENDPOINT: "minio:9000"
-      MINIO_ACCESS_KEY: "minioadmin"
-      MINIO_SECRET_KEY: "minioadmin"
+      MINIO_ACCESS_KEY: "whatygo"
+      MINIO_SECRET_KEY: ${MINIO_PASSWORD:?defina MINIO_PASSWORD no arquivo .env}
       MINIO_BUCKET: "whatygo-media"
       MINIO_USE_SSL: "false"
       MINIO_REGION: "us-east-1"
@@ -86,10 +103,10 @@ services:
     restart: unless-stopped
     environment:
       POSTGRES_USER: postgres
-      POSTGRES_PASSWORD: postgres
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:?defina POSTGRES_PASSWORD no arquivo .env}
       POSTGRES_DB: postgres
     ports:
-      - "5432:5432"
+      - "127.0.0.1:5432:5432" # só este computador; apague o bloco "ports" se não precisar
     volumes:
       - postgres_data:/var/lib/postgresql/data
       - ./init-db.sql:/docker-entrypoint-initdb.d/init-db.sql
@@ -101,28 +118,28 @@ services:
     container_name: whatygo-rabbitmq
     restart: unless-stopped
     environment:
-      RABBITMQ_DEFAULT_USER: admin
-      RABBITMQ_DEFAULT_PASS: admin
+      RABBITMQ_DEFAULT_USER: whatygo
+      RABBITMQ_DEFAULT_PASS: ${RABBITMQ_PASSWORD:?defina RABBITMQ_PASSWORD no arquivo .env}
       RABBITMQ_DEFAULT_VHOST: default
-    ports:
-      - "5672:5672"
-      - "15672:15672"
+    ports: # só este computador; apague o bloco se não precisar do painel/da fila de fora
+      - "127.0.0.1:5672:5672"
+      - "127.0.0.1:15672:15672"
     volumes:
       - rabbitmq_data:/var/lib/rabbitmq
     networks:
       - whatygo_network
 
   minio:
-    image: minio/minio:latest
+    image: minio/minio:${MINIO_TAG:-latest}
     container_name: whatygo-minio
     restart: unless-stopped
     command: server /data --console-address ":9001"
     environment:
-      MINIO_ROOT_USER: minioadmin
-      MINIO_ROOT_PASSWORD: minioadmin
-    ports:
-      - "9000:9000"
-      - "9001:9001"
+      MINIO_ROOT_USER: whatygo
+      MINIO_ROOT_PASSWORD: ${MINIO_PASSWORD:?defina MINIO_PASSWORD no arquivo .env}
+    ports: # só este computador; apague o bloco se não precisar do console de fora
+      - "127.0.0.1:9000:9000"
+      - "127.0.0.1:9001:9001"
     volumes:
       - minio_data:/data
     networks:

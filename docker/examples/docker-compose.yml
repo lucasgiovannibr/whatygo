@@ -1,24 +1,39 @@
-version: '3.8'
-
+# Exemplo básico: servidor + PostgreSQL.
+#
+# Antes de subir, crie um arquivo ".env" ao lado deste (modelo em .env.example) com
+#   GLOBAL_API_KEY=...     chave de administrador (openssl rand -hex 32)
+#   POSTGRES_PASSWORD=...  senha do banco (inventada por você)
+# O "docker compose up" recusa começar sem elas: não há senha padrão.
+#
+# As portas ficam presas ao próprio computador (127.0.0.1): quem acessa de fora é um proxy
+# reverso com HTTPS. Para publicar a API direto, ponha BIND_ADDRESS=0.0.0.0 no .env.
 services:
   whatygo:
-    image: ghcr.io/lucasgiovannibr/whatygo:latest
+    image: ghcr.io/lucasgiovannibr/whatygo:${IMAGE_TAG:-latest}
     container_name: whatygo
     restart: unless-stopped
     stop_grace_period: 30s # time to disconnect clients and flush queues on stop
     ports:
-      - "4000:4000"
+      - "${BIND_ADDRESS:-127.0.0.1}:${HTTP_PORT:-4000}:4000"
+    security_opt:
+      - no-new-privileges:true
+    cap_drop:
+      - ALL
+    cap_add: # só o que o entrypoint usa para acertar os volumes e baixar os privilégios
+      - CHOWN
+      - SETUID
+      - SETGID
     environment:
       # Servidor
       SERVER_PORT: 4000
       CLIENT_NAME: "whatygo"
 
       # Segurança (OBRIGATÓRIO)
-      GLOBAL_API_KEY: "sua-chave-api-segura-aqui"
+      GLOBAL_API_KEY: ${GLOBAL_API_KEY:?defina GLOBAL_API_KEY no arquivo .env}
 
       # Banco de Dados PostgreSQL (RECOMENDADO)
-      POSTGRES_AUTH_DB: "postgresql://postgres:postgres@postgres:5432/whatygo_auth?sslmode=disable"
-      POSTGRES_USERS_DB: "postgresql://postgres:postgres@postgres:5432/whatygo_users?sslmode=disable"
+      POSTGRES_AUTH_DB: "postgresql://postgres:${POSTGRES_PASSWORD:?defina POSTGRES_PASSWORD no arquivo .env}@postgres:5432/whatygo_auth?sslmode=disable"
+      POSTGRES_USERS_DB: "postgresql://postgres:${POSTGRES_PASSWORD}@postgres:5432/whatygo_users?sslmode=disable"
       DATABASE_SAVE_MESSAGES: "false"
 
       # Logs e Debug
@@ -74,10 +89,10 @@ services:
     restart: unless-stopped
     environment:
       POSTGRES_USER: postgres
-      POSTGRES_PASSWORD: postgres
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:?defina POSTGRES_PASSWORD no arquivo .env}
       POSTGRES_DB: postgres
     ports:
-      - "5432:5432"
+      - "127.0.0.1:5432:5432" # só este computador; apague o bloco "ports" se não precisar
     volumes:
       - postgres_data:/var/lib/postgresql/data
       - ./init-db.sql:/docker-entrypoint-initdb.d/init-db.sql
