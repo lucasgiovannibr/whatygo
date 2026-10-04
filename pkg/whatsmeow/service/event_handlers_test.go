@@ -18,9 +18,9 @@ import (
 	"gorm.io/driver/postgres"
 	"gorm.io/gorm"
 
-	"github.com/evolution-foundation/evolution-go/pkg/config"
-	instance_repository "github.com/evolution-foundation/evolution-go/pkg/instance/repository"
-	"github.com/evolution-foundation/evolution-go/pkg/passkey/ceremony"
+	"github.com/lucasgiovannibr/whatygo/pkg/config"
+	instance_repository "github.com/lucasgiovannibr/whatygo/pkg/instance/repository"
+	"github.com/lucasgiovannibr/whatygo/pkg/passkey/ceremony"
 )
 
 // The received-message and receipt cases live in their own methods; these tests drive them through

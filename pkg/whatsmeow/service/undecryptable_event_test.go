@@ -4,9 +4,9 @@ import (
 	"testing"
 	"time"
 
-	"github.com/evolution-foundation/evolution-go/pkg/config"
-	instance_model "github.com/evolution-foundation/evolution-go/pkg/instance/model"
-	logger_wrapper "github.com/evolution-foundation/evolution-go/pkg/logger"
+	"github.com/lucasgiovannibr/whatygo/pkg/config"
+	instance_model "github.com/lucasgiovannibr/whatygo/pkg/instance/model"
+	logger_wrapper "github.com/lucasgiovannibr/whatygo/pkg/logger"
 	"go.mau.fi/whatsmeow/types"
 	"go.mau.fi/whatsmeow/types/events"
 )

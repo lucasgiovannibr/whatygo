@@ -4,7 +4,7 @@ import (
 	"os"
 	"testing"
 
-	"github.com/evolution-foundation/evolution-go/pkg/utils"
+	"github.com/lucasgiovannibr/whatygo/pkg/utils"
 )
 
 // The tests serve files from httptest servers on 127.0.0.1, which the outbound policy

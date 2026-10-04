@@ -4,7 +4,7 @@ import (
 	"net/http"
 	"testing"
 
-	call_service "github.com/evolution-foundation/evolution-go/pkg/call/service"
+	call_service "github.com/lucasgiovannibr/whatygo/pkg/call/service"
 )
 
 func TestStreamTicketAsksForSpeechEvents(t *testing.T) {

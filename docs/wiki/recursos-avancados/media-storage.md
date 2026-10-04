@@ -65,7 +65,7 @@ O WhatyGo armazena arquivos de mídia (imagens, vídeos, áudios, documentos) em
                 ▼
         ┌──────────────┐
         │  Bucket      │
-        │  evolution-  │
+        │  whatygo-    │
         │  go-medias/  │
         └──────────────┘
 ```
@@ -85,7 +85,7 @@ MINIO_ACCESS_KEY=sua-access-key
 MINIO_SECRET_KEY=sua-secret-key
 
 # Bucket
-MINIO_BUCKET=evolution-go-media
+MINIO_BUCKET=whatygo-media
 
 # Região (para AWS S3)
 MINIO_REGION=us-east-1
@@ -111,13 +111,13 @@ docker run -d   --name minio   -p 9000:9000   -p 9001:9001   -e MINIO_ROOT_USER=
 # Criar bucket via mc (MinIO Client)
 docker run --rm   --network host   minio/mc alias set local http://localhost:9000 admin password
 
-docker run --rm   --network host   minio/mc mb local/evolution-go-media
+docker run --rm   --network host   minio/mc mb local/whatygo-media
 
 # .env
 MINIO_ENDPOINT=localhost:9000
 MINIO_ACCESS_KEY=admin
 MINIO_SECRET_KEY=password
-MINIO_BUCKET=evolution-go-media
+MINIO_BUCKET=whatygo-media
 MINIO_REGION=us-east-1
 MINIO_USE_SSL=false
 ```
@@ -130,7 +130,7 @@ MINIO_USE_SSL=false
 MINIO_ENDPOINT=s3.amazonaws.com
 MINIO_ACCESS_KEY=AKIAIOSFODNN7EXAMPLE
 MINIO_SECRET_KEY=wJalrXUtnFEMI/K7MDENG/bPxRfiCYEXAMPLEKEY
-MINIO_BUCKET=meu-bucket-evolution
+MINIO_BUCKET=meu-bucket-whatygo
 MINIO_REGION=us-east-1
 MINIO_USE_SSL=true
 ```
@@ -167,7 +167,7 @@ Cada instância tem a sua pasta. O id de uma mensagem do WhatsApp não é único
 
 ```
 bucket-name/
-└── evolution-go-medias/
+└── whatygo-medias/
     ├── <instanceId-A>/
     │   ├── 3EB0A1B2C3.jpg
     │   └── 3EB0D4E5F6.mp4
@@ -177,14 +177,14 @@ bucket-name/
 
 ### Caminho dos Arquivos
 
-`evolution-go-medias/<instanceId>/<messageId><extensão>`
+`whatygo-medias/<instanceId>/<messageId><extensão>`
 
 **Exemplos**:
-- Instância `4f3c...`, mensagem `3EB0A1B2C3`, imagem → `evolution-go-medias/4f3c.../3EB0A1B2C3.jpg`
+- Instância `4f3c...`, mensagem `3EB0A1B2C3`, imagem → `whatygo-medias/4f3c.../3EB0A1B2C3.jpg`
 
 ### Remoção
 
-Ao apagar uma instância (`DELETE /instance/delete/...`) todos os arquivos da pasta dela são removidos do bucket. Arquivos gravados por versões anteriores (diretamente em `evolution-go-medias/`) não pertencem a nenhuma instância e ficam onde estão.
+Ao apagar uma instância (`DELETE /instance/delete/...`) todos os arquivos da pasta dela são removidos do bucket. Arquivos gravados por versões anteriores (diretamente em `whatygo-medias/`) não pertencem a nenhuma instância e ficam onde estão.
 
 ---
 
@@ -206,7 +206,7 @@ Quando você armazena ou solicita acesso a um arquivo, o WhatyGo gera automatica
 
 **Exemplo de URL presignada**:
 ```
-https://s3.amazonaws.com/evolution-go-media/evolution-go-medias/<instanceId>/photo-123.jpg?
+https://s3.amazonaws.com/whatygo-media/whatygo-medias/<instanceId>/photo-123.jpg?
 X-Amz-Algorithm=AWS4-HMAC-SHA256&
 X-Amz-Credential=AKIAIOSFODNN7EXAMPLE%2F20250111%2Fus-east-1%2Fs3%2Faws4_request&
 X-Amz-Date=20250111T100000Z&
@@ -373,7 +373,7 @@ O WhatyGo configura automaticamente o Content-Type baseado na extensão do arqui
     {
       "Id": "delete-old-media",
       "Status": "Enabled",
-      "Prefix": "evolution-go-medias/",
+      "Prefix": "whatygo-medias/",
       "Expiration": {
         "Days": 30
       }
@@ -384,7 +384,7 @@ O WhatyGo configura automaticamente o Content-Type baseado na extensão do arqui
 
 **MinIO**:
 ```bash
-mc ilm add local/evolution-go-media   --prefix "evolution-go-medias/"   --expiry-days 30
+mc ilm add local/whatygo-media   --prefix "whatygo-medias/"   --expiry-days 30
 ```
 
 ### 4. Use CDN para Distribuição
@@ -392,7 +392,7 @@ mc ilm add local/evolution-go-media   --prefix "evolution-go-medias/"   --expiry
 **CloudFront (AWS)**:
 1. Crie distribuição CloudFront
 2. Aponte origin para bucket S3
-3. URLs ficam: `https://d123456.cloudfront.net/evolution-go-medias/photo.jpg`
+3. URLs ficam: `https://d123456.cloudfront.net/whatygo-medias/photo.jpg`
 
 **DigitalOcean Spaces CDN** (automático):
 ```
@@ -406,7 +406,7 @@ https://bucket-name.nyc3.cdn.digitaloceanspaces.com/file.jpg
 aws s3 ls s3://bucket-name --recursive --summarize | grep "Total Size"
 
 # MinIO
-mc du local/evolution-go-media
+mc du local/whatygo-media
 ```
 
 ### 6. Comprima Imagens Quando Possível
@@ -446,10 +446,10 @@ mc ls test
 **Solução**:
 ```bash
 # Criar bucket
-mc mb test/evolution-go-media
+mc mb test/whatygo-media
 
 # Ou via AWS CLI
-aws s3 mb s3://evolution-go-media
+aws s3 mb s3://whatygo-media
 ```
 
 ### URLs retornam 403 Forbidden

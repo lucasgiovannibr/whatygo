@@ -3,9 +3,9 @@ package instance_service
 import (
 	"sort"
 
-	producer_interfaces "github.com/evolution-foundation/evolution-go/pkg/events/interfaces"
-	instance_model "github.com/evolution-foundation/evolution-go/pkg/instance/model"
-	whatsmeow_service "github.com/evolution-foundation/evolution-go/pkg/whatsmeow/service"
+	producer_interfaces "github.com/lucasgiovannibr/whatygo/pkg/events/interfaces"
+	instance_model "github.com/lucasgiovannibr/whatygo/pkg/instance/model"
+	whatsmeow_service "github.com/lucasgiovannibr/whatygo/pkg/whatsmeow/service"
 )
 
 // DatabaseState is what the database says about the instance.

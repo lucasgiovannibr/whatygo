@@ -7,9 +7,9 @@ import (
 	"strings"
 	"time"
 
-	message_model "github.com/evolution-foundation/evolution-go/pkg/message/model"
-	poll_service "github.com/evolution-foundation/evolution-go/pkg/poll/service"
-	"github.com/evolution-foundation/evolution-go/pkg/utils"
+	message_model "github.com/lucasgiovannibr/whatygo/pkg/message/model"
+	poll_service "github.com/lucasgiovannibr/whatygo/pkg/poll/service"
+	"github.com/lucasgiovannibr/whatygo/pkg/utils"
 	"go.mau.fi/whatsmeow/proto/waE2E"
 	"go.mau.fi/whatsmeow/types"
 	"go.mau.fi/whatsmeow/types/events"

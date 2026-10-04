@@ -4,7 +4,7 @@
 #   1. copie .env.example para .env e preencha as duas senhas
 #   2. docker compose up -d
 #   3. abra http://localhost:4000/manager
-name: evolution-go-fork
+name: whatygo
 
 services:
   postgres:
@@ -21,7 +21,7 @@ services:
       timeout: 3s
       retries: 10
 
-  evolution-go:
+  whatygo:
     image: ghcr.io/lucasgiovannibr/whatygo:${IMAGE_TAG:-latest}
     restart: unless-stopped
     stop_grace_period: 30s
@@ -33,8 +33,8 @@ services:
     environment:
       SERVER_PORT: "4000"
       GLOBAL_API_KEY: ${GLOBAL_API_KEY:?preencha GLOBAL_API_KEY no arquivo .env}
-      POSTGRES_AUTH_DB: postgresql://postgres:${POSTGRES_PASSWORD}@postgres:5432/evogo_auth?sslmode=disable
-      POSTGRES_USERS_DB: postgresql://postgres:${POSTGRES_PASSWORD}@postgres:5432/evogo_users?sslmode=disable
+      POSTGRES_AUTH_DB: postgresql://postgres:${POSTGRES_PASSWORD}@postgres:5432/whatygo_auth?sslmode=disable
+      POSTGRES_USERS_DB: postgresql://postgres:${POSTGRES_PASSWORD}@postgres:5432/whatygo_users?sslmode=disable
       # Reconecta os números sozinho depois de reiniciar o servidor
       CONNECT_ON_STARTUP: "true"
       # Guardar o texto das mensagens no banco (desligado por padrão: use webhook para receber)

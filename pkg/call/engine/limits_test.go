@@ -4,8 +4,8 @@ import (
 	"testing"
 	"time"
 
-	call_engine "github.com/evolution-foundation/evolution-go/pkg/call/engine"
-	"github.com/evolution-foundation/evolution-go/pkg/call/engine/enginetest"
+	call_engine "github.com/lucasgiovannibr/whatygo/pkg/call/engine"
+	"github.com/lucasgiovannibr/whatygo/pkg/call/engine/enginetest"
 )
 
 const limit = 150 * time.Millisecond
@@ -188,6 +188,6 @@ func TestTheReasonsOfTheLimitsAreMetricsLabels(t *testing.T) {
 		t.Fatal("not hung up")
 	}
 	waitFor(t, "the metric", func() bool {
-		return scrape(t, reg, "evolution_calls_ended_total", map[string]string{"reason": "max_duration"}) == 1
+		return scrape(t, reg, "whatygo_calls_ended_total", map[string]string{"reason": "max_duration"}) == 1
 	})
 }

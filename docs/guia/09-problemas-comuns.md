@@ -3,7 +3,7 @@
 Procure o sintoma. Para ver o que está acontecendo, o primeiro passo quase sempre é olhar os logs:
 
 ```bash
-docker compose logs -f evolution-go
+docker compose logs -f whatygo
 ```
 
 ## Instalação e acesso

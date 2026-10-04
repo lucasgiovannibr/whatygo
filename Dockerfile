@@ -16,7 +16,7 @@ COPY . .
 
 ARG VERSION=dev
 # -trimpath and -s -w: no build paths in the binary, no symbol/debug tables (a smaller image).
-RUN CGO_ENABLED=1 go build -trimpath -ldflags "-s -w -X main.version=${VERSION}" -o server ./cmd/evolution-go
+RUN CGO_ENABLED=1 go build -trimpath -ldflags "-s -w -X main.version=${VERSION}" -o server ./cmd/whatygo
 
 # The runtime stage uses the same Alpine release as the build stage: the binary links to the
 # jpeg and webp libraries of the system.
@@ -25,8 +25,8 @@ FROM alpine:3.24 AS final
 # poppler-utils provides pdftoppm, used to rasterize PDF page 1 for /send/media document thumbnails
 # su-exec drops root after the entrypoint has fixed the ownership of the data volumes.
 RUN apk update && apk add --no-cache tzdata ffmpeg libjpeg-turbo libwebp poppler-utils su-exec \
-    && addgroup -S -g 10001 evolution \
-    && adduser -S -u 10001 -G evolution -h /app evolution
+    && addgroup -S -g 10001 whatygo \
+    && adduser -S -u 10001 -G whatygo -h /app whatygo
 
 WORKDIR /app
 
@@ -36,7 +36,7 @@ COPY --from=build /build/VERSION ./VERSION
 COPY docker/entrypoint.sh /entrypoint.sh
 
 # dbdata (SQLite auth DB) and logs are written at run time.
-RUN mkdir -p /app/dbdata /app/logs && chown -R evolution:evolution /app && chmod +x /entrypoint.sh
+RUN mkdir -p /app/dbdata /app/logs && chown -R whatygo:whatygo /app && chmod +x /entrypoint.sh
 
 ENV TZ=America/Sao_Paulo
 ENV SERVER_PORT=8080
@@ -45,7 +45,7 @@ ENV SERVER_PORT=8080
 HEALTHCHECK --interval=30s --timeout=5s --start-period=40s --retries=3 \
     CMD wget -q -O /dev/null "http://127.0.0.1:${SERVER_PORT}/server/ok" || exit 1
 
-# The entrypoint starts as root only to hand the data volumes to the evolution user (volumes
+# The entrypoint starts as root only to hand the data volumes to the whatygo user (volumes
 # created by an earlier image belong to root), then runs the server as that user.
 ENTRYPOINT ["/entrypoint.sh"]
 CMD ["/app/server"]

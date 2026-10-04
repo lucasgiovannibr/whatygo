@@ -5,8 +5,8 @@ import (
 	"errors"
 	"fmt"
 
-	"github.com/evolution-foundation/evolution-go/pkg/apierror"
-	"github.com/evolution-foundation/evolution-go/pkg/utils"
+	"github.com/lucasgiovannibr/whatygo/pkg/apierror"
+	"github.com/lucasgiovannibr/whatygo/pkg/utils"
 	"go.mau.fi/whatsmeow/store/sqlstore"
 )
 

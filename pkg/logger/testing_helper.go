@@ -1,6 +1,6 @@
 package logger
 
-import "github.com/evolution-foundation/evolution-go/pkg/config"
+import "github.com/lucasgiovannibr/whatygo/pkg/config"
 
 // testingT is the part of *testing.T the helper needs (so this package does not import
 // "testing").

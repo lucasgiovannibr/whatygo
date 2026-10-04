@@ -403,7 +403,7 @@ Com `CALL_HISTORY=true` o servidor guarda **uma linha por chamada** que o motor 
 
 **`DELETE /call/history`** apaga o histórico da instância (`{"deleted": N}`), todo ou só o que começou antes de `?before=` (RFC 3339, por exemplo `2026-09-01T00:00:00Z`). Não dá para desfazer. Uma data mal escrita é `400` e **não apaga nada**.
 
-**Retenção:** os registros mais velhos que `CALL_HISTORY_RETENTION_DAYS` (padrão **90**; `0` guarda para sempre) são apagados ao iniciar e uma vez por dia. Uma falha ao gravar perde o registro, nunca a chamada (`evolution_call_history_failed_total`).
+**Retenção:** os registros mais velhos que `CALL_HISTORY_RETENTION_DAYS` (padrão **90**; `0` guarda para sempre) são apagados ao iniciar e uma vez por dia. Uma falha ao gravar perde o registro, nunca a chamada (`whatygo_call_history_failed_total`).
 
 ---
 
@@ -427,7 +427,7 @@ Valores inválidos ou não positivos voltam ao padrão (exceto onde o `0` é a e
 
 **Duração:** por padrão o servidor **não limita** quanto tempo dura uma chamada atendida. `CALL_MAX_DURATION` e `CALL_SILENCE_TIMEOUT` existem para a chamada que ninguém acompanha mais (um agente que travou sem desligar, um telefone esquecido) e que ocupa uma vaga da conta e uma sessão paga de modelo para sempre. "Barulho" é um quadro acima de uns −50 dBFS: o ruído de conforto de quem está mudo fica muito abaixo, e uma voz baixa (−40 dBFS) fica muito acima, então ninguém falando baixo é confundido com silêncio. O áudio do próprio cliente também conta. O timeout por silêncio só vale para chamada **ativa com stream**. Se o stream cair, a chamada espera `CALL_STREAM_GRACE` segundos para o cliente abrir outro (com um bilhete novo de `POST /call/stream-ticket`) e só então é desligada (`stream_closed`).
 
-**Métricas** (`GET /metrics`, chave global): `evolution_calls_active{phase}`, `evolution_calls_started_total{direction,video}`, `evolution_calls_ended_total{direction,reason}`, `evolution_call_talk_seconds`, `evolution_call_dials_total{result}`, `evolution_call_engines{state}`, `evolution_call_streams_attached`, `evolution_call_media_stalled` e `evolution_call_media_stalls_total`, `evolution_call_stream_frames_total` e `evolution_call_stream_dropped_total` (`direction`, `kind`), `evolution_call_keyframe_requests_total`, `evolution_call_history_saved_total` e `evolution_call_history_failed_total`. Os rótulos são limitados de propósito: nunca a instância nem o número, e `server:<código>` e motivos em texto livre viram `server` e `other`.
+**Métricas** (`GET /metrics`, chave global): `whatygo_calls_active{phase}`, `whatygo_calls_started_total{direction,video}`, `whatygo_calls_ended_total{direction,reason}`, `whatygo_call_talk_seconds`, `whatygo_call_dials_total{result}`, `whatygo_call_engines{state}`, `whatygo_call_streams_attached`, `whatygo_call_media_stalled` e `whatygo_call_media_stalls_total`, `whatygo_call_stream_frames_total` e `whatygo_call_stream_dropped_total` (`direction`, `kind`), `whatygo_call_keyframe_requests_total`, `whatygo_call_history_saved_total` e `whatygo_call_history_failed_total`. Os rótulos são limitados de propósito: nunca a instância nem o número, e `server:<código>` e motivos em texto livre viram `server` e `other`.
 
 ---
 
@@ -519,7 +519,7 @@ Validado ao vivo (02/10/2026, navegador de desktop, número real e iPhone): aten
 
 ## Teste ao vivo
 
-O repositório traz um script que exercita tudo isso com uma chamada real: `docker/fork-test/call-stream-test.py` (precisa de `pip install websockets`). Ele atende (ou disca), grava o áudio recebido em WAV e o vídeo em `.h264` (mais um `.orient` com a rotação de cada quadro), devolve o áudio em eco e pode mandar um arquivo H.264 de teste. `--help` mostra as opções e o comando de `ffmpeg` para gerar o vídeo de teste.
+O repositório traz um script que exercita tudo isso com uma chamada real: `docker/test-stack/call-stream-test.py` (precisa de `pip install websockets`). Ele atende (ou disca), grava o áudio recebido em WAV e o vídeo em `.h264` (mais um `.orient` com a rotação de cada quadro), devolve o áudio em eco e pode mandar um arquivo H.264 de teste. `--help` mostra as opções e o comando de `ffmpeg` para gerar o vídeo de teste.
 
 ```bash
 python call-stream-test.py --apikey TOKEN --echo                     # espera uma chamada, atende e devolve o áudio

@@ -6,8 +6,8 @@ import (
 	"strings"
 	"time"
 
-	"github.com/evolution-foundation/evolution-go/pkg/apierror"
-	instance_model "github.com/evolution-foundation/evolution-go/pkg/instance/model"
+	"github.com/lucasgiovannibr/whatygo/pkg/apierror"
+	instance_model "github.com/lucasgiovannibr/whatygo/pkg/instance/model"
 )
 
 // WhatsApp refuses list messages from a linked-device session (405/479, Business accounts

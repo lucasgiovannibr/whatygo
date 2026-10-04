@@ -3,9 +3,9 @@ package whatsmeow_service
 import (
 	"testing"
 
-	call_engine "github.com/evolution-foundation/evolution-go/pkg/call/engine"
-	"github.com/evolution-foundation/evolution-go/pkg/config"
-	"github.com/evolution-foundation/evolution-go/pkg/safemap"
+	call_engine "github.com/lucasgiovannibr/whatygo/pkg/call/engine"
+	"github.com/lucasgiovannibr/whatygo/pkg/config"
+	"github.com/lucasgiovannibr/whatygo/pkg/safemap"
 	"go.mau.fi/whatsmeow"
 )
 

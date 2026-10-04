@@ -6,6 +6,27 @@ Fixes and hardening on top of upstream v0.7.2. Full triage of the upstream issue
 and pull requests in `FORK-TRIAGE.md`.
 
 ### Upgrade notes
+- **Repository layout.** The entry point moved from `cmd/evolution-go` to `cmd/whatygo`, so
+  `go build ./cmd/whatygo`, `go run cmd/whatygo/main.go` and `swag init -g cmd/whatygo/main.go`
+  replace the old paths (the `Makefile` and the `Dockerfile` already use them; the binary
+  built by `make build` is now `build/whatygo`). In `docker/`, `fork-test/` became
+  `test-stack/` (now with a README and a `.env.example`; the Compose project name is unchanged,
+  so existing test volumes are kept) and `stack-evocrm.yml` was removed: it pulled a
+  third-party image (`intrategica/evg:1`) and carried someone else's database credentials.
+  The local test image is now tagged `whatygo:test`.
+- **Own names instead of the upstream's** (the project is in development, so nothing was kept
+  for compatibility): Go module `github.com/lucasgiovannibr/whatygo`; Prometheus metrics
+  `evolution_*` are now `whatygo_*` (update dashboards and alerts); the media folder in the
+  bucket is `whatygo-medias/` (it was `evolution-go-medias/`; media already stored under the old
+  folder is not found); the instance-lock key, the NATS connection name and the outgoing
+  `User-Agent` (`WhatyGo/1.0`) follow; the container user is `whatygo`; the databases in the
+  examples, docs and test stack are `whatygo_auth` and `whatygo_users` (they were `evogo_*`;
+  rename an existing one with `ALTER DATABASE evogo_auth RENAME TO whatygo_auth;`, or keep your
+  own names in `POSTGRES_AUTH_DB` / `POSTGRES_USERS_DB`); the Compose service, container, volume
+  and network names in `docker/` and in the docs are `whatygo*`, and the test stack's project is
+  `whatygo-test`. The `public/` folder (the upstream's logos and donation QR codes, unused) was
+  removed. The upstream is still credited in `LICENSE`, `NOTICE`, the README and the manager's
+  footer.
 - **The product is now called WhatyGo** (a fork of Evolution Go; the original's name, logo and
   colours are no longer used as this project's identity, see `TRADEMARKS.md` and
   `docs/guia/11-avisos-legais-e-creditos.md`). What changes for you:

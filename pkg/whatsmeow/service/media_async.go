@@ -9,7 +9,7 @@ import (
 	"go.mau.fi/whatsmeow/proto/waE2E"
 	"go.mau.fi/whatsmeow/types/events"
 
-	"github.com/evolution-foundation/evolution-go/pkg/metrics"
+	"github.com/lucasgiovannibr/whatygo/pkg/metrics"
 )
 
 // whatsmeow calls the event handler of a client one event at a time. A received message

@@ -51,7 +51,7 @@ Conceder apenas permissões mínimas necessárias:
 | Chave global fraca | O servidor **não inicia** com uma `GLOBAL_API_KEY` publicada (exemplos, `change-me`...) | `ALLOW_INSECURE_API_KEY=true` só em desenvolvimento |
 | SSRF | URLs recebidas em requisições (mídia, figurinhas, preview de link, status) só podem apontar para endereços públicos; loopback e o endpoint de metadados da nuvem são sempre recusados. A verificação é feita na conexão, então redirecionamentos e DNS que mudam de resposta também são cobertos | `ALLOW_PRIVATE_URLS=true` libera redes privadas; webhooks podem apontar para a rede interna |
 | Token no webhook | O payload dos eventos **não** leva `instanceToken` (é a chave de API da instância) | `WEBHOOK_INCLUDE_TOKEN=true` |
-| Bucket S3/MinIO | Não é tornado público; a mídia fica em `evolution-go-medias/<instanceId>/` com URLs pré-assinadas e é apagada com a instância | `MINIO_PUBLIC_BUCKET`, `MINIO_URL_TTL_HOURS` |
+| Bucket S3/MinIO | Não é tornado público; a mídia fica em `whatygo-medias/<instanceId>/` com URLs pré-assinadas e é apagada com a instância | `MINIO_PUBLIC_BUCKET`, `MINIO_URL_TTL_HOURS` |
 | Corpo das requisições | 4 MB (150 MB nas rotas que recebem arquivo); respondem `413` | `MAX_BODY_MB`, `MAX_MEDIA_BODY_MB` |
 | Imagens e conversões | Imagens com mais de 50 megapixels são recusadas antes de decodificar; ffmpeg/pdftoppm têm timeout, teto de saída e número máximo de execuções simultâneas | `MAX_IMAGE_MEGAPIXELS`, `MAX_CONCURRENT_CONVERSIONS` |
 | CORS | Segue `CORS_ORIGINS` (vazio ou `*` libera todas as origens: restrinja em produção) | `CORS_ORIGINS` |
@@ -130,7 +130,7 @@ http {
         location / {
             limit_req zone=api_limit burst=200 nodelay;
             limit_req_status 429;
-            proxy_pass http://evolution-go:4000;
+            proxy_pass http://whatygo:4000;
         }
     }
 }
@@ -145,20 +145,20 @@ http {
 ```bash
 # Criar secrets
 echo "senha_postgres" | docker secret create postgres_password -
-echo "$(uuidgen)" | docker secret create evolution_api_key -
+echo "$(uuidgen)" | docker secret create whatygo_api_key -
 
 # docker-compose.swarm.yml
 services:
-  evolution-go:
+  whatygo:
     secrets:
-      - evolution_api_key
+      - whatygo_api_key
       - postgres_password
     environment:
-      GLOBAL_API_KEY_FILE: /run/secrets/evolution_api_key
+      GLOBAL_API_KEY_FILE: /run/secrets/whatygo_api_key
       POSTGRES_PASSWORD_FILE: /run/secrets/postgres_password
 
 secrets:
-  evolution_api_key:
+  whatygo_api_key:
     external: true
   postgres_password:
     external: true
@@ -168,10 +168,10 @@ secrets:
 
 ```bash
 # Criar secrets
-kubectl create secret generic evolution-secrets \
+kubectl create secret generic whatygo-secrets \
   --from-literal=GLOBAL_API_KEY=$(uuidgen) \
   --from-literal=POSTGRES_PASSWORD=$(openssl rand -base64 32) \
-  --namespace=evolution-go
+  --namespace=whatygo
 
 # Habilitar encryption at rest
 # https://kubernetes.io/docs/tasks/administer-cluster/encrypt-data/
@@ -183,12 +183,12 @@ kubectl create secret generic evolution-secrets \
         - name: GLOBAL_API_KEY
           valueFrom:
             secretKeyRef:
-              name: evolution-secrets
+              name: whatygo-secrets
               key: GLOBAL_API_KEY
         - name: POSTGRES_PASSWORD
           valueFrom:
             secretKeyRef:
-              name: evolution-secrets
+              name: whatygo-secrets
               key: POSTGRES_PASSWORD
 ```
 
@@ -204,7 +204,7 @@ auto_auth {
   method {
     type = "kubernetes"
     config = {
-      role = "evolution-go"
+      role = "whatygo"
     }
   }
 }
@@ -292,7 +292,7 @@ networks:
     internal: true  # Sem acesso externo
 
 services:
-  evolution-go:
+  whatygo:
     networks:
       - frontend
       - backend
@@ -308,7 +308,7 @@ services:
 
 ### Não Executar como Root
 
-A imagem do WhatyGo já roda como usuário sem privilégios (`evolution`, uid 10001): o entrypoint (`docker/entrypoint.sh`) ajusta o dono dos volumes (`/app/dbdata`, `/app/logs`, inclusive um volume criado por uma versão antiga como root) e passa para esse usuário com `su-exec` antes de iniciar o servidor. O binário é compilado com `-trimpath -s -w` e a imagem tem `HEALTHCHECK` em `/server/ok`.
+A imagem do WhatyGo já roda como usuário sem privilégios (`whatygo`, uid 10001): o entrypoint (`docker/entrypoint.sh`) ajusta o dono dos volumes (`/app/dbdata`, `/app/logs`, inclusive um volume criado por uma versão antiga como root) e passa para esse usuário com `su-exec` antes de iniciar o servidor. O binário é compilado com `-trimpath -s -w` e a imagem tem `HEALTHCHECK` em `/server/ok`.
 
 Se você monta o volume de um diretório do host, dê a ele o uid 10001 (ou deixe o entrypoint fazer o `chown`).
 
@@ -316,20 +316,20 @@ Se você monta o volume de um diretório do host, dê a ele o uid 10001 (ou deix
 
 ```yaml
 services:
-  evolution-go:
+  whatygo:
     read_only: true
     tmpfs:
       - /tmp
     volumes:
-      - evolution_data:/app/dbdata
-      - evolution_logs:/app/logs
+      - whatygo_data:/app/dbdata
+      - whatygo_logs:/app/logs
 ```
 
 ### Security Options
 
 ```yaml
 services:
-  evolution-go:
+  whatygo:
     security_opt:
       - no-new-privileges:true
       - apparmor:docker-default
@@ -344,7 +344,7 @@ services:
 
 ```yaml
 services:
-  evolution-go:
+  whatygo:
     deploy:
       resources:
         limits:
@@ -385,10 +385,10 @@ docker scout cves ghcr.io/lucasgiovannibr/whatygo:latest
 sudo apt-get install certbot
 
 # Gerar certificado
-sudo certbot certonly --standalone -d evolution.seudominio.com
+sudo certbot certonly --standalone -d whatygo.seudominio.com
 
 # Certificados em:
-# /etc/letsencrypt/live/evolution.seudominio.com/
+# /etc/letsencrypt/live/whatygo.seudominio.com/
 ```
 
 ### Configuração NGINX
@@ -397,18 +397,18 @@ sudo certbot certonly --standalone -d evolution.seudominio.com
 # Redirecionar HTTP → HTTPS
 server {
     listen 80;
-    server_name evolution.seudominio.com;
+    server_name whatygo.seudominio.com;
     return 301 https://$server_name$request_uri;
 }
 
 # HTTPS
 server {
     listen 443 ssl http2;
-    server_name evolution.seudominio.com;
+    server_name whatygo.seudominio.com;
 
     # Certificados
-    ssl_certificate /etc/letsencrypt/live/evolution.seudominio.com/fullchain.pem;
-    ssl_certificate_key /etc/letsencrypt/live/evolution.seudominio.com/privkey.pem;
+    ssl_certificate /etc/letsencrypt/live/whatygo.seudominio.com/fullchain.pem;
+    ssl_certificate_key /etc/letsencrypt/live/whatygo.seudominio.com/privkey.pem;
 
     # Protocolos e ciphers
     ssl_protocols TLSv1.2 TLSv1.3;
@@ -421,7 +421,7 @@ server {
     # OCSP Stapling
     ssl_stapling on;
     ssl_stapling_verify on;
-    ssl_trusted_certificate /etc/letsencrypt/live/evolution.seudominio.com/chain.pem;
+    ssl_trusted_certificate /etc/letsencrypt/live/whatygo.seudominio.com/chain.pem;
 
     # Security Headers
     add_header X-Frame-Options "SAMEORIGIN" always;
@@ -433,7 +433,7 @@ server {
     server_tokens off;
 
     location / {
-        proxy_pass http://evolution-go:4000;
+        proxy_pass http://whatygo:4000;
         proxy_set_header Host $host;
         proxy_set_header X-Real-IP $remote_addr;
         proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
@@ -484,8 +484,8 @@ password_encryption = scram-sha-256
 # pg_hba.conf
 
 # Apenas SSL
-hostssl evogo_auth evolution 10.0.0.0/8 scram-sha-256
-hostssl evogo_users evolution 10.0.0.0/8 scram-sha-256
+hostssl whatygo_auth whatygo 10.0.0.0/8 scram-sha-256
+hostssl whatygo_users whatygo 10.0.0.0/8 scram-sha-256
 
 # Rejeitar sem SSL
 hostnossl all all 0.0.0.0/0 reject
@@ -537,10 +537,10 @@ docker exec postgres pg_dumpall -U postgres | \
 
 # Volumes
 docker run --rm \
-  -v evolution_data:/data \
+  -v whatygo_data:/data \
   -v ${BACKUP_DIR}:/backup \
   alpine tar czf - -C /data . | \
-  gpg --encrypt --recipient $GPG_KEY --output "${BACKUP_DIR}/evolution_data_${TIMESTAMP}.tar.gz.gpg"
+  gpg --encrypt --recipient $GPG_KEY --output "${BACKUP_DIR}/whatygo_data_${TIMESTAMP}.tar.gz.gpg"
 
 # Upload S3 com KMS
 aws s3 cp "${BACKUP_DIR}/postgres_${TIMESTAMP}.sql.gz.gpg" \
@@ -570,7 +570,7 @@ http {
     server {
         location / {
             limit_req zone=req_limit burst=20 nodelay;
-            proxy_pass http://evolution-go:4000;
+            proxy_pass http://whatygo:4000;
         }
     }
 }
@@ -641,7 +641,7 @@ DELETE FROM messages WHERE timestamp < NOW() - INTERVAL '30 days';
 
 ```yaml
 services:
-  evolution-go:
+  whatygo:
     logging:
       driver: "json-file"
       options:

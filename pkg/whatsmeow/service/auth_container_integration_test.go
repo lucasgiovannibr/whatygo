@@ -5,20 +5,20 @@ import (
 	"os"
 	"testing"
 
-	"github.com/evolution-foundation/evolution-go/pkg/config"
 	_ "github.com/lib/pq"
+	"github.com/lucasgiovannibr/whatygo/pkg/config"
 )
 
-// Integration test, skipped unless EVOGO_TEST_POSTGRES_DSN points at an empty
+// Integration test, skipped unless WHATYGO_TEST_POSTGRES_DSN points at an empty
 // database. It proves the fix for the connection-pool leak (#106 #109 #112 #118
 // #165 #175 #186): every StartClient used to open a brand new pool; now the
 // container is created once on top of the existing authDB pool.
 //
-//	EVOGO_TEST_POSTGRES_DSN='postgresql://postgres:root@localhost:5432/evogo_auth?sslmode=disable' go test ./pkg/whatsmeow/service -run AuthContainer
+//	WHATYGO_TEST_POSTGRES_DSN='postgresql://postgres:root@localhost:5432/whatygo_auth?sslmode=disable' go test ./pkg/whatsmeow/service -run AuthContainer
 func TestAuthContainerReusesPoolOnPostgres(t *testing.T) {
-	dsn := os.Getenv("EVOGO_TEST_POSTGRES_DSN")
+	dsn := os.Getenv("WHATYGO_TEST_POSTGRES_DSN")
 	if dsn == "" {
-		t.Skip("EVOGO_TEST_POSTGRES_DSN not set")
+		t.Skip("WHATYGO_TEST_POSTGRES_DSN not set")
 	}
 
 	db, err := sql.Open("postgres", dsn)

@@ -9,8 +9,8 @@ import (
 	"net/http/httptest"
 	"testing"
 
-	user_service "github.com/evolution-foundation/evolution-go/pkg/user/service"
 	"github.com/gin-gonic/gin"
+	user_service "github.com/lucasgiovannibr/whatygo/pkg/user/service"
 	"go.mau.fi/whatsmeow"
 )
 

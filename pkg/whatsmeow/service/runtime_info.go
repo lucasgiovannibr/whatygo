@@ -1,8 +1,8 @@
 package whatsmeow_service
 
 import (
-	call_engine "github.com/evolution-foundation/evolution-go/pkg/call/engine"
-	producer_interfaces "github.com/evolution-foundation/evolution-go/pkg/events/interfaces"
+	call_engine "github.com/lucasgiovannibr/whatygo/pkg/call/engine"
+	producer_interfaces "github.com/lucasgiovannibr/whatygo/pkg/events/interfaces"
 	"runtime"
 	"sort"
 	"time"

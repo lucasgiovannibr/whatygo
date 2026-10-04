@@ -103,7 +103,7 @@ Mockups, exemplos, referências, etc.
 ### Processo
 
 1. **Fork** o repositório
-2. **Clone** seu fork: `git clone https://git.evochat.com/SEU-USUARIO/evolution-go.git`
+2. **Clone** seu fork: `git clone https://github.com/SEU-USUARIO/whatygo.git`
 3. **Crie branch**: `git checkout -b feature/minha-feature`
 4. **Desenvolva** e **commit** suas mudanças
 5. **Push**: `git push origin feature/minha-feature`

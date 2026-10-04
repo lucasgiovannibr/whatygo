@@ -1,10 +1,10 @@
 -- Script de inicialização dos bancos de dados WhatyGo
 
 -- Criar database para autenticação
-CREATE DATABASE evogo_auth;
+CREATE DATABASE whatygo_auth;
 
 -- Criar database para dados de usuários
-CREATE DATABASE evogo_users;
+CREATE DATABASE whatygo_users;
 
 -- Mensagem de confirmação
-SELECT 'Databases evogo_auth e evogo_users criados com sucesso!' as message;
+SELECT 'Databases whatygo_auth e whatygo_users criados com sucesso!' as message;

@@ -11,7 +11,7 @@ import (
 	"testing"
 	"time"
 
-	"github.com/evolution-foundation/evolution-go/pkg/config"
+	"github.com/lucasgiovannibr/whatygo/pkg/config"
 )
 
 func newTestManager(t *testing.T, level string) (*LoggerManager, string) {

@@ -20,7 +20,7 @@ Para documentação detalhada, consulte: [Configuração](../fundamentos/configu
 | Variável | Padrão | Descrição |
 |----------|--------|-----------|
 | `SERVER_PORT` | `4000` | Porta HTTP |
-| `CLIENT_NAME` | `evolution` | Nome identificador |
+| `CLIENT_NAME` | `whatygo` | Nome identificador |
 | `OS_NAME` | `Linux` | Sistema operacional |
 
 ---
@@ -34,8 +34,8 @@ Para documentação detalhada, consulte: [Configuração](../fundamentos/configu
 
 **Formato:**
 ```env
-POSTGRES_AUTH_DB=postgresql://user:pass@host:5432/evogo_auth?sslmode=disable
-POSTGRES_USERS_DB=postgresql://user:pass@host:5432/evogo_users?sslmode=disable
+POSTGRES_AUTH_DB=postgresql://user:pass@host:5432/whatygo_auth?sslmode=disable
+POSTGRES_USERS_DB=postgresql://user:pass@host:5432/whatygo_users?sslmode=disable
 ```
 
 ---
@@ -134,7 +134,7 @@ NATS_GLOBAL_EVENTS=messages.upsert,connection.update
 | `MINIO_PUBLIC_BUCKET` | `true` torna **todos** os objetos do bucket públicos (substitui a policy do bucket). Padrão: desligado; a mídia é servida por URLs pré-assinadas |
 | `MINIO_URL_TTL_HOURS` | Validade das URLs pré-assinadas, em horas (padrão e máximo `168`) |
 
-A mídia é gravada em `evolution-go-medias/<instanceId>/` e apagada junto com a instância. O bucket é criado se não existir.
+A mídia é gravada em `whatygo-medias/<instanceId>/` e apagada junto com a instância. O bucket é criado se não existir.
 
 **Exemplo:**
 ```env
@@ -142,7 +142,7 @@ MINIO_ENABLED=true
 MINIO_ENDPOINT=localhost:9000
 MINIO_ACCESS_KEY=minioadmin
 MINIO_SECRET_KEY=minioadmin
-MINIO_BUCKET=evolution-media
+MINIO_BUCKET=whatygo-media
 MINIO_USE_SSL=false
 MINIO_REGION=us-east-1
 ```
@@ -261,12 +261,12 @@ DATABASE_SAVE_MESSAGES=false
 
 # Servidor
 SERVER_PORT=4000
-CLIENT_NAME=evolution
+CLIENT_NAME=whatygo
 OS_NAME=Linux
 
 # Banco de Dados
-POSTGRES_AUTH_DB=postgresql://postgres:senha@postgres:5432/evogo_auth?sslmode=disable
-POSTGRES_USERS_DB=postgresql://postgres:senha@postgres:5432/evogo_users?sslmode=disable
+POSTGRES_AUTH_DB=postgresql://postgres:senha@postgres:5432/whatygo_auth?sslmode=disable
+POSTGRES_USERS_DB=postgresql://postgres:senha@postgres:5432/whatygo_users?sslmode=disable
 
 # Logs
 WADEBUG=INFO
@@ -291,7 +291,7 @@ MINIO_ENABLED=true
 MINIO_ENDPOINT=minio:9000
 MINIO_ACCESS_KEY=minioadmin
 MINIO_SECRET_KEY=minioadmin
-MINIO_BUCKET=evolution-media
+MINIO_BUCKET=whatygo-media
 MINIO_USE_SSL=false
 ```
 

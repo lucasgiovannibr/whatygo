@@ -1,8 +1,8 @@
 .PHONY: help dev run build test clean swagger deps docker-build docker-run install setup migrate-up migrate-down logs
 
 # Configurações
-APP_NAME=evolution-go
-MAIN_PATH=cmd/evolution-go/main.go
+APP_NAME=whatygo
+MAIN_PATH=cmd/whatygo/main.go
 BUILD_DIR=build
 GO=go
 VERSION=$(shell grep -om1 "v[0-9].*" CHANGELOG.md)

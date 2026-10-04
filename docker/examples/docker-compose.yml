@@ -1,9 +1,9 @@
 version: '3.8'
 
 services:
-  evolution-go:
+  whatygo:
     image: ghcr.io/lucasgiovannibr/whatygo:latest
-    container_name: evolution-go
+    container_name: whatygo
     restart: unless-stopped
     stop_grace_period: 30s # time to disconnect clients and flush queues on stop
     ports:
@@ -11,14 +11,14 @@ services:
     environment:
       # Servidor
       SERVER_PORT: 4000
-      CLIENT_NAME: "evolution"
+      CLIENT_NAME: "whatygo"
 
       # Segurança (OBRIGATÓRIO)
       GLOBAL_API_KEY: "sua-chave-api-segura-aqui"
 
       # Banco de Dados PostgreSQL (RECOMENDADO)
-      POSTGRES_AUTH_DB: "postgresql://postgres:postgres@postgres:5432/evogo_auth?sslmode=disable"
-      POSTGRES_USERS_DB: "postgresql://postgres:postgres@postgres:5432/evogo_users?sslmode=disable"
+      POSTGRES_AUTH_DB: "postgresql://postgres:postgres@postgres:5432/whatygo_auth?sslmode=disable"
+      POSTGRES_USERS_DB: "postgresql://postgres:postgres@postgres:5432/whatygo_users?sslmode=disable"
       DATABASE_SAVE_MESSAGES: "false"
 
       # Logs e Debug
@@ -61,16 +61,16 @@ services:
       QRCODE_MAX_COUNT: "5"
 
     volumes:
-      - evolution_data:/app/dbdata
-      - evolution_logs:/app/logs
+      - whatygo_data:/app/dbdata
+      - whatygo_logs:/app/logs
     networks:
-      - evolution_network
+      - whatygo_network
     depends_on:
       - postgres
 
   postgres:
     image: postgres:15-alpine
-    container_name: evolution-postgres
+    container_name: whatygo-postgres
     restart: unless-stopped
     environment:
       POSTGRES_USER: postgres
@@ -82,16 +82,16 @@ services:
       - postgres_data:/var/lib/postgresql/data
       - ./init-db.sql:/docker-entrypoint-initdb.d/init-db.sql
     networks:
-      - evolution_network
+      - whatygo_network
 
 volumes:
-  evolution_data:
+  whatygo_data:
     driver: local
-  evolution_logs:
+  whatygo_logs:
     driver: local
   postgres_data:
     driver: local
 
 networks:
-  evolution_network:
+  whatygo_network:
     driver: bridge

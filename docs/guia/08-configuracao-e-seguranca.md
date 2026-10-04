@@ -17,7 +17,7 @@ A lista completa, com todos os padrões, está em [Variáveis de ambiente](../wi
 | `SERVER_PORT` | Porta dentro do contêiner. | `4000` (na imagem) |
 | `CONNECT_ON_STARTUP` | Reconectar os números sozinhos ao iniciar. | `false` (a instalação simples liga) |
 | `DATABASE_SAVE_MESSAGES` | Guardar as mensagens no banco. | `false` |
-| `CLIENT_NAME` | Nome do servidor. Só serve para separar quais instâncias cada servidor inicia quando há mais de um. | `evolution` |
+| `CLIENT_NAME` | Nome do servidor. Só serve para separar quais instâncias cada servidor inicia quando há mais de um. | `whatygo` |
 
 ## Comportamento do WhatsApp
 
@@ -75,7 +75,7 @@ O WhatsApp não tem regra pública de limites, mas a experiência da comunidade 
 1. **Guarde a `GLOBAL_API_KEY`** como uma senha de banco: quem a tem controla tudo.
 2. **Coloque HTTPS** na frente (Caddy, Nginx Proxy Manager, Traefik...). Sem HTTPS, as chaves viajam em texto puro.
 3. **Feche as portas.** Publique só 80/443 (e SSH). O banco de dados **não** deve ficar na internet.
-4. **Faça backup** dos bancos `evogo_auth` e `evogo_users` (comando em [Instalação](./02-instalacao.md#atualizar-para-uma-versão-nova)). O `evogo_auth` guarda as sessões dos números: perdê-lo significa ler todos os QR Codes de novo.
+4. **Faça backup** dos bancos `whatygo_auth` e `whatygo_users` (comando em [Instalação](./02-instalacao.md#atualizar-para-uma-versão-nova)). O `whatygo_auth` guarda as sessões dos números: perdê-lo significa ler todos os QR Codes de novo.
 5. **Atualize** com regularidade.
 6. **Não exponha** `/debug/pprof` (`ENABLE_PPROF`) nem `/metrics` na internet.
 

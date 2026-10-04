@@ -5,7 +5,7 @@ import (
 	"errors"
 	"time"
 
-	instance_model "github.com/evolution-foundation/evolution-go/pkg/instance/model"
+	instance_model "github.com/lucasgiovannibr/whatygo/pkg/instance/model"
 	"go.mau.fi/whatsmeow/types"
 )
 

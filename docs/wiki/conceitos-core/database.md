@@ -18,8 +18,8 @@ Sistema de armazenamento de dados do WhatyGo usando bancos separados para difere
 
 O WhatyGo usa **dois bancos de dados separados**. Pense nisso como ter dois armários diferentes:
 
-1. **Banco Auth** (`evogo_auth`): Guarda os dados técnicos do WhatsApp
-2. **Banco Users** (`evogo_users`): Guarda os dados da sua aplicação
+1. **Banco Auth** (`whatygo_auth`): Guarda os dados técnicos do WhatsApp
+2. **Banco Users** (`whatygo_users`): Guarda os dados da sua aplicação
 
 ### Tipos de Banco Suportados
 
@@ -218,10 +218,10 @@ Se você deletar a instância `abc-123`:
 
 ```env
 # Banco Auth (Dados do WhatsApp)
-POSTGRES_AUTH_DB=postgresql://user:pass@localhost:5432/evogo_auth
+POSTGRES_AUTH_DB=postgresql://user:pass@localhost:5432/whatygo_auth
 
 # Banco Users (Dados da API)
-POSTGRES_USERS_DB=postgresql://user:pass@localhost:5432/evogo_users
+POSTGRES_USERS_DB=postgresql://user:pass@localhost:5432/whatygo_users
 ```
 
 ### Criação Automática de Tabelas
@@ -245,10 +245,10 @@ Isso se chama **Auto-Migration** (migração automática).
 
 ```bash
 # Backup do banco Auth (CRÍTICO!)
-pg_dump -U postgres evogo_auth > backup_auth_$(date +%Y%m%d).sql
+pg_dump -U postgres whatygo_auth > backup_auth_$(date +%Y%m%d).sql
 
 # Backup do banco Users
-pg_dump -U postgres evogo_users > backup_users_$(date +%Y%m%d).sql
+pg_dump -U postgres whatygo_users > backup_users_$(date +%Y%m%d).sql
 ```
 
 💡 O backup do **Auth** é mais crítico pois contém as chaves de criptografia!
@@ -363,7 +363,7 @@ ORDER BY pg_total_relation_size(tablename::text) DESC;
 ```
 ┌────────────────────────┐         ┌────────────────────────┐
 │   Banco Auth           │         │   Banco Users          │
-│   (evogo_auth)         │         │   (evogo_users)        │
+│   (whatygo_auth)         │         │   (whatygo_users)        │
 ├────────────────────────┤         ├────────────────────────┤
 │                        │         │                        │
 │ WhatsApp               │         │ Sua Aplicação          │

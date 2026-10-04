@@ -3,10 +3,10 @@ package label_handler
 import (
 	"net/http"
 
-	"github.com/evolution-foundation/evolution-go/pkg/apierror"
-	instance_model "github.com/evolution-foundation/evolution-go/pkg/instance/model"
-	label_service "github.com/evolution-foundation/evolution-go/pkg/label/service"
 	"github.com/gin-gonic/gin"
+	"github.com/lucasgiovannibr/whatygo/pkg/apierror"
+	instance_model "github.com/lucasgiovannibr/whatygo/pkg/instance/model"
+	label_service "github.com/lucasgiovannibr/whatygo/pkg/label/service"
 )
 
 type LabelHandler interface {

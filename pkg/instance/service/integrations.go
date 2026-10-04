@@ -5,8 +5,8 @@ import (
 	"net/url"
 	"strings"
 
-	"github.com/evolution-foundation/evolution-go/pkg/apierror"
-	event_types "github.com/evolution-foundation/evolution-go/pkg/internal/event_types"
+	"github.com/lucasgiovannibr/whatygo/pkg/apierror"
+	event_types "github.com/lucasgiovannibr/whatygo/pkg/internal/event_types"
 )
 
 // IntegrationsStruct is the body of PUT /instance/{instanceId}/integrations.

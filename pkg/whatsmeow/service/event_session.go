@@ -6,7 +6,7 @@ import (
 	"strings"
 	"time"
 
-	"github.com/evolution-foundation/evolution-go/pkg/utils"
+	"github.com/lucasgiovannibr/whatygo/pkg/utils"
 	"github.com/patrickmn/go-cache"
 	"go.mau.fi/whatsmeow/types/events"
 )

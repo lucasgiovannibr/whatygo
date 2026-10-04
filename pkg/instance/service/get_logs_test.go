@@ -7,7 +7,7 @@ import (
 	"testing"
 	"time"
 
-	"github.com/evolution-foundation/evolution-go/pkg/config"
+	"github.com/lucasgiovannibr/whatygo/pkg/config"
 )
 
 func writeInstanceLog(t *testing.T, dir, instanceID string, n int, day time.Time) {

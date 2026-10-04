@@ -12,10 +12,10 @@ import (
 	"sync"
 	"time"
 
-	"github.com/evolution-foundation/evolution-go/pkg/apierror"
-	call_engine "github.com/evolution-foundation/evolution-go/pkg/call/engine"
 	"github.com/gin-gonic/gin"
 	"github.com/gorilla/websocket"
+	"github.com/lucasgiovannibr/whatygo/pkg/apierror"
+	call_engine "github.com/lucasgiovannibr/whatygo/pkg/call/engine"
 )
 
 const (

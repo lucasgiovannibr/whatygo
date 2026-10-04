@@ -9,8 +9,8 @@ import (
 	"gorm.io/driver/postgres"
 	"gorm.io/gorm"
 
-	instance_repository "github.com/evolution-foundation/evolution-go/pkg/instance/repository"
-	"github.com/evolution-foundation/evolution-go/pkg/utils"
+	instance_repository "github.com/lucasgiovannibr/whatygo/pkg/instance/repository"
+	"github.com/lucasgiovannibr/whatygo/pkg/utils"
 )
 
 const testInstanceID = "4f3c6282-c561-4056-b530-401a5669ac85"

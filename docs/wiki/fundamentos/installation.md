@@ -56,10 +56,10 @@ cd whatygo
 **Opção B: Download direto**
 
 ```bash
-mkdir evolution-go-deploy && cd evolution-go-deploy
+mkdir whatygo-deploy && cd whatygo-deploy
 
-curl -o docker-compose.yml https://raw.githubusercontent.com/EvolutionAPI/evolution-go/main/docker/examples/docker-compose.yml
-curl -o init-db.sql https://raw.githubusercontent.com/EvolutionAPI/evolution-go/main/docker/examples/init-db.sql
+curl -o docker-compose.yml https://raw.githubusercontent.com/lucasgiovannibr/whatygo/main/docker/examples/docker-compose.yml
+curl -o init-db.sql https://raw.githubusercontent.com/lucasgiovannibr/whatygo/main/docker/examples/init-db.sql
 ```
 
 ### 2. Configurar API Key
@@ -104,7 +104,7 @@ Aguarde ~30 segundos para inicialização completa.
 
 ```bash
 # WhatyGo
-docker-compose logs -f evolution-go
+docker-compose logs -f whatygo
 
 # PostgreSQL
 docker-compose logs -f postgres
@@ -146,8 +146,8 @@ sudo -u postgres psql
 ```
 
 ```sql
-CREATE DATABASE evogo_auth;
-CREATE DATABASE evogo_users;
+CREATE DATABASE whatygo_auth;
+CREATE DATABASE whatygo_users;
 \q
 ```
 
@@ -191,8 +191,8 @@ Configuração mínima:
 SERVER_PORT=4000
 GLOBAL_API_KEY=sua-chave-gerada
 
-POSTGRES_AUTH_DB=postgresql://postgres:postgres@localhost:5432/evogo_auth?sslmode=disable
-POSTGRES_USERS_DB=postgresql://postgres:postgres@localhost:5432/evogo_users?sslmode=disable
+POSTGRES_AUTH_DB=postgresql://postgres:postgres@localhost:5432/whatygo_auth?sslmode=disable
+POSTGRES_USERS_DB=postgresql://postgres:postgres@localhost:5432/whatygo_users?sslmode=disable
 DATABASE_SAVE_MESSAGES=false
 
 WADEBUG=DEBUG
@@ -211,13 +211,13 @@ make dev
 
 Ou:
 ```bash
-go run cmd/evolution-go/main.go -dev
+go run cmd/whatygo/main.go -dev
 ```
 
 **Build produção:**
 ```bash
 make build-local
-./build/evolution-go
+./build/whatygo
 ```
 
 ---
@@ -235,8 +235,8 @@ docker swarm init
 ### 2. Criar Recursos
 
 ```bash
-docker volume create evolution_go_data
-docker volume create evolution_go_logs
+docker volume create whatygo_data
+docker volume create whatygo_logs
 docker network create --driver overlay network_public
 ```
 
@@ -256,14 +256,14 @@ Configure:
 ### 4. Deploy
 
 ```bash
-docker stack deploy -c docker-compose.swarm.yml evolution
+docker stack deploy -c docker-compose.swarm.yml whatygo
 ```
 
 ### 5. Verificar
 
 ```bash
 docker service ls
-docker service logs evolution_evolution_go -f
+docker service logs whatygo_whatygo -f
 ```
 
 ---
@@ -273,7 +273,7 @@ docker service logs evolution_evolution_go -f
 Incluindo RabbitMQ, MinIO e NATS.
 
 ```bash
-curl -o docker-compose-full.yml https://raw.githubusercontent.com/EvolutionAPI/evolution-go/main/docker/examples/docker-compose.full.yml
+curl -o docker-compose-full.yml https://raw.githubusercontent.com/lucasgiovannibr/whatygo/main/docker/examples/docker-compose.full.yml
 
 nano docker-compose-full.yml  # Configurar API Key
 
@@ -301,7 +301,7 @@ docker-compose -f docker-compose-full.yml up -d
 
 1. Acesse http://localhost:9001
 2. Login: minioadmin / minioadmin
-3. Create bucket: `evolution-media`
+3. Create bucket: `whatygo-media`
 4. Configurar política de acesso
 
 ---
@@ -343,12 +343,12 @@ curl -X POST http://localhost:4000/instance/create \
 
 **Docker:**
 ```bash
-docker-compose logs -f evolution-go
+docker-compose logs -f whatygo
 ```
 
 **Local:**
 ```bash
-tail -f logs/evolution-go.log
+tail -f logs/whatygo.log
 ```
 
 ---
@@ -383,7 +383,7 @@ Acesso via: http://localhost:4001
 
 **Ver logs:**
 ```bash
-docker-compose logs evolution-go
+docker-compose logs whatygo
 ```
 
 **Causas comuns:**
@@ -409,11 +409,11 @@ volumes:
 
 1. Acessar console: http://localhost:9001
 2. Login: minioadmin / minioadmin
-3. Criar bucket: `evolution-media`
+3. Criar bucket: `whatygo-media`
 
 Ou via CLI:
 ```bash
-docker-compose exec minio mc mb /data/evolution-media
+docker-compose exec minio mc mb /data/whatygo-media
 ```
 
 ---
@@ -453,16 +453,16 @@ docker-compose up -d
 docker service ls
 
 # Logs
-docker service logs evolution_evolution_go -f
+docker service logs whatygo_whatygo -f
 
 # Escalar
-docker service scale evolution_evolution_go=3
+docker service scale whatygo_whatygo=3
 
 # Atualizar
-docker service update --image ghcr.io/lucasgiovannibr/whatygo:latest evolution_evolution_go
+docker service update --image ghcr.io/lucasgiovannibr/whatygo:latest whatygo_whatygo
 
 # Remover
-docker stack rm evolution
+docker stack rm whatygo
 ```
 
 ---

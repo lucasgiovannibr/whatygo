@@ -9,7 +9,7 @@ import (
 	"time"
 
 	"github.com/DATA-DOG/go-sqlmock"
-	call_engine "github.com/evolution-foundation/evolution-go/pkg/call/engine"
+	call_engine "github.com/lucasgiovannibr/whatygo/pkg/call/engine"
 	"gorm.io/driver/postgres"
 	"gorm.io/gorm"
 )

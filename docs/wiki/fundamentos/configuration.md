@@ -70,7 +70,7 @@ Identificador do cliente/instalação.
 - **Tipo**: String
 
 ```env
-CLIENT_NAME=evolution-production
+CLIENT_NAME=whatygo-production
 ```
 
 ### OS_NAME
@@ -95,7 +95,7 @@ String de conexão para banco de autenticação.
 - **Formato**: `postgresql://user:pass@host:port/database?sslmode=disable`
 
 ```env
-POSTGRES_AUTH_DB=postgresql://postgres:senha@postgres:5432/evogo_auth?sslmode=disable
+POSTGRES_AUTH_DB=postgresql://postgres:senha@postgres:5432/whatygo_auth?sslmode=disable
 ```
 
 ### POSTGRES_USERS_DB
@@ -103,7 +103,7 @@ POSTGRES_AUTH_DB=postgresql://postgres:senha@postgres:5432/evogo_auth?sslmode=di
 String de conexão para banco de dados de usuários.
 
 ```env
-POSTGRES_USERS_DB=postgresql://postgres:senha@postgres:5432/evogo_users?sslmode=disable
+POSTGRES_USERS_DB=postgresql://postgres:senha@postgres:5432/whatygo_users?sslmode=disable
 ```
 
 **Componentes da URL:**
@@ -111,7 +111,7 @@ POSTGRES_USERS_DB=postgresql://postgres:senha@postgres:5432/evogo_users?sslmode=
 - `senha` - password (substituir)
 - `postgres` - hostname (ou `localhost`)
 - `5432` - porta
-- `evogo_auth` / `evogo_users` - database name
+- `whatygo_auth` / `whatygo_users` - database name
 
 ---
 
@@ -406,7 +406,7 @@ MINIO_SECRET_KEY=minioadmin
 Nome do bucket para armazenamento de mídia.
 
 ```env
-MINIO_BUCKET=evolution-media
+MINIO_BUCKET=whatygo-media
 ```
 
 **Nota**: O bucket deve existir antes de habilitar a integração.
@@ -527,12 +527,12 @@ DATABASE_SAVE_MESSAGES=false
 
 # Servidor
 SERVER_PORT=4000
-CLIENT_NAME=evolution
+CLIENT_NAME=whatygo
 OS_NAME=Linux
 
 # Banco de Dados
-POSTGRES_AUTH_DB=postgresql://postgres:senha@postgres:5432/evogo_auth?sslmode=disable
-POSTGRES_USERS_DB=postgresql://postgres:senha@postgres:5432/evogo_users?sslmode=disable
+POSTGRES_AUTH_DB=postgresql://postgres:senha@postgres:5432/whatygo_auth?sslmode=disable
+POSTGRES_USERS_DB=postgresql://postgres:senha@postgres:5432/whatygo_users?sslmode=disable
 
 # Logs
 WADEBUG=INFO

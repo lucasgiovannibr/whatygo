@@ -101,7 +101,7 @@ Eventos serão enviados via POST HTTP para o endpoint configurado.
 
 **Diagnóstico**:
 ```bash
-docker-compose logs -f evolution-go
+docker-compose logs -f whatygo
 ```
 
 **Soluções**:
@@ -132,7 +132,7 @@ docker-compose logs -f evolution-go
 - URL acessível publicamente (não localhost)
 - Endpoint retorna status 200
 - Firewall/proxy não bloqueando
-- Logs: `docker-compose logs -f evolution-go | grep webhook`
+- Logs: `docker-compose logs -f whatygo | grep webhook`
 
 ---
 

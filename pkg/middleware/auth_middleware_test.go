@@ -7,10 +7,10 @@ import (
 	"net/http/httptest"
 	"testing"
 
-	"github.com/evolution-foundation/evolution-go/pkg/config"
-	instance_model "github.com/evolution-foundation/evolution-go/pkg/instance/model"
-	instance_service "github.com/evolution-foundation/evolution-go/pkg/instance/service"
 	"github.com/gin-gonic/gin"
+	"github.com/lucasgiovannibr/whatygo/pkg/config"
+	instance_model "github.com/lucasgiovannibr/whatygo/pkg/instance/model"
+	instance_service "github.com/lucasgiovannibr/whatygo/pkg/instance/service"
 )
 
 // fakeInstances only implements the lookup the middleware needs.

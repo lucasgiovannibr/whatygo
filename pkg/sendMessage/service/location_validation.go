@@ -2,7 +2,7 @@ package send_service
 
 import (
 	"fmt"
-	"github.com/evolution-foundation/evolution-go/pkg/apierror"
+	"github.com/lucasgiovannibr/whatygo/pkg/apierror"
 	"math"
 )
 

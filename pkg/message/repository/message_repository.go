@@ -1,7 +1,7 @@
 package message_repository
 
 import (
-	message_model "github.com/evolution-foundation/evolution-go/pkg/message/model"
+	message_model "github.com/lucasgiovannibr/whatygo/pkg/message/model"
 	"gorm.io/gorm"
 	"gorm.io/gorm/clause"
 )

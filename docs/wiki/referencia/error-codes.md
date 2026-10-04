@@ -187,7 +187,7 @@ docker-compose ps postgres
 docker-compose logs postgres
 
 # Testar conectividade
-docker-compose exec evolution-go nc -zv postgres 5432
+docker-compose exec whatygo nc -zv postgres 5432
 ```
 
 **Resolução**:
@@ -244,7 +244,7 @@ docker-compose exec evolution-go nc -zv postgres 5432
 **Diagnóstico**:
 ```bash
 # Verificar logs detalhados
-docker-compose logs -f evolution-go
+docker-compose logs -f whatygo
 
 # Verificar status da instância
 curl -H "apikey: SUA-CHAVE" \
@@ -265,13 +265,13 @@ WADEBUG=DEBUG
 
 ```bash
 # Docker Compose
-docker-compose logs -f evolution-go
+docker-compose logs -f whatygo
 
 # Docker (container específico)
-docker logs -f evolution-go --tail=100
+docker logs -f whatygo --tail=100
 
 # Arquivo (se LOGTYPE=file)
-tail -f logs/evolution-go.log
+tail -f logs/whatygo.log
 ```
 
 ### Logs Estruturados

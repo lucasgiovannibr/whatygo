@@ -7,7 +7,7 @@ import (
 	"strings"
 	"time"
 
-	config_env "github.com/evolution-foundation/evolution-go/pkg/config/env"
+	config_env "github.com/lucasgiovannibr/whatygo/pkg/config/env"
 )
 
 // DBPool is the size of a database connection pool.

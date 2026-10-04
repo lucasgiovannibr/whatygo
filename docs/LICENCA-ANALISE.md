@@ -2,7 +2,8 @@
 
 > **Estado (2026-10-03):** a Opção A (seção 9) foi escolhida e implementada; o resultado e a
 > verificação estão na seção 10. As seções 2 a 7 descrevem o código **como era** (`pkg/core` foi
-> removido; para ler o original: `git show fd6d77d^:pkg/core/c0.go`).
+> removido; para ler o original: `git show fd6d77d^:pkg/core/c0.go`). O diretório `cmd/evolution-go`,
+> citado nas seções de análise, hoje se chama `cmd/whatygo`.
 
 Data da análise: 2026-10-03. Escopo: somente leitura do código desta branch (`pkg/core/c0.go`,
 `pkg/core/license_swagger.go`, `cmd/evolution-go/main.go`, `manager/src/...`). Nada foi executado
@@ -282,7 +283,7 @@ Escolha do dono: **A, removendo também as rotas `/license/*`** (respondem 404).
 
 O que mudou:
 
-- Removidos `pkg/core/` inteiro e todas as ligações em `cmd/evolution-go/main.go` (gate, rotas,
+- Removidos `pkg/core/` inteiro e todas as ligações em `cmd/whatygo/main.go` (gate, rotas,
   inicialização, heartbeat, desligamento). `setupRouter` perdeu o parâmetro `runtimeCtx`.
 - `runtime_configs` não é mais criada nem lida. Uma tabela existente **não é tocada**: a imagem
   anterior ainda funciona sobre ela. Ela guarda a chave de licença do upstream em claro; apagar é
@@ -293,7 +294,7 @@ O que mudou:
   de `LICENSE_*` em `lib/http.ts`.
 - Swagger regenerado (swag v1.16.3): só desapareceram as 3 rotas de licença.
 - CI/lint: `gofmt` e `golangci-lint` deixaram de excluir `pkg/core`.
-- Teste-guarda `cmd/evolution-go/licensing_removed_test.go`: falha se voltar código-fonte Go que cite o
+- Teste-guarda `cmd/whatygo/licensing_removed_test.go`: falha se voltar código-fonte Go que cite o
   host de licença do upstream, `LICENSE_REQUIRED`, `/v1/heartbeat`, `/v1/activate`, `/license/` ou
   `runtime_configs`, ou se `pkg/core` reaparecer.
 

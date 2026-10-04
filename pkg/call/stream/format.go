@@ -6,7 +6,7 @@ import (
 	"fmt"
 	"strings"
 
-	call_engine "github.com/evolution-foundation/evolution-go/pkg/call/engine"
+	call_engine "github.com/lucasgiovannibr/whatygo/pkg/call/engine"
 )
 
 // The audio encodings a stream can carry. The names are the ones the "start" message

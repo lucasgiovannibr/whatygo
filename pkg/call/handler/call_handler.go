@@ -7,13 +7,13 @@ import (
 	"strconv"
 	"time"
 
-	"github.com/evolution-foundation/evolution-go/pkg/apierror"
-	call_engine "github.com/evolution-foundation/evolution-go/pkg/call/engine"
-	call_history "github.com/evolution-foundation/evolution-go/pkg/call/history"
-	call_service "github.com/evolution-foundation/evolution-go/pkg/call/service"
-	call_stream "github.com/evolution-foundation/evolution-go/pkg/call/stream"
-	instance_model "github.com/evolution-foundation/evolution-go/pkg/instance/model"
 	"github.com/gin-gonic/gin"
+	"github.com/lucasgiovannibr/whatygo/pkg/apierror"
+	call_engine "github.com/lucasgiovannibr/whatygo/pkg/call/engine"
+	call_history "github.com/lucasgiovannibr/whatygo/pkg/call/history"
+	call_service "github.com/lucasgiovannibr/whatygo/pkg/call/service"
+	call_stream "github.com/lucasgiovannibr/whatygo/pkg/call/stream"
+	instance_model "github.com/lucasgiovannibr/whatygo/pkg/instance/model"
 )
 
 type CallHandler interface {

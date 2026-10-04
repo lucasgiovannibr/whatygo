@@ -9,9 +9,9 @@ import (
 	"sync"
 	"time"
 
-	producer_interfaces "github.com/evolution-foundation/evolution-go/pkg/events/interfaces"
-	logger_wrapper "github.com/evolution-foundation/evolution-go/pkg/logger"
 	"github.com/gomessguii/logger"
+	producer_interfaces "github.com/lucasgiovannibr/whatygo/pkg/events/interfaces"
+	logger_wrapper "github.com/lucasgiovannibr/whatygo/pkg/logger"
 	amqp "github.com/rabbitmq/amqp091-go"
 )
 

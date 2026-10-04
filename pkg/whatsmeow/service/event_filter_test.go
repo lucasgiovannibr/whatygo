@@ -5,8 +5,8 @@ import (
 	"strings"
 	"testing"
 
-	"github.com/evolution-foundation/evolution-go/pkg/config"
-	instance_model "github.com/evolution-foundation/evolution-go/pkg/instance/model"
+	"github.com/lucasgiovannibr/whatygo/pkg/config"
+	instance_model "github.com/lucasgiovannibr/whatygo/pkg/instance/model"
 )
 
 func TestEventSubscribed(t *testing.T) {

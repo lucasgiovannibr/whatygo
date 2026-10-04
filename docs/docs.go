@@ -29,7 +29,7 @@ const docTemplate = `{
                     "200": {
                         "description": "OK",
                         "schema": {
-                            "$ref": "#/definitions/github_com_evolution-foundation_evolution-go_pkg_call_service.ActiveCallsResult"
+                            "$ref": "#/definitions/github_com_lucasgiovannibr_whatygo_pkg_call_service.ActiveCallsResult"
                         }
                     },
                     "500": {
@@ -61,7 +61,7 @@ const docTemplate = `{
                         "in": "body",
                         "required": true,
                         "schema": {
-                            "$ref": "#/definitions/github_com_evolution-foundation_evolution-go_pkg_call_service.AnswerCallStruct"
+                            "$ref": "#/definitions/github_com_lucasgiovannibr_whatygo_pkg_call_service.AnswerCallStruct"
                         }
                     }
                 ],
@@ -69,7 +69,7 @@ const docTemplate = `{
                     "200": {
                         "description": "OK",
                         "schema": {
-                            "$ref": "#/definitions/github_com_evolution-foundation_evolution-go_pkg_call_engine.Info"
+                            "$ref": "#/definitions/github_com_lucasgiovannibr_whatygo_pkg_call_engine.Info"
                         }
                     },
                     "400": {
@@ -113,7 +113,7 @@ const docTemplate = `{
                         "in": "body",
                         "required": true,
                         "schema": {
-                            "$ref": "#/definitions/github_com_evolution-foundation_evolution-go_pkg_call_service.DialCallStruct"
+                            "$ref": "#/definitions/github_com_lucasgiovannibr_whatygo_pkg_call_service.DialCallStruct"
                         }
                     }
                 ],
@@ -121,7 +121,7 @@ const docTemplate = `{
                     "200": {
                         "description": "OK",
                         "schema": {
-                            "$ref": "#/definitions/github_com_evolution-foundation_evolution-go_pkg_call_service.DialResult"
+                            "$ref": "#/definitions/github_com_lucasgiovannibr_whatygo_pkg_call_service.DialResult"
                         }
                     },
                     "400": {
@@ -171,7 +171,7 @@ const docTemplate = `{
                         "in": "body",
                         "required": true,
                         "schema": {
-                            "$ref": "#/definitions/github_com_evolution-foundation_evolution-go_pkg_call_service.HangupCallStruct"
+                            "$ref": "#/definitions/github_com_lucasgiovannibr_whatygo_pkg_call_service.HangupCallStruct"
                         }
                     }
                 ],
@@ -243,7 +243,7 @@ const docTemplate = `{
                     "200": {
                         "description": "OK",
                         "schema": {
-                            "$ref": "#/definitions/github_com_evolution-foundation_evolution-go_pkg_call_history.Page"
+                            "$ref": "#/definitions/github_com_lucasgiovannibr_whatygo_pkg_call_history.Page"
                         }
                     },
                     "400": {
@@ -319,7 +319,7 @@ const docTemplate = `{
                         "in": "body",
                         "required": true,
                         "schema": {
-                            "$ref": "#/definitions/github_com_evolution-foundation_evolution-go_pkg_call_service.RejectCallStruct"
+                            "$ref": "#/definitions/github_com_lucasgiovannibr_whatygo_pkg_call_service.RejectCallStruct"
                         }
                     }
                 ],
@@ -359,7 +359,7 @@ const docTemplate = `{
                         "in": "body",
                         "required": true,
                         "schema": {
-                            "$ref": "#/definitions/github_com_evolution-foundation_evolution-go_pkg_call_service.StreamTicketStruct"
+                            "$ref": "#/definitions/github_com_lucasgiovannibr_whatygo_pkg_call_service.StreamTicketStruct"
                         }
                     }
                 ],
@@ -367,7 +367,7 @@ const docTemplate = `{
                     "200": {
                         "description": "OK",
                         "schema": {
-                            "$ref": "#/definitions/github_com_evolution-foundation_evolution-go_pkg_call_service.StreamTicket"
+                            "$ref": "#/definitions/github_com_lucasgiovannibr_whatygo_pkg_call_service.StreamTicket"
                         }
                     },
                     "400": {
@@ -405,7 +405,7 @@ const docTemplate = `{
                         "in": "body",
                         "required": true,
                         "schema": {
-                            "$ref": "#/definitions/github_com_evolution-foundation_evolution-go_pkg_call_service.VideoCallStruct"
+                            "$ref": "#/definitions/github_com_lucasgiovannibr_whatygo_pkg_call_service.VideoCallStruct"
                         }
                     }
                 ],
@@ -413,7 +413,7 @@ const docTemplate = `{
                     "200": {
                         "description": "OK",
                         "schema": {
-                            "$ref": "#/definitions/github_com_evolution-foundation_evolution-go_pkg_call_engine.Info"
+                            "$ref": "#/definitions/github_com_lucasgiovannibr_whatygo_pkg_call_engine.Info"
                         }
                     },
                     "400": {
@@ -460,7 +460,7 @@ const docTemplate = `{
                     "200": {
                         "description": "OK",
                         "schema": {
-                            "$ref": "#/definitions/github_com_evolution-foundation_evolution-go_pkg_call_engine.Info"
+                            "$ref": "#/definitions/github_com_lucasgiovannibr_whatygo_pkg_call_engine.Info"
                         }
                     },
                     "404": {
@@ -498,7 +498,7 @@ const docTemplate = `{
                         "in": "body",
                         "required": true,
                         "schema": {
-                            "$ref": "#/definitions/github_com_evolution-foundation_evolution-go_pkg_chat_service.BodyStruct"
+                            "$ref": "#/definitions/github_com_lucasgiovannibr_whatygo_pkg_chat_service.BodyStruct"
                         }
                     }
                 ],
@@ -544,7 +544,7 @@ const docTemplate = `{
                         "in": "body",
                         "required": true,
                         "schema": {
-                            "$ref": "#/definitions/github_com_evolution-foundation_evolution-go_pkg_chat_service.DisappearingStruct"
+                            "$ref": "#/definitions/github_com_lucasgiovannibr_whatygo_pkg_chat_service.DisappearingStruct"
                         }
                     }
                 ],
@@ -590,7 +590,7 @@ const docTemplate = `{
                         "in": "body",
                         "required": true,
                         "schema": {
-                            "$ref": "#/definitions/github_com_evolution-foundation_evolution-go_pkg_chat_service.HistorySyncRequestStruct"
+                            "$ref": "#/definitions/github_com_lucasgiovannibr_whatygo_pkg_chat_service.HistorySyncRequestStruct"
                         }
                     }
                 ],
@@ -636,7 +636,7 @@ const docTemplate = `{
                         "in": "body",
                         "required": true,
                         "schema": {
-                            "$ref": "#/definitions/github_com_evolution-foundation_evolution-go_pkg_chat_service.BodyStruct"
+                            "$ref": "#/definitions/github_com_lucasgiovannibr_whatygo_pkg_chat_service.BodyStruct"
                         }
                     }
                 ],
@@ -682,7 +682,7 @@ const docTemplate = `{
                         "in": "body",
                         "required": true,
                         "schema": {
-                            "$ref": "#/definitions/github_com_evolution-foundation_evolution-go_pkg_chat_service.BodyStruct"
+                            "$ref": "#/definitions/github_com_lucasgiovannibr_whatygo_pkg_chat_service.BodyStruct"
                         }
                     }
                 ],
@@ -728,7 +728,7 @@ const docTemplate = `{
                         "in": "body",
                         "required": true,
                         "schema": {
-                            "$ref": "#/definitions/github_com_evolution-foundation_evolution-go_pkg_chat_service.BodyStruct"
+                            "$ref": "#/definitions/github_com_lucasgiovannibr_whatygo_pkg_chat_service.BodyStruct"
                         }
                     }
                 ],
@@ -774,7 +774,7 @@ const docTemplate = `{
                         "in": "body",
                         "required": true,
                         "schema": {
-                            "$ref": "#/definitions/github_com_evolution-foundation_evolution-go_pkg_chat_service.BodyStruct"
+                            "$ref": "#/definitions/github_com_lucasgiovannibr_whatygo_pkg_chat_service.BodyStruct"
                         }
                     }
                 ],
@@ -820,7 +820,7 @@ const docTemplate = `{
                         "in": "body",
                         "required": true,
                         "schema": {
-                            "$ref": "#/definitions/github_com_evolution-foundation_evolution-go_pkg_chat_service.BodyStruct"
+                            "$ref": "#/definitions/github_com_lucasgiovannibr_whatygo_pkg_chat_service.BodyStruct"
                         }
                     }
                 ],
@@ -866,7 +866,7 @@ const docTemplate = `{
                         "in": "body",
                         "required": true,
                         "schema": {
-                            "$ref": "#/definitions/github_com_evolution-foundation_evolution-go_pkg_community_service.AddParticipantStruct"
+                            "$ref": "#/definitions/github_com_lucasgiovannibr_whatygo_pkg_community_service.AddParticipantStruct"
                         }
                     }
                 ],
@@ -912,7 +912,7 @@ const docTemplate = `{
                         "in": "body",
                         "required": true,
                         "schema": {
-                            "$ref": "#/definitions/github_com_evolution-foundation_evolution-go_pkg_community_service.CreateCommunityStruct"
+                            "$ref": "#/definitions/github_com_lucasgiovannibr_whatygo_pkg_community_service.CreateCommunityStruct"
                         }
                     }
                 ],
@@ -958,7 +958,7 @@ const docTemplate = `{
                         "in": "body",
                         "required": true,
                         "schema": {
-                            "$ref": "#/definitions/github_com_evolution-foundation_evolution-go_pkg_community_service.AddParticipantStruct"
+                            "$ref": "#/definitions/github_com_lucasgiovannibr_whatygo_pkg_community_service.AddParticipantStruct"
                         }
                     }
                 ],
@@ -1004,7 +1004,7 @@ const docTemplate = `{
                         "in": "body",
                         "required": true,
                         "schema": {
-                            "$ref": "#/definitions/github_com_evolution-foundation_evolution-go_pkg_group_service.CreateGroupStruct"
+                            "$ref": "#/definitions/github_com_lucasgiovannibr_whatygo_pkg_group_service.CreateGroupStruct"
                         }
                     }
                 ],
@@ -1050,7 +1050,7 @@ const docTemplate = `{
                         "in": "body",
                         "required": true,
                         "schema": {
-                            "$ref": "#/definitions/github_com_evolution-foundation_evolution-go_pkg_group_service.SetGroupDescriptionStruct"
+                            "$ref": "#/definitions/github_com_lucasgiovannibr_whatygo_pkg_group_service.SetGroupDescriptionStruct"
                         }
                     }
                 ],
@@ -1096,7 +1096,7 @@ const docTemplate = `{
                         "in": "body",
                         "required": true,
                         "schema": {
-                            "$ref": "#/definitions/github_com_evolution-foundation_evolution-go_pkg_group_service.GetGroupInfoStruct"
+                            "$ref": "#/definitions/github_com_lucasgiovannibr_whatygo_pkg_group_service.GetGroupInfoStruct"
                         }
                     }
                 ],
@@ -1142,7 +1142,7 @@ const docTemplate = `{
                         "in": "body",
                         "required": true,
                         "schema": {
-                            "$ref": "#/definitions/github_com_evolution-foundation_evolution-go_pkg_group_service.GroupInviteStruct"
+                            "$ref": "#/definitions/github_com_lucasgiovannibr_whatygo_pkg_group_service.GroupInviteStruct"
                         }
                     }
                 ],
@@ -1188,7 +1188,7 @@ const docTemplate = `{
                         "in": "body",
                         "required": true,
                         "schema": {
-                            "$ref": "#/definitions/github_com_evolution-foundation_evolution-go_pkg_group_service.GetGroupInviteLinkStruct"
+                            "$ref": "#/definitions/github_com_lucasgiovannibr_whatygo_pkg_group_service.GetGroupInviteLinkStruct"
                         }
                     }
                 ],
@@ -1234,7 +1234,7 @@ const docTemplate = `{
                         "in": "body",
                         "required": true,
                         "schema": {
-                            "$ref": "#/definitions/github_com_evolution-foundation_evolution-go_pkg_group_service.JoinGroupStruct"
+                            "$ref": "#/definitions/github_com_lucasgiovannibr_whatygo_pkg_group_service.JoinGroupStruct"
                         }
                     }
                 ],
@@ -1280,7 +1280,7 @@ const docTemplate = `{
                         "in": "body",
                         "required": true,
                         "schema": {
-                            "$ref": "#/definitions/github_com_evolution-foundation_evolution-go_pkg_group_service.GroupInviteStruct"
+                            "$ref": "#/definitions/github_com_lucasgiovannibr_whatygo_pkg_group_service.GroupInviteStruct"
                         }
                     }
                 ],
@@ -1326,7 +1326,7 @@ const docTemplate = `{
                         "in": "body",
                         "required": true,
                         "schema": {
-                            "$ref": "#/definitions/github_com_evolution-foundation_evolution-go_pkg_group_service.LeaveGroupStruct"
+                            "$ref": "#/definitions/github_com_lucasgiovannibr_whatygo_pkg_group_service.LeaveGroupStruct"
                         }
                     }
                 ],
@@ -1430,7 +1430,7 @@ const docTemplate = `{
                         "in": "body",
                         "required": true,
                         "schema": {
-                            "$ref": "#/definitions/github_com_evolution-foundation_evolution-go_pkg_group_service.SetGroupNameStruct"
+                            "$ref": "#/definitions/github_com_lucasgiovannibr_whatygo_pkg_group_service.SetGroupNameStruct"
                         }
                     }
                 ],
@@ -1476,7 +1476,7 @@ const docTemplate = `{
                         "in": "body",
                         "required": true,
                         "schema": {
-                            "$ref": "#/definitions/github_com_evolution-foundation_evolution-go_pkg_group_service.AddParticipantStruct"
+                            "$ref": "#/definitions/github_com_lucasgiovannibr_whatygo_pkg_group_service.AddParticipantStruct"
                         }
                     }
                 ],
@@ -1522,7 +1522,7 @@ const docTemplate = `{
                         "in": "body",
                         "required": true,
                         "schema": {
-                            "$ref": "#/definitions/github_com_evolution-foundation_evolution-go_pkg_group_service.SetGroupPhotoStruct"
+                            "$ref": "#/definitions/github_com_lucasgiovannibr_whatygo_pkg_group_service.SetGroupPhotoStruct"
                         }
                     }
                 ],
@@ -1568,7 +1568,7 @@ const docTemplate = `{
                         "in": "body",
                         "required": true,
                         "schema": {
-                            "$ref": "#/definitions/github_com_evolution-foundation_evolution-go_pkg_group_service.GetGroupRequestParticipantsStruct"
+                            "$ref": "#/definitions/github_com_lucasgiovannibr_whatygo_pkg_group_service.GetGroupRequestParticipantsStruct"
                         }
                     }
                 ],
@@ -1614,7 +1614,7 @@ const docTemplate = `{
                         "in": "body",
                         "required": true,
                         "schema": {
-                            "$ref": "#/definitions/github_com_evolution-foundation_evolution-go_pkg_group_service.UpdateGroupRequestParticipantsStruct"
+                            "$ref": "#/definitions/github_com_lucasgiovannibr_whatygo_pkg_group_service.UpdateGroupRequestParticipantsStruct"
                         }
                     }
                 ],
@@ -1660,7 +1660,7 @@ const docTemplate = `{
                         "in": "body",
                         "required": true,
                         "schema": {
-                            "$ref": "#/definitions/github_com_evolution-foundation_evolution-go_pkg_group_service.UpdateGroupSettingsStruct"
+                            "$ref": "#/definitions/github_com_lucasgiovannibr_whatygo_pkg_group_service.UpdateGroupSettingsStruct"
                         }
                     }
                 ],
@@ -1735,7 +1735,7 @@ const docTemplate = `{
                         "in": "body",
                         "required": true,
                         "schema": {
-                            "$ref": "#/definitions/github_com_evolution-foundation_evolution-go_pkg_instance_service.ConnectStruct"
+                            "$ref": "#/definitions/github_com_lucasgiovannibr_whatygo_pkg_instance_service.ConnectStruct"
                         }
                     }
                 ],
@@ -1781,7 +1781,7 @@ const docTemplate = `{
                         "in": "body",
                         "required": true,
                         "schema": {
-                            "$ref": "#/definitions/github_com_evolution-foundation_evolution-go_pkg_instance_service.CreateStruct"
+                            "$ref": "#/definitions/github_com_lucasgiovannibr_whatygo_pkg_instance_service.CreateStruct"
                         }
                     }
                 ],
@@ -1907,7 +1907,7 @@ const docTemplate = `{
                         "in": "body",
                         "required": true,
                         "schema": {
-                            "$ref": "#/definitions/github_com_evolution-foundation_evolution-go_pkg_instance_service.ForceReconnectStruct"
+                            "$ref": "#/definitions/github_com_lucasgiovannibr_whatygo_pkg_instance_service.ForceReconnectStruct"
                         }
                     }
                 ],
@@ -2091,7 +2091,7 @@ const docTemplate = `{
                         "in": "body",
                         "required": true,
                         "schema": {
-                            "$ref": "#/definitions/github_com_evolution-foundation_evolution-go_pkg_instance_service.PairStruct"
+                            "$ref": "#/definitions/github_com_lucasgiovannibr_whatygo_pkg_instance_service.PairStruct"
                         }
                     }
                 ],
@@ -2140,7 +2140,7 @@ const docTemplate = `{
                     "200": {
                         "description": "Proxy status",
                         "schema": {
-                            "$ref": "#/definitions/github_com_evolution-foundation_evolution-go_pkg_instance_service.ProxyStatus"
+                            "$ref": "#/definitions/github_com_lucasgiovannibr_whatygo_pkg_instance_service.ProxyStatus"
                         }
                     },
                     "400": {
@@ -2183,7 +2183,7 @@ const docTemplate = `{
                         "in": "body",
                         "required": true,
                         "schema": {
-                            "$ref": "#/definitions/github_com_evolution-foundation_evolution-go_pkg_instance_service.SetProxyStruct"
+                            "$ref": "#/definitions/github_com_lucasgiovannibr_whatygo_pkg_instance_service.SetProxyStruct"
                         }
                     }
                 ],
@@ -2323,7 +2323,7 @@ const docTemplate = `{
                     "200": {
                         "description": "Runtime report",
                         "schema": {
-                            "$ref": "#/definitions/github_com_evolution-foundation_evolution-go_pkg_instance_service.RuntimesReport"
+                            "$ref": "#/definitions/github_com_lucasgiovannibr_whatygo_pkg_instance_service.RuntimesReport"
                         }
                     },
                     "500": {
@@ -2387,7 +2387,7 @@ const docTemplate = `{
                     "200": {
                         "description": "Advanced settings retrieved successfully",
                         "schema": {
-                            "$ref": "#/definitions/github_com_evolution-foundation_evolution-go_pkg_instance_model.AdvancedSettings"
+                            "$ref": "#/definitions/github_com_lucasgiovannibr_whatygo_pkg_instance_model.AdvancedSettings"
                         }
                     },
                     "400": {
@@ -2436,7 +2436,7 @@ const docTemplate = `{
                         "in": "body",
                         "required": true,
                         "schema": {
-                            "$ref": "#/definitions/github_com_evolution-foundation_evolution-go_pkg_instance_model.AdvancedSettings"
+                            "$ref": "#/definitions/github_com_lucasgiovannibr_whatygo_pkg_instance_model.AdvancedSettings"
                         }
                     }
                 ],
@@ -2495,7 +2495,7 @@ const docTemplate = `{
                         "in": "body",
                         "required": true,
                         "schema": {
-                            "$ref": "#/definitions/github_com_evolution-foundation_evolution-go_pkg_instance_service.IntegrationsStruct"
+                            "$ref": "#/definitions/github_com_lucasgiovannibr_whatygo_pkg_instance_service.IntegrationsStruct"
                         }
                     }
                 ],
@@ -2550,7 +2550,7 @@ const docTemplate = `{
                     "200": {
                         "description": "Runtime diagnostics",
                         "schema": {
-                            "$ref": "#/definitions/github_com_evolution-foundation_evolution-go_pkg_instance_service.RuntimeDiagnostics"
+                            "$ref": "#/definitions/github_com_lucasgiovannibr_whatygo_pkg_instance_service.RuntimeDiagnostics"
                         }
                     },
                     "500": {
@@ -2582,7 +2582,7 @@ const docTemplate = `{
                         "in": "body",
                         "required": true,
                         "schema": {
-                            "$ref": "#/definitions/github_com_evolution-foundation_evolution-go_pkg_label_service.ChatLabelStruct"
+                            "$ref": "#/definitions/github_com_lucasgiovannibr_whatygo_pkg_label_service.ChatLabelStruct"
                         }
                     }
                 ],
@@ -2628,7 +2628,7 @@ const docTemplate = `{
                         "in": "body",
                         "required": true,
                         "schema": {
-                            "$ref": "#/definitions/github_com_evolution-foundation_evolution-go_pkg_label_service.EditLabelStruct"
+                            "$ref": "#/definitions/github_com_lucasgiovannibr_whatygo_pkg_label_service.EditLabelStruct"
                         }
                     }
                 ],
@@ -2703,7 +2703,7 @@ const docTemplate = `{
                         "in": "body",
                         "required": true,
                         "schema": {
-                            "$ref": "#/definitions/github_com_evolution-foundation_evolution-go_pkg_label_service.MessageLabelStruct"
+                            "$ref": "#/definitions/github_com_lucasgiovannibr_whatygo_pkg_label_service.MessageLabelStruct"
                         }
                     }
                 ],
@@ -2749,7 +2749,7 @@ const docTemplate = `{
                         "in": "body",
                         "required": true,
                         "schema": {
-                            "$ref": "#/definitions/github_com_evolution-foundation_evolution-go_pkg_message_service.MessageStruct"
+                            "$ref": "#/definitions/github_com_lucasgiovannibr_whatygo_pkg_message_service.MessageStruct"
                         }
                     }
                 ],
@@ -2795,7 +2795,7 @@ const docTemplate = `{
                         "in": "body",
                         "required": true,
                         "schema": {
-                            "$ref": "#/definitions/github_com_evolution-foundation_evolution-go_pkg_message_service.DownloadMediaStruct"
+                            "$ref": "#/definitions/github_com_lucasgiovannibr_whatygo_pkg_message_service.DownloadMediaStruct"
                         }
                     }
                 ],
@@ -2841,7 +2841,7 @@ const docTemplate = `{
                         "in": "body",
                         "required": true,
                         "schema": {
-                            "$ref": "#/definitions/github_com_evolution-foundation_evolution-go_pkg_message_service.EditMessageStruct"
+                            "$ref": "#/definitions/github_com_lucasgiovannibr_whatygo_pkg_message_service.EditMessageStruct"
                         }
                     }
                 ],
@@ -2887,7 +2887,7 @@ const docTemplate = `{
                         "in": "body",
                         "required": true,
                         "schema": {
-                            "$ref": "#/definitions/github_com_evolution-foundation_evolution-go_pkg_message_service.MarkPlayedStruct"
+                            "$ref": "#/definitions/github_com_lucasgiovannibr_whatygo_pkg_message_service.MarkPlayedStruct"
                         }
                     }
                 ],
@@ -2933,7 +2933,7 @@ const docTemplate = `{
                         "in": "body",
                         "required": true,
                         "schema": {
-                            "$ref": "#/definitions/github_com_evolution-foundation_evolution-go_pkg_message_service.MarkReadStruct"
+                            "$ref": "#/definitions/github_com_lucasgiovannibr_whatygo_pkg_message_service.MarkReadStruct"
                         }
                     }
                 ],
@@ -2979,7 +2979,7 @@ const docTemplate = `{
                         "in": "body",
                         "required": true,
                         "schema": {
-                            "$ref": "#/definitions/github_com_evolution-foundation_evolution-go_pkg_message_service.ChatPresenceStruct"
+                            "$ref": "#/definitions/github_com_lucasgiovannibr_whatygo_pkg_message_service.ChatPresenceStruct"
                         }
                     }
                 ],
@@ -3025,7 +3025,7 @@ const docTemplate = `{
                         "in": "body",
                         "required": true,
                         "schema": {
-                            "$ref": "#/definitions/github_com_evolution-foundation_evolution-go_pkg_message_service.ReactStruct"
+                            "$ref": "#/definitions/github_com_lucasgiovannibr_whatygo_pkg_message_service.ReactStruct"
                         }
                     }
                 ],
@@ -3071,7 +3071,7 @@ const docTemplate = `{
                         "in": "body",
                         "required": true,
                         "schema": {
-                            "$ref": "#/definitions/github_com_evolution-foundation_evolution-go_pkg_message_service.RerequestStruct"
+                            "$ref": "#/definitions/github_com_lucasgiovannibr_whatygo_pkg_message_service.RerequestStruct"
                         }
                     }
                 ],
@@ -3117,7 +3117,7 @@ const docTemplate = `{
                         "in": "body",
                         "required": true,
                         "schema": {
-                            "$ref": "#/definitions/github_com_evolution-foundation_evolution-go_pkg_message_service.MessageStatusStruct"
+                            "$ref": "#/definitions/github_com_lucasgiovannibr_whatygo_pkg_message_service.MessageStatusStruct"
                         }
                     }
                 ],
@@ -3163,7 +3163,7 @@ const docTemplate = `{
                         "in": "body",
                         "required": true,
                         "schema": {
-                            "$ref": "#/definitions/github_com_evolution-foundation_evolution-go_pkg_message_service.SubscribePresenceStruct"
+                            "$ref": "#/definitions/github_com_lucasgiovannibr_whatygo_pkg_message_service.SubscribePresenceStruct"
                         }
                     }
                 ],
@@ -3209,7 +3209,7 @@ const docTemplate = `{
                         "in": "body",
                         "required": true,
                         "schema": {
-                            "$ref": "#/definitions/github_com_evolution-foundation_evolution-go_pkg_newsletter_service.CreateNewsletterStruct"
+                            "$ref": "#/definitions/github_com_lucasgiovannibr_whatygo_pkg_newsletter_service.CreateNewsletterStruct"
                         }
                     }
                 ],
@@ -3254,7 +3254,7 @@ const docTemplate = `{
                         "in": "body",
                         "required": true,
                         "schema": {
-                            "$ref": "#/definitions/github_com_evolution-foundation_evolution-go_pkg_newsletter_service.GetNewsletterStruct"
+                            "$ref": "#/definitions/github_com_lucasgiovannibr_whatygo_pkg_newsletter_service.GetNewsletterStruct"
                         }
                     }
                 ],
@@ -3300,7 +3300,7 @@ const docTemplate = `{
                         "in": "body",
                         "required": true,
                         "schema": {
-                            "$ref": "#/definitions/github_com_evolution-foundation_evolution-go_pkg_newsletter_service.GetNewsletterStruct"
+                            "$ref": "#/definitions/github_com_lucasgiovannibr_whatygo_pkg_newsletter_service.GetNewsletterStruct"
                         }
                     }
                 ],
@@ -3346,7 +3346,7 @@ const docTemplate = `{
                         "in": "body",
                         "required": true,
                         "schema": {
-                            "$ref": "#/definitions/github_com_evolution-foundation_evolution-go_pkg_newsletter_service.GetNewsletterInviteStruct"
+                            "$ref": "#/definitions/github_com_lucasgiovannibr_whatygo_pkg_newsletter_service.GetNewsletterInviteStruct"
                         }
                     }
                 ],
@@ -3421,7 +3421,7 @@ const docTemplate = `{
                         "in": "body",
                         "required": true,
                         "schema": {
-                            "$ref": "#/definitions/github_com_evolution-foundation_evolution-go_pkg_newsletter_service.NewsletterMarkViewedStruct"
+                            "$ref": "#/definitions/github_com_lucasgiovannibr_whatygo_pkg_newsletter_service.NewsletterMarkViewedStruct"
                         }
                     }
                 ],
@@ -3467,7 +3467,7 @@ const docTemplate = `{
                         "in": "body",
                         "required": true,
                         "schema": {
-                            "$ref": "#/definitions/github_com_evolution-foundation_evolution-go_pkg_newsletter_service.GetNewsletterMessagesStruct"
+                            "$ref": "#/definitions/github_com_lucasgiovannibr_whatygo_pkg_newsletter_service.GetNewsletterMessagesStruct"
                         }
                     }
                 ],
@@ -3512,7 +3512,7 @@ const docTemplate = `{
                         "in": "body",
                         "required": true,
                         "schema": {
-                            "$ref": "#/definitions/github_com_evolution-foundation_evolution-go_pkg_newsletter_service.NewsletterMuteStruct"
+                            "$ref": "#/definitions/github_com_lucasgiovannibr_whatygo_pkg_newsletter_service.NewsletterMuteStruct"
                         }
                     }
                 ],
@@ -3558,7 +3558,7 @@ const docTemplate = `{
                         "in": "body",
                         "required": true,
                         "schema": {
-                            "$ref": "#/definitions/github_com_evolution-foundation_evolution-go_pkg_newsletter_service.NewsletterReactStruct"
+                            "$ref": "#/definitions/github_com_lucasgiovannibr_whatygo_pkg_newsletter_service.NewsletterReactStruct"
                         }
                     }
                 ],
@@ -3604,7 +3604,7 @@ const docTemplate = `{
                         "in": "body",
                         "required": true,
                         "schema": {
-                            "$ref": "#/definitions/github_com_evolution-foundation_evolution-go_pkg_newsletter_service.GetNewsletterStruct"
+                            "$ref": "#/definitions/github_com_lucasgiovannibr_whatygo_pkg_newsletter_service.GetNewsletterStruct"
                         }
                     }
                 ],
@@ -3649,7 +3649,7 @@ const docTemplate = `{
                         "in": "body",
                         "required": true,
                         "schema": {
-                            "$ref": "#/definitions/github_com_evolution-foundation_evolution-go_pkg_newsletter_service.GetNewsletterStruct"
+                            "$ref": "#/definitions/github_com_lucasgiovannibr_whatygo_pkg_newsletter_service.GetNewsletterStruct"
                         }
                     }
                 ],
@@ -3677,7 +3677,7 @@ const docTemplate = `{
         },
         "/passkey-ceremony/{token}": {
             "get": {
-                "description": "Returns the current WebAuthn passkey-pairing ceremony state for a token. PUBLIC endpoint (no apikey) — access is gated by the opaque short-lived ceremony token. Polled by the Evolution Passkey Helper browser extension.",
+                "description": "Returns the current WebAuthn passkey-pairing ceremony state for a token. PUBLIC endpoint (no apikey) — access is gated by the opaque short-lived ceremony token. Polled by the WhatyGo Passkey Helper browser extension.",
                 "produces": [
                     "application/json"
                 ],
@@ -3866,7 +3866,7 @@ const docTemplate = `{
                     "200": {
                         "description": "OK",
                         "schema": {
-                            "$ref": "#/definitions/github_com_evolution-foundation_evolution-go_pkg_poll_model.PollResults"
+                            "$ref": "#/definitions/github_com_lucasgiovannibr_whatygo_pkg_poll_model.PollResults"
                         }
                     },
                     "400": {
@@ -3910,7 +3910,7 @@ const docTemplate = `{
                         "in": "body",
                         "required": true,
                         "schema": {
-                            "$ref": "#/definitions/github_com_evolution-foundation_evolution-go_pkg_sendMessage_service.ButtonStruct"
+                            "$ref": "#/definitions/github_com_lucasgiovannibr_whatygo_pkg_sendMessage_service.ButtonStruct"
                         }
                     }
                 ],
@@ -3956,7 +3956,7 @@ const docTemplate = `{
                         "in": "body",
                         "required": true,
                         "schema": {
-                            "$ref": "#/definitions/github_com_evolution-foundation_evolution-go_pkg_sendMessage_service.CarouselStruct"
+                            "$ref": "#/definitions/github_com_lucasgiovannibr_whatygo_pkg_sendMessage_service.CarouselStruct"
                         }
                     }
                 ],
@@ -4002,7 +4002,7 @@ const docTemplate = `{
                         "in": "body",
                         "required": true,
                         "schema": {
-                            "$ref": "#/definitions/github_com_evolution-foundation_evolution-go_pkg_sendMessage_service.ContactStruct"
+                            "$ref": "#/definitions/github_com_lucasgiovannibr_whatygo_pkg_sendMessage_service.ContactStruct"
                         }
                     }
                 ],
@@ -4048,7 +4048,7 @@ const docTemplate = `{
                         "in": "body",
                         "required": true,
                         "schema": {
-                            "$ref": "#/definitions/github_com_evolution-foundation_evolution-go_pkg_sendMessage_service.LinkStruct"
+                            "$ref": "#/definitions/github_com_lucasgiovannibr_whatygo_pkg_sendMessage_service.LinkStruct"
                         }
                     }
                 ],
@@ -4094,7 +4094,7 @@ const docTemplate = `{
                         "in": "body",
                         "required": true,
                         "schema": {
-                            "$ref": "#/definitions/github_com_evolution-foundation_evolution-go_pkg_sendMessage_service.ListStruct"
+                            "$ref": "#/definitions/github_com_lucasgiovannibr_whatygo_pkg_sendMessage_service.ListStruct"
                         }
                     }
                 ],
@@ -4140,7 +4140,7 @@ const docTemplate = `{
                         "in": "body",
                         "required": true,
                         "schema": {
-                            "$ref": "#/definitions/github_com_evolution-foundation_evolution-go_pkg_sendMessage_service.LocationStruct"
+                            "$ref": "#/definitions/github_com_lucasgiovannibr_whatygo_pkg_sendMessage_service.LocationStruct"
                         }
                     }
                 ],
@@ -4186,7 +4186,7 @@ const docTemplate = `{
                         "in": "body",
                         "required": true,
                         "schema": {
-                            "$ref": "#/definitions/github_com_evolution-foundation_evolution-go_pkg_sendMessage_service.MediaStruct"
+                            "$ref": "#/definitions/github_com_lucasgiovannibr_whatygo_pkg_sendMessage_service.MediaStruct"
                         }
                     }
                 ],
@@ -4232,7 +4232,7 @@ const docTemplate = `{
                         "in": "body",
                         "required": true,
                         "schema": {
-                            "$ref": "#/definitions/github_com_evolution-foundation_evolution-go_pkg_sendMessage_service.PollStruct"
+                            "$ref": "#/definitions/github_com_lucasgiovannibr_whatygo_pkg_sendMessage_service.PollStruct"
                         }
                     }
                 ],
@@ -4278,7 +4278,7 @@ const docTemplate = `{
                         "in": "body",
                         "required": true,
                         "schema": {
-                            "$ref": "#/definitions/github_com_evolution-foundation_evolution-go_pkg_sendMessage_service.PollVoteStruct"
+                            "$ref": "#/definitions/github_com_lucasgiovannibr_whatygo_pkg_sendMessage_service.PollVoteStruct"
                         }
                     }
                 ],
@@ -4393,7 +4393,7 @@ const docTemplate = `{
                         "in": "body",
                         "required": true,
                         "schema": {
-                            "$ref": "#/definitions/github_com_evolution-foundation_evolution-go_pkg_sendMessage_service.StatusTextStruct"
+                            "$ref": "#/definitions/github_com_lucasgiovannibr_whatygo_pkg_sendMessage_service.StatusTextStruct"
                         }
                     }
                 ],
@@ -4439,7 +4439,7 @@ const docTemplate = `{
                         "in": "body",
                         "required": true,
                         "schema": {
-                            "$ref": "#/definitions/github_com_evolution-foundation_evolution-go_pkg_sendMessage_service.StickerStruct"
+                            "$ref": "#/definitions/github_com_lucasgiovannibr_whatygo_pkg_sendMessage_service.StickerStruct"
                         }
                     }
                 ],
@@ -4485,7 +4485,7 @@ const docTemplate = `{
                         "in": "body",
                         "required": true,
                         "schema": {
-                            "$ref": "#/definitions/github_com_evolution-foundation_evolution-go_pkg_sendMessage_service.TextStruct"
+                            "$ref": "#/definitions/github_com_lucasgiovannibr_whatygo_pkg_sendMessage_service.TextStruct"
                         }
                     }
                 ],
@@ -4531,7 +4531,7 @@ const docTemplate = `{
                         "in": "body",
                         "required": true,
                         "schema": {
-                            "$ref": "#/definitions/github_com_evolution-foundation_evolution-go_pkg_label_service.ChatLabelStruct"
+                            "$ref": "#/definitions/github_com_lucasgiovannibr_whatygo_pkg_label_service.ChatLabelStruct"
                         }
                     }
                 ],
@@ -4577,7 +4577,7 @@ const docTemplate = `{
                         "in": "body",
                         "required": true,
                         "schema": {
-                            "$ref": "#/definitions/github_com_evolution-foundation_evolution-go_pkg_label_service.MessageLabelStruct"
+                            "$ref": "#/definitions/github_com_lucasgiovannibr_whatygo_pkg_label_service.MessageLabelStruct"
                         }
                     }
                 ],
@@ -4623,7 +4623,7 @@ const docTemplate = `{
                         "in": "body",
                         "required": true,
                         "schema": {
-                            "$ref": "#/definitions/github_com_evolution-foundation_evolution-go_pkg_user_service.GetAvatarStruct"
+                            "$ref": "#/definitions/github_com_lucasgiovannibr_whatygo_pkg_user_service.GetAvatarStruct"
                         }
                     }
                 ],
@@ -4681,7 +4681,7 @@ const docTemplate = `{
                         "in": "body",
                         "required": true,
                         "schema": {
-                            "$ref": "#/definitions/github_com_evolution-foundation_evolution-go_pkg_user_service.BlockStruct"
+                            "$ref": "#/definitions/github_com_lucasgiovannibr_whatygo_pkg_user_service.BlockStruct"
                         }
                     }
                 ],
@@ -4756,7 +4756,7 @@ const docTemplate = `{
                         "in": "body",
                         "required": true,
                         "schema": {
-                            "$ref": "#/definitions/github_com_evolution-foundation_evolution-go_pkg_user_service.BusinessProfileStruct"
+                            "$ref": "#/definitions/github_com_lucasgiovannibr_whatygo_pkg_user_service.BusinessProfileStruct"
                         }
                     }
                 ],
@@ -4808,7 +4808,7 @@ const docTemplate = `{
                         "in": "body",
                         "required": true,
                         "schema": {
-                            "$ref": "#/definitions/github_com_evolution-foundation_evolution-go_pkg_user_service.CheckUserStruct"
+                            "$ref": "#/definitions/github_com_lucasgiovannibr_whatygo_pkg_user_service.CheckUserStruct"
                         }
                     }
                 ],
@@ -4881,7 +4881,7 @@ const docTemplate = `{
                         "in": "body",
                         "required": true,
                         "schema": {
-                            "$ref": "#/definitions/github_com_evolution-foundation_evolution-go_pkg_user_service.SaveContactStruct"
+                            "$ref": "#/definitions/github_com_lucasgiovannibr_whatygo_pkg_user_service.SaveContactStruct"
                         }
                     }
                 ],
@@ -4927,7 +4927,7 @@ const docTemplate = `{
                         "in": "body",
                         "required": true,
                         "schema": {
-                            "$ref": "#/definitions/github_com_evolution-foundation_evolution-go_pkg_chat_service.DefaultDisappearingStruct"
+                            "$ref": "#/definitions/github_com_lucasgiovannibr_whatygo_pkg_chat_service.DefaultDisappearingStruct"
                         }
                     }
                 ],
@@ -4973,7 +4973,7 @@ const docTemplate = `{
                         "in": "body",
                         "required": true,
                         "schema": {
-                            "$ref": "#/definitions/github_com_evolution-foundation_evolution-go_pkg_user_service.DevicesStruct"
+                            "$ref": "#/definitions/github_com_lucasgiovannibr_whatygo_pkg_user_service.DevicesStruct"
                         }
                     }
                 ],
@@ -5019,7 +5019,7 @@ const docTemplate = `{
                         "in": "body",
                         "required": true,
                         "schema": {
-                            "$ref": "#/definitions/github_com_evolution-foundation_evolution-go_pkg_user_service.CheckUserStruct"
+                            "$ref": "#/definitions/github_com_lucasgiovannibr_whatygo_pkg_user_service.CheckUserStruct"
                         }
                     }
                 ],
@@ -5065,7 +5065,7 @@ const docTemplate = `{
                         "in": "body",
                         "required": true,
                         "schema": {
-                            "$ref": "#/definitions/github_com_evolution-foundation_evolution-go_pkg_user_service.ResolveLidStruct"
+                            "$ref": "#/definitions/github_com_lucasgiovannibr_whatygo_pkg_user_service.ResolveLidStruct"
                         }
                     }
                 ],
@@ -5138,7 +5138,7 @@ const docTemplate = `{
                         "in": "body",
                         "required": true,
                         "schema": {
-                            "$ref": "#/definitions/github_com_evolution-foundation_evolution-go_pkg_user_service.PrivacyStruct"
+                            "$ref": "#/definitions/github_com_lucasgiovannibr_whatygo_pkg_user_service.PrivacyStruct"
                         }
                     }
                 ],
@@ -5178,7 +5178,7 @@ const docTemplate = `{
                         "in": "body",
                         "required": true,
                         "schema": {
-                            "$ref": "#/definitions/github_com_evolution-foundation_evolution-go_pkg_user_service.SetProfileNameStruct"
+                            "$ref": "#/definitions/github_com_lucasgiovannibr_whatygo_pkg_user_service.SetProfileNameStruct"
                         }
                     }
                 ],
@@ -5224,7 +5224,7 @@ const docTemplate = `{
                         "in": "body",
                         "required": true,
                         "schema": {
-                            "$ref": "#/definitions/github_com_evolution-foundation_evolution-go_pkg_user_service.SetProfilePictureStruct"
+                            "$ref": "#/definitions/github_com_lucasgiovannibr_whatygo_pkg_user_service.SetProfilePictureStruct"
                         }
                     }
                 ],
@@ -5270,7 +5270,7 @@ const docTemplate = `{
                         "in": "body",
                         "required": true,
                         "schema": {
-                            "$ref": "#/definitions/github_com_evolution-foundation_evolution-go_pkg_user_service.SetProfilePictureStruct"
+                            "$ref": "#/definitions/github_com_lucasgiovannibr_whatygo_pkg_user_service.SetProfilePictureStruct"
                         }
                     }
                 ],
@@ -5342,7 +5342,7 @@ const docTemplate = `{
                         "in": "body",
                         "required": true,
                         "schema": {
-                            "$ref": "#/definitions/github_com_evolution-foundation_evolution-go_pkg_user_service.BlockStruct"
+                            "$ref": "#/definitions/github_com_lucasgiovannibr_whatygo_pkg_user_service.BlockStruct"
                         }
                     }
                 ],
@@ -5374,7 +5374,7 @@ const docTemplate = `{
             "type": "object",
             "additionalProperties": {}
         },
-        "github_com_evolution-foundation_evolution-go_pkg_call_engine.Direction": {
+        "github_com_lucasgiovannibr_whatygo_pkg_call_engine.Direction": {
             "type": "string",
             "enum": [
                 "incoming",
@@ -5385,14 +5385,14 @@ const docTemplate = `{
                 "Outgoing"
             ]
         },
-        "github_com_evolution-foundation_evolution-go_pkg_call_engine.Info": {
+        "github_com_lucasgiovannibr_whatygo_pkg_call_engine.Info": {
             "type": "object",
             "properties": {
                 "callId": {
                     "type": "string"
                 },
                 "direction": {
-                    "$ref": "#/definitions/github_com_evolution-foundation_evolution-go_pkg_call_engine.Direction"
+                    "$ref": "#/definitions/github_com_lucasgiovannibr_whatygo_pkg_call_engine.Direction"
                 },
                 "mediaStalled": {
                     "description": "MediaStalled: the call is active and has a stream but the peer's audio has stopped\narriving (see Options.MediaStall).",
@@ -5405,12 +5405,12 @@ const docTemplate = `{
                     "description": "PeerVideo is the last video state the peer reported; absent until it reports one.",
                     "allOf": [
                         {
-                            "$ref": "#/definitions/github_com_evolution-foundation_evolution-go_pkg_call_engine.VideoState"
+                            "$ref": "#/definitions/github_com_lucasgiovannibr_whatygo_pkg_call_engine.VideoState"
                         }
                     ]
                 },
                 "phase": {
-                    "$ref": "#/definitions/github_com_evolution-foundation_evolution-go_pkg_call_engine.Phase"
+                    "$ref": "#/definitions/github_com_lucasgiovannibr_whatygo_pkg_call_engine.Phase"
                 },
                 "startedAt": {
                     "type": "string"
@@ -5419,7 +5419,7 @@ const docTemplate = `{
                     "description": "Stream describes the stream of the call; absent when none ever attached.",
                     "allOf": [
                         {
-                            "$ref": "#/definitions/github_com_evolution-foundation_evolution-go_pkg_call_engine.StreamInfo"
+                            "$ref": "#/definitions/github_com_lucasgiovannibr_whatygo_pkg_call_engine.StreamInfo"
                         }
                     ]
                 },
@@ -5435,7 +5435,7 @@ const docTemplate = `{
                 }
             }
         },
-        "github_com_evolution-foundation_evolution-go_pkg_call_engine.Phase": {
+        "github_com_lucasgiovannibr_whatygo_pkg_call_engine.Phase": {
             "type": "string",
             "enum": [
                 "calling",
@@ -5461,7 +5461,7 @@ const docTemplate = `{
                 "PhaseOther"
             ]
         },
-        "github_com_evolution-foundation_evolution-go_pkg_call_engine.State": {
+        "github_com_lucasgiovannibr_whatygo_pkg_call_engine.State": {
             "type": "string",
             "enum": [
                 "active",
@@ -5474,7 +5474,7 @@ const docTemplate = `{
                 "StateBlockedProxy"
             ]
         },
-        "github_com_evolution-foundation_evolution-go_pkg_call_engine.Status": {
+        "github_com_lucasgiovannibr_whatygo_pkg_call_engine.Status": {
             "type": "object",
             "properties": {
                 "activeCalls": {
@@ -5485,11 +5485,11 @@ const docTemplate = `{
                     "type": "string"
                 },
                 "state": {
-                    "$ref": "#/definitions/github_com_evolution-foundation_evolution-go_pkg_call_engine.State"
+                    "$ref": "#/definitions/github_com_lucasgiovannibr_whatygo_pkg_call_engine.State"
                 }
             }
         },
-        "github_com_evolution-foundation_evolution-go_pkg_call_engine.StreamInfo": {
+        "github_com_lucasgiovannibr_whatygo_pkg_call_engine.StreamInfo": {
             "type": "object",
             "properties": {
                 "attached": {
@@ -5524,7 +5524,7 @@ const docTemplate = `{
                 }
             }
         },
-        "github_com_evolution-foundation_evolution-go_pkg_call_engine.VideoState": {
+        "github_com_lucasgiovannibr_whatygo_pkg_call_engine.VideoState": {
             "type": "object",
             "properties": {
                 "active": {
@@ -5549,7 +5549,7 @@ const docTemplate = `{
                 }
             }
         },
-        "github_com_evolution-foundation_evolution-go_pkg_call_history.Page": {
+        "github_com_lucasgiovannibr_whatygo_pkg_call_history.Page": {
             "type": "object",
             "properties": {
                 "next": {
@@ -5558,12 +5558,12 @@ const docTemplate = `{
                 "records": {
                     "type": "array",
                     "items": {
-                        "$ref": "#/definitions/github_com_evolution-foundation_evolution-go_pkg_call_history.Record"
+                        "$ref": "#/definitions/github_com_lucasgiovannibr_whatygo_pkg_call_history.Record"
                     }
                 }
             }
         },
-        "github_com_evolution-foundation_evolution-go_pkg_call_history.Record": {
+        "github_com_lucasgiovannibr_whatygo_pkg_call_history.Record": {
             "type": "object",
             "properties": {
                 "answeredAt": {
@@ -5612,13 +5612,13 @@ const docTemplate = `{
                 }
             }
         },
-        "github_com_evolution-foundation_evolution-go_pkg_call_service.ActiveCallsResult": {
+        "github_com_lucasgiovannibr_whatygo_pkg_call_service.ActiveCallsResult": {
             "type": "object",
             "properties": {
                 "calls": {
                     "type": "array",
                     "items": {
-                        "$ref": "#/definitions/github_com_evolution-foundation_evolution-go_pkg_call_engine.Info"
+                        "$ref": "#/definitions/github_com_lucasgiovannibr_whatygo_pkg_call_engine.Info"
                     }
                 },
                 "enabled": {
@@ -5629,11 +5629,11 @@ const docTemplate = `{
                     "type": "string"
                 },
                 "state": {
-                    "$ref": "#/definitions/github_com_evolution-foundation_evolution-go_pkg_call_engine.State"
+                    "$ref": "#/definitions/github_com_lucasgiovannibr_whatygo_pkg_call_engine.State"
                 }
             }
         },
-        "github_com_evolution-foundation_evolution-go_pkg_call_service.AnswerCallStruct": {
+        "github_com_lucasgiovannibr_whatygo_pkg_call_service.AnswerCallStruct": {
             "type": "object",
             "properties": {
                 "callId": {
@@ -5641,7 +5641,7 @@ const docTemplate = `{
                 }
             }
         },
-        "github_com_evolution-foundation_evolution-go_pkg_call_service.DialCallStruct": {
+        "github_com_lucasgiovannibr_whatygo_pkg_call_service.DialCallStruct": {
             "type": "object",
             "properties": {
                 "binary": {
@@ -5673,14 +5673,14 @@ const docTemplate = `{
                 }
             }
         },
-        "github_com_evolution-foundation_evolution-go_pkg_call_service.DialResult": {
+        "github_com_lucasgiovannibr_whatygo_pkg_call_service.DialResult": {
             "type": "object",
             "properties": {
                 "callId": {
                     "type": "string"
                 },
                 "direction": {
-                    "$ref": "#/definitions/github_com_evolution-foundation_evolution-go_pkg_call_engine.Direction"
+                    "$ref": "#/definitions/github_com_lucasgiovannibr_whatygo_pkg_call_engine.Direction"
                 },
                 "mediaStalled": {
                     "description": "MediaStalled: the call is active and has a stream but the peer's audio has stopped\narriving (see Options.MediaStall).",
@@ -5693,12 +5693,12 @@ const docTemplate = `{
                     "description": "PeerVideo is the last video state the peer reported; absent until it reports one.",
                     "allOf": [
                         {
-                            "$ref": "#/definitions/github_com_evolution-foundation_evolution-go_pkg_call_engine.VideoState"
+                            "$ref": "#/definitions/github_com_lucasgiovannibr_whatygo_pkg_call_engine.VideoState"
                         }
                     ]
                 },
                 "phase": {
-                    "$ref": "#/definitions/github_com_evolution-foundation_evolution-go_pkg_call_engine.Phase"
+                    "$ref": "#/definitions/github_com_lucasgiovannibr_whatygo_pkg_call_engine.Phase"
                 },
                 "startedAt": {
                     "type": "string"
@@ -5707,12 +5707,12 @@ const docTemplate = `{
                     "description": "Stream describes the stream of the call; absent when none ever attached.",
                     "allOf": [
                         {
-                            "$ref": "#/definitions/github_com_evolution-foundation_evolution-go_pkg_call_engine.StreamInfo"
+                            "$ref": "#/definitions/github_com_lucasgiovannibr_whatygo_pkg_call_engine.StreamInfo"
                         }
                     ]
                 },
                 "streamTicket": {
-                    "$ref": "#/definitions/github_com_evolution-foundation_evolution-go_pkg_call_service.StreamTicket"
+                    "$ref": "#/definitions/github_com_lucasgiovannibr_whatygo_pkg_call_service.StreamTicket"
                 },
                 "video": {
                     "type": "boolean"
@@ -5726,7 +5726,7 @@ const docTemplate = `{
                 }
             }
         },
-        "github_com_evolution-foundation_evolution-go_pkg_call_service.HangupCallStruct": {
+        "github_com_lucasgiovannibr_whatygo_pkg_call_service.HangupCallStruct": {
             "type": "object",
             "properties": {
                 "callId": {
@@ -5734,7 +5734,7 @@ const docTemplate = `{
                 }
             }
         },
-        "github_com_evolution-foundation_evolution-go_pkg_call_service.RejectCallStruct": {
+        "github_com_lucasgiovannibr_whatygo_pkg_call_service.RejectCallStruct": {
             "type": "object",
             "properties": {
                 "callCreator": {
@@ -5745,7 +5745,7 @@ const docTemplate = `{
                 }
             }
         },
-        "github_com_evolution-foundation_evolution-go_pkg_call_service.StreamTicket": {
+        "github_com_lucasgiovannibr_whatygo_pkg_call_service.StreamTicket": {
             "type": "object",
             "properties": {
                 "binary": {
@@ -5774,7 +5774,7 @@ const docTemplate = `{
                 }
             }
         },
-        "github_com_evolution-foundation_evolution-go_pkg_call_service.StreamTicketStruct": {
+        "github_com_lucasgiovannibr_whatygo_pkg_call_service.StreamTicketStruct": {
             "type": "object",
             "properties": {
                 "binary": {
@@ -5802,7 +5802,7 @@ const docTemplate = `{
                 }
             }
         },
-        "github_com_evolution-foundation_evolution-go_pkg_call_service.VideoCallStruct": {
+        "github_com_lucasgiovannibr_whatygo_pkg_call_service.VideoCallStruct": {
             "type": "object",
             "properties": {
                 "action": {
@@ -5818,7 +5818,7 @@ const docTemplate = `{
                 }
             }
         },
-        "github_com_evolution-foundation_evolution-go_pkg_chat_service.BodyStruct": {
+        "github_com_lucasgiovannibr_whatygo_pkg_chat_service.BodyStruct": {
             "type": "object",
             "properties": {
                 "chat": {
@@ -5830,7 +5830,7 @@ const docTemplate = `{
                 }
             }
         },
-        "github_com_evolution-foundation_evolution-go_pkg_chat_service.DefaultDisappearingStruct": {
+        "github_com_lucasgiovannibr_whatygo_pkg_chat_service.DefaultDisappearingStruct": {
             "type": "object",
             "properties": {
                 "timer": {
@@ -5838,7 +5838,7 @@ const docTemplate = `{
                 }
             }
         },
-        "github_com_evolution-foundation_evolution-go_pkg_chat_service.DisappearingStruct": {
+        "github_com_lucasgiovannibr_whatygo_pkg_chat_service.DisappearingStruct": {
             "type": "object",
             "properties": {
                 "chat": {
@@ -5850,7 +5850,7 @@ const docTemplate = `{
                 }
             }
         },
-        "github_com_evolution-foundation_evolution-go_pkg_chat_service.HistorySyncRequestStruct": {
+        "github_com_lucasgiovannibr_whatygo_pkg_chat_service.HistorySyncRequestStruct": {
             "type": "object",
             "properties": {
                 "count": {
@@ -5861,7 +5861,7 @@ const docTemplate = `{
                 }
             }
         },
-        "github_com_evolution-foundation_evolution-go_pkg_community_service.AddParticipantStruct": {
+        "github_com_lucasgiovannibr_whatygo_pkg_community_service.AddParticipantStruct": {
             "type": "object",
             "properties": {
                 "communityJid": {
@@ -5875,7 +5875,7 @@ const docTemplate = `{
                 }
             }
         },
-        "github_com_evolution-foundation_evolution-go_pkg_community_service.CreateCommunityStruct": {
+        "github_com_lucasgiovannibr_whatygo_pkg_community_service.CreateCommunityStruct": {
             "type": "object",
             "properties": {
                 "communityName": {
@@ -5883,7 +5883,7 @@ const docTemplate = `{
                 }
             }
         },
-        "github_com_evolution-foundation_evolution-go_pkg_events_interfaces.WebhookStats": {
+        "github_com_lucasgiovannibr_whatygo_pkg_events_interfaces.WebhookStats": {
             "type": "object",
             "properties": {
                 "degradedDestinations": {
@@ -5921,7 +5921,7 @@ const docTemplate = `{
                 }
             }
         },
-        "github_com_evolution-foundation_evolution-go_pkg_group_service.AddParticipantStruct": {
+        "github_com_lucasgiovannibr_whatygo_pkg_group_service.AddParticipantStruct": {
             "type": "object",
             "properties": {
                 "action": {
@@ -5938,7 +5938,7 @@ const docTemplate = `{
                 }
             }
         },
-        "github_com_evolution-foundation_evolution-go_pkg_group_service.CreateGroupStruct": {
+        "github_com_lucasgiovannibr_whatygo_pkg_group_service.CreateGroupStruct": {
             "type": "object",
             "properties": {
                 "groupName": {
@@ -5952,7 +5952,7 @@ const docTemplate = `{
                 }
             }
         },
-        "github_com_evolution-foundation_evolution-go_pkg_group_service.GetGroupInfoStruct": {
+        "github_com_lucasgiovannibr_whatygo_pkg_group_service.GetGroupInfoStruct": {
             "type": "object",
             "properties": {
                 "groupJid": {
@@ -5960,7 +5960,7 @@ const docTemplate = `{
                 }
             }
         },
-        "github_com_evolution-foundation_evolution-go_pkg_group_service.GetGroupInviteLinkStruct": {
+        "github_com_lucasgiovannibr_whatygo_pkg_group_service.GetGroupInviteLinkStruct": {
             "type": "object",
             "properties": {
                 "groupJid": {
@@ -5971,7 +5971,7 @@ const docTemplate = `{
                 }
             }
         },
-        "github_com_evolution-foundation_evolution-go_pkg_group_service.GetGroupRequestParticipantsStruct": {
+        "github_com_lucasgiovannibr_whatygo_pkg_group_service.GetGroupRequestParticipantsStruct": {
             "type": "object",
             "properties": {
                 "groupJid": {
@@ -5979,7 +5979,7 @@ const docTemplate = `{
                 }
             }
         },
-        "github_com_evolution-foundation_evolution-go_pkg_group_service.GroupInviteStruct": {
+        "github_com_lucasgiovannibr_whatygo_pkg_group_service.GroupInviteStruct": {
             "type": "object",
             "properties": {
                 "code": {
@@ -5996,7 +5996,7 @@ const docTemplate = `{
                 }
             }
         },
-        "github_com_evolution-foundation_evolution-go_pkg_group_service.JoinGroupStruct": {
+        "github_com_lucasgiovannibr_whatygo_pkg_group_service.JoinGroupStruct": {
             "type": "object",
             "properties": {
                 "code": {
@@ -6004,7 +6004,7 @@ const docTemplate = `{
                 }
             }
         },
-        "github_com_evolution-foundation_evolution-go_pkg_group_service.LeaveGroupStruct": {
+        "github_com_lucasgiovannibr_whatygo_pkg_group_service.LeaveGroupStruct": {
             "type": "object",
             "properties": {
                 "groupJid": {
@@ -6012,7 +6012,7 @@ const docTemplate = `{
                 }
             }
         },
-        "github_com_evolution-foundation_evolution-go_pkg_group_service.SetGroupDescriptionStruct": {
+        "github_com_lucasgiovannibr_whatygo_pkg_group_service.SetGroupDescriptionStruct": {
             "type": "object",
             "properties": {
                 "description": {
@@ -6023,7 +6023,7 @@ const docTemplate = `{
                 }
             }
         },
-        "github_com_evolution-foundation_evolution-go_pkg_group_service.SetGroupNameStruct": {
+        "github_com_lucasgiovannibr_whatygo_pkg_group_service.SetGroupNameStruct": {
             "type": "object",
             "properties": {
                 "groupJid": {
@@ -6034,7 +6034,7 @@ const docTemplate = `{
                 }
             }
         },
-        "github_com_evolution-foundation_evolution-go_pkg_group_service.SetGroupPhotoStruct": {
+        "github_com_lucasgiovannibr_whatygo_pkg_group_service.SetGroupPhotoStruct": {
             "type": "object",
             "properties": {
                 "groupJid": {
@@ -6045,7 +6045,7 @@ const docTemplate = `{
                 }
             }
         },
-        "github_com_evolution-foundation_evolution-go_pkg_group_service.UpdateGroupRequestParticipantsStruct": {
+        "github_com_lucasgiovannibr_whatygo_pkg_group_service.UpdateGroupRequestParticipantsStruct": {
             "type": "object",
             "properties": {
                 "action": {
@@ -6063,7 +6063,7 @@ const docTemplate = `{
                 }
             }
         },
-        "github_com_evolution-foundation_evolution-go_pkg_group_service.UpdateGroupSettingsStruct": {
+        "github_com_lucasgiovannibr_whatygo_pkg_group_service.UpdateGroupSettingsStruct": {
             "type": "object",
             "properties": {
                 "action": {
@@ -6075,7 +6075,7 @@ const docTemplate = `{
                 }
             }
         },
-        "github_com_evolution-foundation_evolution-go_pkg_instance_model.AdvancedSettings": {
+        "github_com_lucasgiovannibr_whatygo_pkg_instance_model.AdvancedSettings": {
             "type": "object",
             "properties": {
                 "alwaysOnline": {
@@ -6102,7 +6102,7 @@ const docTemplate = `{
                 }
             }
         },
-        "github_com_evolution-foundation_evolution-go_pkg_instance_service.ConnectStruct": {
+        "github_com_lucasgiovannibr_whatygo_pkg_instance_service.ConnectStruct": {
             "type": "object",
             "properties": {
                 "immediate": {
@@ -6131,11 +6131,11 @@ const docTemplate = `{
                 }
             }
         },
-        "github_com_evolution-foundation_evolution-go_pkg_instance_service.CreateStruct": {
+        "github_com_lucasgiovannibr_whatygo_pkg_instance_service.CreateStruct": {
             "type": "object",
             "properties": {
                 "advancedSettings": {
-                    "$ref": "#/definitions/github_com_evolution-foundation_evolution-go_pkg_instance_model.AdvancedSettings"
+                    "$ref": "#/definitions/github_com_lucasgiovannibr_whatygo_pkg_instance_model.AdvancedSettings"
                 },
                 "instanceId": {
                     "type": "string"
@@ -6144,14 +6144,14 @@ const docTemplate = `{
                     "type": "string"
                 },
                 "proxy": {
-                    "$ref": "#/definitions/github_com_evolution-foundation_evolution-go_pkg_instance_service.ProxyConfig"
+                    "$ref": "#/definitions/github_com_lucasgiovannibr_whatygo_pkg_instance_service.ProxyConfig"
                 },
                 "token": {
                     "type": "string"
                 }
             }
         },
-        "github_com_evolution-foundation_evolution-go_pkg_instance_service.DatabaseState": {
+        "github_com_lucasgiovannibr_whatygo_pkg_instance_service.DatabaseState": {
             "type": "object",
             "properties": {
                 "alwaysOnline": {
@@ -6171,7 +6171,7 @@ const docTemplate = `{
                 }
             }
         },
-        "github_com_evolution-foundation_evolution-go_pkg_instance_service.ForceReconnectStruct": {
+        "github_com_lucasgiovannibr_whatygo_pkg_instance_service.ForceReconnectStruct": {
             "type": "object",
             "properties": {
                 "number": {
@@ -6179,7 +6179,7 @@ const docTemplate = `{
                 }
             }
         },
-        "github_com_evolution-foundation_evolution-go_pkg_instance_service.IntegrationsStruct": {
+        "github_com_lucasgiovannibr_whatygo_pkg_instance_service.IntegrationsStruct": {
             "type": "object",
             "properties": {
                 "natsEnable": {
@@ -6202,7 +6202,7 @@ const docTemplate = `{
                 }
             }
         },
-        "github_com_evolution-foundation_evolution-go_pkg_instance_service.PairStruct": {
+        "github_com_lucasgiovannibr_whatygo_pkg_instance_service.PairStruct": {
             "type": "object",
             "properties": {
                 "phone": {
@@ -6216,7 +6216,7 @@ const docTemplate = `{
                 }
             }
         },
-        "github_com_evolution-foundation_evolution-go_pkg_instance_service.ProxyConfig": {
+        "github_com_lucasgiovannibr_whatygo_pkg_instance_service.ProxyConfig": {
             "type": "object",
             "properties": {
                 "host": {
@@ -6236,7 +6236,7 @@ const docTemplate = `{
                 }
             }
         },
-        "github_com_evolution-foundation_evolution-go_pkg_instance_service.ProxyStatus": {
+        "github_com_lucasgiovannibr_whatygo_pkg_instance_service.ProxyStatus": {
             "type": "object",
             "properties": {
                 "configured": {
@@ -6276,14 +6276,14 @@ const docTemplate = `{
                 }
             }
         },
-        "github_com_evolution-foundation_evolution-go_pkg_instance_service.RuntimeDiagnostics": {
+        "github_com_lucasgiovannibr_whatygo_pkg_instance_service.RuntimeDiagnostics": {
             "type": "object",
             "properties": {
                 "database": {
                     "description": "Database is nil for a runtime whose instance no longer exists.",
                     "allOf": [
                         {
-                            "$ref": "#/definitions/github_com_evolution-foundation_evolution-go_pkg_instance_service.DatabaseState"
+                            "$ref": "#/definitions/github_com_lucasgiovannibr_whatygo_pkg_instance_service.DatabaseState"
                         }
                     ]
                 },
@@ -6294,43 +6294,43 @@ const docTemplate = `{
                     "type": "string"
                 },
                 "runtime": {
-                    "$ref": "#/definitions/github_com_evolution-foundation_evolution-go_pkg_whatsmeow_service.RuntimeInfo"
+                    "$ref": "#/definitions/github_com_lucasgiovannibr_whatygo_pkg_whatsmeow_service.RuntimeInfo"
                 },
                 "warnings": {
                     "description": "Warnings are the runtime's own plus the database-vs-runtime mismatches.",
                     "type": "array",
                     "items": {
-                        "$ref": "#/definitions/github_com_evolution-foundation_evolution-go_pkg_whatsmeow_service.Warning"
+                        "$ref": "#/definitions/github_com_lucasgiovannibr_whatygo_pkg_whatsmeow_service.Warning"
                     }
                 }
             }
         },
-        "github_com_evolution-foundation_evolution-go_pkg_instance_service.RuntimesReport": {
+        "github_com_lucasgiovannibr_whatygo_pkg_instance_service.RuntimesReport": {
             "type": "object",
             "properties": {
                 "instances": {
                     "type": "array",
                     "items": {
-                        "$ref": "#/definitions/github_com_evolution-foundation_evolution-go_pkg_instance_service.RuntimeDiagnostics"
+                        "$ref": "#/definitions/github_com_lucasgiovannibr_whatygo_pkg_instance_service.RuntimeDiagnostics"
                     }
                 },
                 "process": {
-                    "$ref": "#/definitions/github_com_evolution-foundation_evolution-go_pkg_whatsmeow_service.ProcessInfo"
+                    "$ref": "#/definitions/github_com_lucasgiovannibr_whatygo_pkg_whatsmeow_service.ProcessInfo"
                 },
                 "summary": {
-                    "$ref": "#/definitions/github_com_evolution-foundation_evolution-go_pkg_instance_service.RuntimesSummary"
+                    "$ref": "#/definitions/github_com_lucasgiovannibr_whatygo_pkg_instance_service.RuntimesSummary"
                 },
                 "webhook": {
                     "description": "Webhook is the state of the webhook delivery queues: what is waiting, and what\nwas dropped because a receiver could not keep up.",
                     "allOf": [
                         {
-                            "$ref": "#/definitions/github_com_evolution-foundation_evolution-go_pkg_events_interfaces.WebhookStats"
+                            "$ref": "#/definitions/github_com_lucasgiovannibr_whatygo_pkg_events_interfaces.WebhookStats"
                         }
                     ]
                 }
             }
         },
-        "github_com_evolution-foundation_evolution-go_pkg_instance_service.RuntimesSummary": {
+        "github_com_lucasgiovannibr_whatygo_pkg_instance_service.RuntimesSummary": {
             "type": "object",
             "properties": {
                 "connected": {
@@ -6344,7 +6344,7 @@ const docTemplate = `{
                 }
             }
         },
-        "github_com_evolution-foundation_evolution-go_pkg_instance_service.SetProxyStruct": {
+        "github_com_lucasgiovannibr_whatygo_pkg_instance_service.SetProxyStruct": {
             "type": "object",
             "required": [
                 "host",
@@ -6368,7 +6368,7 @@ const docTemplate = `{
                 }
             }
         },
-        "github_com_evolution-foundation_evolution-go_pkg_label_service.ChatLabelStruct": {
+        "github_com_lucasgiovannibr_whatygo_pkg_label_service.ChatLabelStruct": {
             "type": "object",
             "properties": {
                 "jid": {
@@ -6379,7 +6379,7 @@ const docTemplate = `{
                 }
             }
         },
-        "github_com_evolution-foundation_evolution-go_pkg_label_service.EditLabelStruct": {
+        "github_com_lucasgiovannibr_whatygo_pkg_label_service.EditLabelStruct": {
             "type": "object",
             "properties": {
                 "color": {
@@ -6396,7 +6396,7 @@ const docTemplate = `{
                 }
             }
         },
-        "github_com_evolution-foundation_evolution-go_pkg_label_service.MessageLabelStruct": {
+        "github_com_lucasgiovannibr_whatygo_pkg_label_service.MessageLabelStruct": {
             "type": "object",
             "properties": {
                 "jid": {
@@ -6410,7 +6410,7 @@ const docTemplate = `{
                 }
             }
         },
-        "github_com_evolution-foundation_evolution-go_pkg_message_service.ChatPresenceStruct": {
+        "github_com_lucasgiovannibr_whatygo_pkg_message_service.ChatPresenceStruct": {
             "type": "object",
             "properties": {
                 "delay": {
@@ -6428,7 +6428,7 @@ const docTemplate = `{
                 }
             }
         },
-        "github_com_evolution-foundation_evolution-go_pkg_message_service.DownloadMediaStruct": {
+        "github_com_lucasgiovannibr_whatygo_pkg_message_service.DownloadMediaStruct": {
             "type": "object",
             "properties": {
                 "message": {
@@ -6436,7 +6436,7 @@ const docTemplate = `{
                 }
             }
         },
-        "github_com_evolution-foundation_evolution-go_pkg_message_service.EditMessageStruct": {
+        "github_com_lucasgiovannibr_whatygo_pkg_message_service.EditMessageStruct": {
             "type": "object",
             "properties": {
                 "chat": {
@@ -6450,7 +6450,7 @@ const docTemplate = `{
                 }
             }
         },
-        "github_com_evolution-foundation_evolution-go_pkg_message_service.MarkPlayedStruct": {
+        "github_com_lucasgiovannibr_whatygo_pkg_message_service.MarkPlayedStruct": {
             "type": "object",
             "properties": {
                 "id": {
@@ -6464,7 +6464,7 @@ const docTemplate = `{
                 }
             }
         },
-        "github_com_evolution-foundation_evolution-go_pkg_message_service.MarkReadStruct": {
+        "github_com_lucasgiovannibr_whatygo_pkg_message_service.MarkReadStruct": {
             "type": "object",
             "properties": {
                 "id": {
@@ -6478,7 +6478,7 @@ const docTemplate = `{
                 }
             }
         },
-        "github_com_evolution-foundation_evolution-go_pkg_message_service.MessageStatusStruct": {
+        "github_com_lucasgiovannibr_whatygo_pkg_message_service.MessageStatusStruct": {
             "type": "object",
             "properties": {
                 "id": {
@@ -6486,7 +6486,7 @@ const docTemplate = `{
                 }
             }
         },
-        "github_com_evolution-foundation_evolution-go_pkg_message_service.MessageStruct": {
+        "github_com_lucasgiovannibr_whatygo_pkg_message_service.MessageStruct": {
             "type": "object",
             "properties": {
                 "chat": {
@@ -6497,7 +6497,7 @@ const docTemplate = `{
                 }
             }
         },
-        "github_com_evolution-foundation_evolution-go_pkg_message_service.ReactStruct": {
+        "github_com_lucasgiovannibr_whatygo_pkg_message_service.ReactStruct": {
             "type": "object",
             "properties": {
                 "fromMe": {
@@ -6517,7 +6517,7 @@ const docTemplate = `{
                 }
             }
         },
-        "github_com_evolution-foundation_evolution-go_pkg_message_service.RerequestStruct": {
+        "github_com_lucasgiovannibr_whatygo_pkg_message_service.RerequestStruct": {
             "type": "object",
             "properties": {
                 "chat": {
@@ -6532,7 +6532,7 @@ const docTemplate = `{
                 }
             }
         },
-        "github_com_evolution-foundation_evolution-go_pkg_message_service.SubscribePresenceStruct": {
+        "github_com_lucasgiovannibr_whatygo_pkg_message_service.SubscribePresenceStruct": {
             "type": "object",
             "properties": {
                 "number": {
@@ -6541,7 +6541,7 @@ const docTemplate = `{
                 }
             }
         },
-        "github_com_evolution-foundation_evolution-go_pkg_newsletter_service.CreateNewsletterStruct": {
+        "github_com_lucasgiovannibr_whatygo_pkg_newsletter_service.CreateNewsletterStruct": {
             "type": "object",
             "properties": {
                 "description": {
@@ -6552,7 +6552,7 @@ const docTemplate = `{
                 }
             }
         },
-        "github_com_evolution-foundation_evolution-go_pkg_newsletter_service.GetNewsletterInviteStruct": {
+        "github_com_lucasgiovannibr_whatygo_pkg_newsletter_service.GetNewsletterInviteStruct": {
             "type": "object",
             "properties": {
                 "key": {
@@ -6560,7 +6560,7 @@ const docTemplate = `{
                 }
             }
         },
-        "github_com_evolution-foundation_evolution-go_pkg_newsletter_service.GetNewsletterMessagesStruct": {
+        "github_com_lucasgiovannibr_whatygo_pkg_newsletter_service.GetNewsletterMessagesStruct": {
             "type": "object",
             "properties": {
                 "before_id": {
@@ -6574,7 +6574,7 @@ const docTemplate = `{
                 }
             }
         },
-        "github_com_evolution-foundation_evolution-go_pkg_newsletter_service.GetNewsletterStruct": {
+        "github_com_lucasgiovannibr_whatygo_pkg_newsletter_service.GetNewsletterStruct": {
             "type": "object",
             "properties": {
                 "jid": {
@@ -6582,7 +6582,7 @@ const docTemplate = `{
                 }
             }
         },
-        "github_com_evolution-foundation_evolution-go_pkg_newsletter_service.NewsletterMarkViewedStruct": {
+        "github_com_lucasgiovannibr_whatygo_pkg_newsletter_service.NewsletterMarkViewedStruct": {
             "type": "object",
             "properties": {
                 "jid": {
@@ -6596,7 +6596,7 @@ const docTemplate = `{
                 }
             }
         },
-        "github_com_evolution-foundation_evolution-go_pkg_newsletter_service.NewsletterMuteStruct": {
+        "github_com_lucasgiovannibr_whatygo_pkg_newsletter_service.NewsletterMuteStruct": {
             "type": "object",
             "properties": {
                 "jid": {
@@ -6607,7 +6607,7 @@ const docTemplate = `{
                 }
             }
         },
-        "github_com_evolution-foundation_evolution-go_pkg_newsletter_service.NewsletterReactStruct": {
+        "github_com_lucasgiovannibr_whatygo_pkg_newsletter_service.NewsletterReactStruct": {
             "type": "object",
             "properties": {
                 "jid": {
@@ -6626,7 +6626,7 @@ const docTemplate = `{
                 }
             }
         },
-        "github_com_evolution-foundation_evolution-go_pkg_poll_model.PollResults": {
+        "github_com_lucasgiovannibr_whatygo_pkg_poll_model.PollResults": {
             "type": "object",
             "properties": {
                 "optionCounts": {
@@ -6648,18 +6648,18 @@ const docTemplate = `{
                 "voters": {
                     "type": "array",
                     "items": {
-                        "$ref": "#/definitions/github_com_evolution-foundation_evolution-go_pkg_poll_model.VoterInfo"
+                        "$ref": "#/definitions/github_com_lucasgiovannibr_whatygo_pkg_poll_model.VoterInfo"
                     }
                 },
                 "votes": {
                     "type": "array",
                     "items": {
-                        "$ref": "#/definitions/github_com_evolution-foundation_evolution-go_pkg_poll_model.PollVote"
+                        "$ref": "#/definitions/github_com_lucasgiovannibr_whatygo_pkg_poll_model.PollVote"
                     }
                 }
             }
         },
-        "github_com_evolution-foundation_evolution-go_pkg_poll_model.PollVote": {
+        "github_com_lucasgiovannibr_whatygo_pkg_poll_model.PollVote": {
             "type": "object",
             "properties": {
                 "companyId": {
@@ -6704,7 +6704,7 @@ const docTemplate = `{
                 }
             }
         },
-        "github_com_evolution-foundation_evolution-go_pkg_poll_model.VoterInfo": {
+        "github_com_lucasgiovannibr_whatygo_pkg_poll_model.VoterInfo": {
             "type": "object",
             "properties": {
                 "jid": {
@@ -6727,7 +6727,7 @@ const docTemplate = `{
                 }
             }
         },
-        "github_com_evolution-foundation_evolution-go_pkg_sendMessage_service.Button": {
+        "github_com_lucasgiovannibr_whatygo_pkg_sendMessage_service.Button": {
             "type": "object",
             "properties": {
                 "copyCode": {
@@ -6792,18 +6792,18 @@ const docTemplate = `{
                 "url": {
                     "description": "Target URL when type=url.",
                     "type": "string",
-                    "example": "https://evolutionapi.com"
+                    "example": "https://example.com"
                 }
             }
         },
-        "github_com_evolution-foundation_evolution-go_pkg_sendMessage_service.ButtonStruct": {
+        "github_com_lucasgiovannibr_whatygo_pkg_sendMessage_service.ButtonStruct": {
             "type": "object",
             "properties": {
                 "buttons": {
                     "description": "Buttons array. See combination rules on the parent type description.",
                     "type": "array",
                     "items": {
-                        "$ref": "#/definitions/github_com_evolution-foundation_evolution-go_pkg_sendMessage_service.Button"
+                        "$ref": "#/definitions/github_com_lucasgiovannibr_whatygo_pkg_sendMessage_service.Button"
                     }
                 },
                 "delay": {
@@ -6849,7 +6849,7 @@ const docTemplate = `{
                     "description": "Quoted (reply-to) context.",
                     "allOf": [
                         {
-                            "$ref": "#/definitions/github_com_evolution-foundation_evolution-go_pkg_sendMessage_service.QuotedStruct"
+                            "$ref": "#/definitions/github_com_lucasgiovannibr_whatygo_pkg_sendMessage_service.QuotedStruct"
                         }
                     ]
                 },
@@ -6864,7 +6864,7 @@ const docTemplate = `{
                 }
             }
         },
-        "github_com_evolution-foundation_evolution-go_pkg_sendMessage_service.CarouselButtonStruct": {
+        "github_com_lucasgiovannibr_whatygo_pkg_sendMessage_service.CarouselButtonStruct": {
             "type": "object",
             "properties": {
                 "copyCode": {
@@ -6909,7 +6909,7 @@ const docTemplate = `{
                 }
             }
         },
-        "github_com_evolution-foundation_evolution-go_pkg_sendMessage_service.CarouselCardBodyStruct": {
+        "github_com_lucasgiovannibr_whatygo_pkg_sendMessage_service.CarouselCardBodyStruct": {
             "type": "object",
             "properties": {
                 "text": {
@@ -6919,7 +6919,7 @@ const docTemplate = `{
                 }
             }
         },
-        "github_com_evolution-foundation_evolution-go_pkg_sendMessage_service.CarouselCardHeaderStruct": {
+        "github_com_lucasgiovannibr_whatygo_pkg_sendMessage_service.CarouselCardHeaderStruct": {
             "type": "object",
             "properties": {
                 "imageUrl": {
@@ -6943,14 +6943,14 @@ const docTemplate = `{
                 }
             }
         },
-        "github_com_evolution-foundation_evolution-go_pkg_sendMessage_service.CarouselCardStruct": {
+        "github_com_lucasgiovannibr_whatygo_pkg_sendMessage_service.CarouselCardStruct": {
             "type": "object",
             "properties": {
                 "body": {
                     "description": "Card body text (required).",
                     "allOf": [
                         {
-                            "$ref": "#/definitions/github_com_evolution-foundation_evolution-go_pkg_sendMessage_service.CarouselCardBodyStruct"
+                            "$ref": "#/definitions/github_com_lucasgiovannibr_whatygo_pkg_sendMessage_service.CarouselCardBodyStruct"
                         }
                     ]
                 },
@@ -6958,7 +6958,7 @@ const docTemplate = `{
                     "description": "Buttons shown on the card. See CarouselButtonStruct for combination rules.",
                     "type": "array",
                     "items": {
-                        "$ref": "#/definitions/github_com_evolution-foundation_evolution-go_pkg_sendMessage_service.CarouselButtonStruct"
+                        "$ref": "#/definitions/github_com_lucasgiovannibr_whatygo_pkg_sendMessage_service.CarouselButtonStruct"
                     }
                 },
                 "footer": {
@@ -6970,13 +6970,13 @@ const docTemplate = `{
                     "description": "Card header (media + title/subtitle).",
                     "allOf": [
                         {
-                            "$ref": "#/definitions/github_com_evolution-foundation_evolution-go_pkg_sendMessage_service.CarouselCardHeaderStruct"
+                            "$ref": "#/definitions/github_com_lucasgiovannibr_whatygo_pkg_sendMessage_service.CarouselCardHeaderStruct"
                         }
                     ]
                 }
             }
         },
-        "github_com_evolution-foundation_evolution-go_pkg_sendMessage_service.CarouselStruct": {
+        "github_com_lucasgiovannibr_whatygo_pkg_sendMessage_service.CarouselStruct": {
             "type": "object",
             "properties": {
                 "body": {
@@ -6988,7 +6988,7 @@ const docTemplate = `{
                     "description": "Cards displayed in order. At least one card is required.",
                     "type": "array",
                     "items": {
-                        "$ref": "#/definitions/github_com_evolution-foundation_evolution-go_pkg_sendMessage_service.CarouselCardStruct"
+                        "$ref": "#/definitions/github_com_lucasgiovannibr_whatygo_pkg_sendMessage_service.CarouselCardStruct"
                     }
                 },
                 "delay": {
@@ -7014,13 +7014,13 @@ const docTemplate = `{
                     "description": "Quoted (reply-to) context.",
                     "allOf": [
                         {
-                            "$ref": "#/definitions/github_com_evolution-foundation_evolution-go_pkg_sendMessage_service.QuotedStruct"
+                            "$ref": "#/definitions/github_com_lucasgiovannibr_whatygo_pkg_sendMessage_service.QuotedStruct"
                         }
                     ]
                 }
             }
         },
-        "github_com_evolution-foundation_evolution-go_pkg_sendMessage_service.ContactStruct": {
+        "github_com_lucasgiovannibr_whatygo_pkg_sendMessage_service.ContactStruct": {
             "type": "object",
             "properties": {
                 "delay": {
@@ -7045,14 +7045,14 @@ const docTemplate = `{
                     "type": "string"
                 },
                 "quoted": {
-                    "$ref": "#/definitions/github_com_evolution-foundation_evolution-go_pkg_sendMessage_service.QuotedStruct"
+                    "$ref": "#/definitions/github_com_lucasgiovannibr_whatygo_pkg_sendMessage_service.QuotedStruct"
                 },
                 "vcard": {
-                    "$ref": "#/definitions/github_com_evolution-foundation_evolution-go_pkg_utils.VCardStruct"
+                    "$ref": "#/definitions/github_com_lucasgiovannibr_whatygo_pkg_utils.VCardStruct"
                 }
             }
         },
-        "github_com_evolution-foundation_evolution-go_pkg_sendMessage_service.LinkStruct": {
+        "github_com_lucasgiovannibr_whatygo_pkg_sendMessage_service.LinkStruct": {
             "type": "object",
             "properties": {
                 "delay": {
@@ -7083,7 +7083,7 @@ const docTemplate = `{
                     "type": "string"
                 },
                 "quoted": {
-                    "$ref": "#/definitions/github_com_evolution-foundation_evolution-go_pkg_sendMessage_service.QuotedStruct"
+                    "$ref": "#/definitions/github_com_lucasgiovannibr_whatygo_pkg_sendMessage_service.QuotedStruct"
                 },
                 "text": {
                     "type": "string"
@@ -7096,7 +7096,7 @@ const docTemplate = `{
                 }
             }
         },
-        "github_com_evolution-foundation_evolution-go_pkg_sendMessage_service.ListStruct": {
+        "github_com_lucasgiovannibr_whatygo_pkg_sendMessage_service.ListStruct": {
             "type": "object",
             "properties": {
                 "buttonText": {
@@ -7147,7 +7147,7 @@ const docTemplate = `{
                     "description": "Quoted (reply-to) context.",
                     "allOf": [
                         {
-                            "$ref": "#/definitions/github_com_evolution-foundation_evolution-go_pkg_sendMessage_service.QuotedStruct"
+                            "$ref": "#/definitions/github_com_lucasgiovannibr_whatygo_pkg_sendMessage_service.QuotedStruct"
                         }
                     ]
                 },
@@ -7155,7 +7155,7 @@ const docTemplate = `{
                     "description": "Sections with rows. At least one section with one row is required.",
                     "type": "array",
                     "items": {
-                        "$ref": "#/definitions/github_com_evolution-foundation_evolution-go_pkg_sendMessage_service.Section"
+                        "$ref": "#/definitions/github_com_lucasgiovannibr_whatygo_pkg_sendMessage_service.Section"
                     }
                 },
                 "title": {
@@ -7165,7 +7165,7 @@ const docTemplate = `{
                 }
             }
         },
-        "github_com_evolution-foundation_evolution-go_pkg_sendMessage_service.LocationStruct": {
+        "github_com_lucasgiovannibr_whatygo_pkg_sendMessage_service.LocationStruct": {
             "type": "object",
             "properties": {
                 "address": {
@@ -7202,11 +7202,11 @@ const docTemplate = `{
                     "type": "string"
                 },
                 "quoted": {
-                    "$ref": "#/definitions/github_com_evolution-foundation_evolution-go_pkg_sendMessage_service.QuotedStruct"
+                    "$ref": "#/definitions/github_com_lucasgiovannibr_whatygo_pkg_sendMessage_service.QuotedStruct"
                 }
             }
         },
-        "github_com_evolution-foundation_evolution-go_pkg_sendMessage_service.MediaStruct": {
+        "github_com_lucasgiovannibr_whatygo_pkg_sendMessage_service.MediaStruct": {
             "type": "object",
             "properties": {
                 "caption": {
@@ -7240,7 +7240,7 @@ const docTemplate = `{
                     "type": "string"
                 },
                 "quoted": {
-                    "$ref": "#/definitions/github_com_evolution-foundation_evolution-go_pkg_sendMessage_service.QuotedStruct"
+                    "$ref": "#/definitions/github_com_lucasgiovannibr_whatygo_pkg_sendMessage_service.QuotedStruct"
                 },
                 "type": {
                     "type": "string"
@@ -7254,7 +7254,7 @@ const docTemplate = `{
                 }
             }
         },
-        "github_com_evolution-foundation_evolution-go_pkg_sendMessage_service.PollStruct": {
+        "github_com_lucasgiovannibr_whatygo_pkg_sendMessage_service.PollStruct": {
             "type": "object",
             "properties": {
                 "delay": {
@@ -7291,11 +7291,11 @@ const docTemplate = `{
                     "type": "string"
                 },
                 "quoted": {
-                    "$ref": "#/definitions/github_com_evolution-foundation_evolution-go_pkg_sendMessage_service.QuotedStruct"
+                    "$ref": "#/definitions/github_com_lucasgiovannibr_whatygo_pkg_sendMessage_service.QuotedStruct"
                 }
             }
         },
-        "github_com_evolution-foundation_evolution-go_pkg_sendMessage_service.PollVoteStruct": {
+        "github_com_lucasgiovannibr_whatygo_pkg_sendMessage_service.PollVoteStruct": {
             "type": "object",
             "properties": {
                 "delay": {
@@ -7332,7 +7332,7 @@ const docTemplate = `{
                 }
             }
         },
-        "github_com_evolution-foundation_evolution-go_pkg_sendMessage_service.QuotedStruct": {
+        "github_com_lucasgiovannibr_whatygo_pkg_sendMessage_service.QuotedStruct": {
             "type": "object",
             "properties": {
                 "messageId": {
@@ -7347,7 +7347,7 @@ const docTemplate = `{
                 }
             }
         },
-        "github_com_evolution-foundation_evolution-go_pkg_sendMessage_service.Row": {
+        "github_com_lucasgiovannibr_whatygo_pkg_sendMessage_service.Row": {
             "type": "object",
             "properties": {
                 "description": {
@@ -7367,14 +7367,14 @@ const docTemplate = `{
                 }
             }
         },
-        "github_com_evolution-foundation_evolution-go_pkg_sendMessage_service.Section": {
+        "github_com_lucasgiovannibr_whatygo_pkg_sendMessage_service.Section": {
             "type": "object",
             "properties": {
                 "rows": {
                     "description": "Rows inside this section.",
                     "type": "array",
                     "items": {
-                        "$ref": "#/definitions/github_com_evolution-foundation_evolution-go_pkg_sendMessage_service.Row"
+                        "$ref": "#/definitions/github_com_lucasgiovannibr_whatygo_pkg_sendMessage_service.Row"
                     }
                 },
                 "title": {
@@ -7384,7 +7384,7 @@ const docTemplate = `{
                 }
             }
         },
-        "github_com_evolution-foundation_evolution-go_pkg_sendMessage_service.StatusTextStruct": {
+        "github_com_lucasgiovannibr_whatygo_pkg_sendMessage_service.StatusTextStruct": {
             "type": "object",
             "properties": {
                 "id": {
@@ -7395,7 +7395,7 @@ const docTemplate = `{
                 }
             }
         },
-        "github_com_evolution-foundation_evolution-go_pkg_sendMessage_service.StickerStruct": {
+        "github_com_lucasgiovannibr_whatygo_pkg_sendMessage_service.StickerStruct": {
             "type": "object",
             "properties": {
                 "delay": {
@@ -7420,14 +7420,14 @@ const docTemplate = `{
                     "type": "string"
                 },
                 "quoted": {
-                    "$ref": "#/definitions/github_com_evolution-foundation_evolution-go_pkg_sendMessage_service.QuotedStruct"
+                    "$ref": "#/definitions/github_com_lucasgiovannibr_whatygo_pkg_sendMessage_service.QuotedStruct"
                 },
                 "sticker": {
                     "type": "string"
                 }
             }
         },
-        "github_com_evolution-foundation_evolution-go_pkg_sendMessage_service.TextStruct": {
+        "github_com_lucasgiovannibr_whatygo_pkg_sendMessage_service.TextStruct": {
             "type": "object",
             "properties": {
                 "delay": {
@@ -7455,14 +7455,14 @@ const docTemplate = `{
                     "type": "string"
                 },
                 "quoted": {
-                    "$ref": "#/definitions/github_com_evolution-foundation_evolution-go_pkg_sendMessage_service.QuotedStruct"
+                    "$ref": "#/definitions/github_com_lucasgiovannibr_whatygo_pkg_sendMessage_service.QuotedStruct"
                 },
                 "text": {
                     "type": "string"
                 }
             }
         },
-        "github_com_evolution-foundation_evolution-go_pkg_user_service.BlockStruct": {
+        "github_com_lucasgiovannibr_whatygo_pkg_user_service.BlockStruct": {
             "type": "object",
             "properties": {
                 "number": {
@@ -7470,7 +7470,7 @@ const docTemplate = `{
                 }
             }
         },
-        "github_com_evolution-foundation_evolution-go_pkg_user_service.BusinessProfileStruct": {
+        "github_com_lucasgiovannibr_whatygo_pkg_user_service.BusinessProfileStruct": {
             "type": "object",
             "properties": {
                 "number": {
@@ -7478,7 +7478,7 @@ const docTemplate = `{
                 }
             }
         },
-        "github_com_evolution-foundation_evolution-go_pkg_user_service.CheckUserStruct": {
+        "github_com_lucasgiovannibr_whatygo_pkg_user_service.CheckUserStruct": {
             "type": "object",
             "properties": {
                 "formatJid": {
@@ -7492,7 +7492,7 @@ const docTemplate = `{
                 }
             }
         },
-        "github_com_evolution-foundation_evolution-go_pkg_user_service.DevicesStruct": {
+        "github_com_lucasgiovannibr_whatygo_pkg_user_service.DevicesStruct": {
             "type": "object",
             "properties": {
                 "number": {
@@ -7504,7 +7504,7 @@ const docTemplate = `{
                 }
             }
         },
-        "github_com_evolution-foundation_evolution-go_pkg_user_service.GetAvatarStruct": {
+        "github_com_lucasgiovannibr_whatygo_pkg_user_service.GetAvatarStruct": {
             "type": "object",
             "properties": {
                 "number": {
@@ -7515,7 +7515,7 @@ const docTemplate = `{
                 }
             }
         },
-        "github_com_evolution-foundation_evolution-go_pkg_user_service.PrivacyStruct": {
+        "github_com_lucasgiovannibr_whatygo_pkg_user_service.PrivacyStruct": {
             "type": "object",
             "properties": {
                 "callAdd": {
@@ -7541,7 +7541,7 @@ const docTemplate = `{
                 }
             }
         },
-        "github_com_evolution-foundation_evolution-go_pkg_user_service.ResolveLidStruct": {
+        "github_com_lucasgiovannibr_whatygo_pkg_user_service.ResolveLidStruct": {
             "type": "object",
             "properties": {
                 "groupJid": {
@@ -7552,7 +7552,7 @@ const docTemplate = `{
                 }
             }
         },
-        "github_com_evolution-foundation_evolution-go_pkg_user_service.SaveContactStruct": {
+        "github_com_lucasgiovannibr_whatygo_pkg_user_service.SaveContactStruct": {
             "type": "object",
             "properties": {
                 "firstName": {
@@ -7570,7 +7570,7 @@ const docTemplate = `{
                 }
             }
         },
-        "github_com_evolution-foundation_evolution-go_pkg_user_service.SetProfileNameStruct": {
+        "github_com_lucasgiovannibr_whatygo_pkg_user_service.SetProfileNameStruct": {
             "type": "object",
             "properties": {
                 "name": {
@@ -7578,7 +7578,7 @@ const docTemplate = `{
                 }
             }
         },
-        "github_com_evolution-foundation_evolution-go_pkg_user_service.SetProfilePictureStruct": {
+        "github_com_lucasgiovannibr_whatygo_pkg_user_service.SetProfilePictureStruct": {
             "type": "object",
             "properties": {
                 "image": {
@@ -7586,7 +7586,7 @@ const docTemplate = `{
                 }
             }
         },
-        "github_com_evolution-foundation_evolution-go_pkg_utils.VCardStruct": {
+        "github_com_lucasgiovannibr_whatygo_pkg_utils.VCardStruct": {
             "type": "object",
             "properties": {
                 "fullName": {
@@ -7600,7 +7600,7 @@ const docTemplate = `{
                 }
             }
         },
-        "github_com_evolution-foundation_evolution-go_pkg_whatsmeow_service.ProcessInfo": {
+        "github_com_lucasgiovannibr_whatygo_pkg_whatsmeow_service.ProcessInfo": {
             "type": "object",
             "properties": {
                 "goVersion": {
@@ -7623,7 +7623,7 @@ const docTemplate = `{
                 }
             }
         },
-        "github_com_evolution-foundation_evolution-go_pkg_whatsmeow_service.ProxyRuntimeStatus": {
+        "github_com_lucasgiovannibr_whatygo_pkg_whatsmeow_service.ProxyRuntimeStatus": {
             "type": "object",
             "properties": {
                 "fallbackWithoutProxy": {
@@ -7643,7 +7643,7 @@ const docTemplate = `{
                 }
             }
         },
-        "github_com_evolution-foundation_evolution-go_pkg_whatsmeow_service.ReachoutTimelockStatus": {
+        "github_com_lucasgiovannibr_whatygo_pkg_whatsmeow_service.ReachoutTimelockStatus": {
             "type": "object",
             "properties": {
                 "active": {
@@ -7660,14 +7660,14 @@ const docTemplate = `{
                 }
             }
         },
-        "github_com_evolution-foundation_evolution-go_pkg_whatsmeow_service.RuntimeInfo": {
+        "github_com_lucasgiovannibr_whatygo_pkg_whatsmeow_service.RuntimeInfo": {
             "type": "object",
             "properties": {
                 "calls": {
                     "description": "Calls is the state of the call engine; absent when the instance runs without one\n(calls not enabled for it).",
                     "allOf": [
                         {
-                            "$ref": "#/definitions/github_com_evolution-foundation_evolution-go_pkg_call_engine.Status"
+                            "$ref": "#/definitions/github_com_lucasgiovannibr_whatygo_pkg_call_engine.Status"
                         }
                     ]
                 },
@@ -7701,7 +7701,7 @@ const docTemplate = `{
                     "type": "string"
                 },
                 "lastStreamError": {
-                    "$ref": "#/definitions/github_com_evolution-foundation_evolution-go_pkg_whatsmeow_service.StreamErrorInfo"
+                    "$ref": "#/definitions/github_com_lucasgiovannibr_whatygo_pkg_whatsmeow_service.StreamErrorInfo"
                 },
                 "loggedIn": {
                     "type": "boolean"
@@ -7710,7 +7710,7 @@ const docTemplate = `{
                     "type": "boolean"
                 },
                 "proxy": {
-                    "$ref": "#/definitions/github_com_evolution-foundation_evolution-go_pkg_whatsmeow_service.ProxyRuntimeStatus"
+                    "$ref": "#/definitions/github_com_lucasgiovannibr_whatygo_pkg_whatsmeow_service.ProxyRuntimeStatus"
                 },
                 "qrCount": {
                     "type": "integer"
@@ -7722,7 +7722,7 @@ const docTemplate = `{
                     "description": "Operational events reported by WhatsApp (see operational_events.go).",
                     "allOf": [
                         {
-                            "$ref": "#/definitions/github_com_evolution-foundation_evolution-go_pkg_whatsmeow_service.ReachoutTimelockStatus"
+                            "$ref": "#/definitions/github_com_lucasgiovannibr_whatygo_pkg_whatsmeow_service.ReachoutTimelockStatus"
                         }
                     ]
                 },
@@ -7741,7 +7741,7 @@ const docTemplate = `{
                 "warnings": {
                     "type": "array",
                     "items": {
-                        "$ref": "#/definitions/github_com_evolution-foundation_evolution-go_pkg_whatsmeow_service.Warning"
+                        "$ref": "#/definitions/github_com_lucasgiovannibr_whatygo_pkg_whatsmeow_service.Warning"
                     }
                 },
                 "websocketConnected": {
@@ -7750,7 +7750,7 @@ const docTemplate = `{
                 }
             }
         },
-        "github_com_evolution-foundation_evolution-go_pkg_whatsmeow_service.StreamErrorInfo": {
+        "github_com_lucasgiovannibr_whatygo_pkg_whatsmeow_service.StreamErrorInfo": {
             "type": "object",
             "properties": {
                 "at": {
@@ -7764,7 +7764,7 @@ const docTemplate = `{
                 }
             }
         },
-        "github_com_evolution-foundation_evolution-go_pkg_whatsmeow_service.Warning": {
+        "github_com_lucasgiovannibr_whatygo_pkg_whatsmeow_service.Warning": {
             "type": "object",
             "properties": {
                 "code": {

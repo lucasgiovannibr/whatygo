@@ -8,10 +8,10 @@ import (
 	"net/http"
 	"strings"
 
-	"github.com/evolution-foundation/evolution-go/pkg/apierror"
-	"github.com/evolution-foundation/evolution-go/pkg/utils"
 	"github.com/gin-gonic/gin"
 	"github.com/gomessguii/logger"
+	"github.com/lucasgiovannibr/whatygo/pkg/apierror"
+	"github.com/lucasgiovannibr/whatygo/pkg/utils"
 )
 
 // JIDValidationMiddleware validates JID parameters in request bodies

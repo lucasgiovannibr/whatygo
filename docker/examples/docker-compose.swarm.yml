@@ -1,21 +1,21 @@
 version: '3.8'
 
 services:
-  evolution_go:
+  whatygo:
     image: ghcr.io/lucasgiovannibr/whatygo:latest
     networks:
       - network_public
     environment:
       # Servidor
       SERVER_PORT: 4000
-      CLIENT_NAME: "evolution"
+      CLIENT_NAME: "whatygo"
 
       # Segurança (OBRIGATÓRIO)
       GLOBAL_API_KEY: "sua-chave-api-segura-aqui"
 
       # Banco de Dados PostgreSQL (RECOMENDADO)
-      POSTGRES_AUTH_DB: "postgresql://postgres:senha@postgres:5432/evogo_auth?sslmode=disable"
-      POSTGRES_USERS_DB: "postgresql://postgres:senha@postgres:5432/evogo_users?sslmode=disable"
+      POSTGRES_AUTH_DB: "postgresql://postgres:senha@postgres:5432/whatygo_auth?sslmode=disable"
+      POSTGRES_USERS_DB: "postgresql://postgres:senha@postgres:5432/whatygo_users?sslmode=disable"
       DATABASE_SAVE_MESSAGES: "false"
 
       # Logs e Debug
@@ -66,8 +66,8 @@ services:
       MINIO_USE_SSL: "false"
 
     volumes:
-      - evolution_go_data:/app/dbdata
-      - evolution_go_logs:/app/logs
+      - whatygo_data:/app/dbdata
+      - whatygo_logs:/app/logs
 
     deploy:
       replicas: 1
@@ -81,20 +81,20 @@ services:
       labels:
         # Traefik Labels (ajuste conforme necessário)
         - traefik.enable=true
-        - traefik.http.routers.evolution_go.rule=Host(`evolution.seudominio.com`)
-        - traefik.http.routers.evolution_go.entrypoints=websecure
-        - traefik.http.routers.evolution_go.tls.certresolver=letsencryptresolver
-        - traefik.http.routers.evolution_go.service=evolution_go
-        - traefik.http.services.evolution_go.loadbalancer.server.port=4000
-        - traefik.http.services.evolution_go.loadbalancer.passHostHeader=true
+        - traefik.http.routers.whatygo.rule=Host(`whatygo.seudominio.com`)
+        - traefik.http.routers.whatygo.entrypoints=websecure
+        - traefik.http.routers.whatygo.tls.certresolver=letsencryptresolver
+        - traefik.http.routers.whatygo.service=whatygo
+        - traefik.http.services.whatygo.loadbalancer.server.port=4000
+        - traefik.http.services.whatygo.loadbalancer.passHostHeader=true
 
 volumes:
-  evolution_go_data:
+  whatygo_data:
     external: true
-    name: evolution_go_data
-  evolution_go_logs:
+    name: whatygo_data
+  whatygo_logs:
     external: true
-    name: evolution_go_logs
+    name: whatygo_logs
 
 networks:
   network_public:

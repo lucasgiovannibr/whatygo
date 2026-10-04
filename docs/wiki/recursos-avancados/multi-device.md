@@ -48,7 +48,7 @@ WhatsApp **Multi-Device** é o protocolo que permite conectar até 4 dispositivo
        ├────────────┬────────────┬────────────┐
        ▼            ▼            ▼            ▼
 ┌──────────┐ ┌──────────┐ ┌──────────┐ ┌──────────┐
-│WhatsApp  │ │Evolution │ │WhatsApp  │ │WhatsApp  │
+│WhatsApp  │ │WhatyGo   │ │WhatsApp  │ │WhatsApp  │
 │Desktop   │ │   GO     │ │Web       │ │Business  │
 └──────────┘ └──────────┘ └──────────┘ └──────────┘
 
@@ -91,7 +91,7 @@ Todos funcionam INDEPENDENTEMENTE!
          ▼          ▼          ▼          ▼          ▼
     ┌────────┐ ┌────────┐ ┌────────┐ ┌────────┐ ┌────────┐
     │Primary │ │Device 1│ │Device 2│ │Device 3│ │Device 4│
-    │(Phone) │ │Desktop │ │Evolution│ │   Web  │ │Business│
+    │(Phone) │ │Desktop │ │WhatyGo │ │   Web  │ │Business│
     └────────┘ └────────┘ └────────┘ └────────┘ └────────┘
          │          │          │          │          │
          └──────────┴──────────┴──────────┴──────────┘
@@ -350,9 +350,9 @@ Todas as mensagens são criptografadas no dispositivo do remetente e só podem s
 **Com containers Docker**, você pode ter **N instâncias** do WhatyGo, cada uma conectada a um número WhatsApp diferente:
 
 ```bash
-docker run -d --name evo-vendas evolution-go
-docker run -d --name evo-suporte evolution-go
-docker run -d --name evo-marketing evolution-go
+docker run -d --name evo-vendas whatygo
+docker run -d --name evo-suporte whatygo
+docker run -d --name evo-marketing whatygo
 ```
 
 Cada container = 1 número WhatsApp separado.

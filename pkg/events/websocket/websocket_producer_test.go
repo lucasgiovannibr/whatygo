@@ -9,9 +9,9 @@ import (
 	"testing"
 	"time"
 
-	"github.com/evolution-foundation/evolution-go/pkg/config"
-	logger_wrapper "github.com/evolution-foundation/evolution-go/pkg/logger"
 	"github.com/gorilla/websocket"
+	"github.com/lucasgiovannibr/whatygo/pkg/config"
+	logger_wrapper "github.com/lucasgiovannibr/whatygo/pkg/logger"
 )
 
 func newTestProducer(t *testing.T) *websocketProducer {

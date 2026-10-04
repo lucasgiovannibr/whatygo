@@ -109,7 +109,7 @@ func TestEachInstanceHasItsOwnFolder(t *testing.T) {
 		t.Fatal(err)
 	}
 
-	if string(f.objects["evolution-go-medias/inst-a/3EB0ABC.jpg"]) != "A" || string(f.objects["evolution-go-medias/inst-b/3EB0ABC.jpg"]) != "B" {
+	if string(f.objects["whatygo-medias/inst-a/3EB0ABC.jpg"]) != "A" || string(f.objects["whatygo-medias/inst-b/3EB0ABC.jpg"]) != "B" {
 		t.Fatalf("objects: %v", f.objects)
 	}
 }
@@ -118,7 +118,7 @@ func TestStoreReturnsAPresignedURLWithTheConfiguredTTL(t *testing.T) {
 	f := newFake()
 	s := newTestStorage(t, f, Options{URLTTL: 24 * time.Hour})
 	u, err := s.Store(context.Background(), "inst", []byte("x"), "a.png", "image/png")
-	if err != nil || !strings.Contains(u, "sig=") || !strings.Contains(u, "/evolution-go-medias/inst/a.png") {
+	if err != nil || !strings.Contains(u, "sig=") || !strings.Contains(u, "/whatygo-medias/inst/a.png") {
 		t.Fatalf("url %q err %v", u, err)
 	}
 	if f.presignTTL != 24*time.Hour {
@@ -148,10 +148,10 @@ func TestDeletingAnInstanceRemovesOnlyItsMedia(t *testing.T) {
 	if err != nil || n != 2 {
 		t.Fatalf("removed %d, err %v, want 2", n, err)
 	}
-	if _, ok := f.objects["evolution-go-medias/inst-ab/3.jpg"]; !ok {
+	if _, ok := f.objects["whatygo-medias/inst-ab/3.jpg"]; !ok {
 		t.Fatal("inst-ab must not lose its files because its name starts like inst-a")
 	}
-	if _, ok := f.objects["evolution-go-medias/inst-b/4.jpg"]; !ok {
+	if _, ok := f.objects["whatygo-medias/inst-b/4.jpg"]; !ok {
 		t.Fatal("another instance's files must stay")
 	}
 	if len(f.objects) != 2 {
@@ -174,7 +174,7 @@ func TestKeysCannotEscapeTheInstanceFolder(t *testing.T) {
 		"":                 "file",
 	} {
 		k, err := objectKey("inst", in)
-		if err != nil || k != "evolution-go-medias/inst/"+want {
+		if err != nil || k != "whatygo-medias/inst/"+want {
 			t.Errorf("file name %q -> %q (%v), want .../inst/%s", in, k, err, want)
 		}
 	}

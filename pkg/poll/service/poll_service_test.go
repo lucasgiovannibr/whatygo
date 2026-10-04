@@ -6,9 +6,9 @@ import (
 	"time"
 
 	"github.com/DATA-DOG/go-sqlmock"
-	"github.com/evolution-foundation/evolution-go/pkg/config"
-	logger_wrapper "github.com/evolution-foundation/evolution-go/pkg/logger"
-	"github.com/evolution-foundation/evolution-go/pkg/poll/model"
+	"github.com/lucasgiovannibr/whatygo/pkg/config"
+	logger_wrapper "github.com/lucasgiovannibr/whatygo/pkg/logger"
+	"github.com/lucasgiovannibr/whatygo/pkg/poll/model"
 )
 
 func newMockPollService(t *testing.T) (*pollService, sqlmock.Sqlmock) {

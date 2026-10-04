@@ -8,9 +8,9 @@ set -e
 
 if [ "$(id -u)" = "0" ]; then
     for dir in /app/dbdata /app/logs "${LOG_DIRECTORY:-}"; do
-        [ -n "$dir" ] && [ -d "$dir" ] && chown -R evolution:evolution "$dir" 2>/dev/null || true
+        [ -n "$dir" ] && [ -d "$dir" ] && chown -R whatygo:whatygo "$dir" 2>/dev/null || true
     done
-    exec su-exec evolution:evolution "$@"
+    exec su-exec whatygo:whatygo "$@"
 fi
 
 # Already unprivileged (the container was started with --user): nothing to fix.

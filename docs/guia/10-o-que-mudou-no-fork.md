@@ -43,7 +43,7 @@ Se você usava o original e vai trocar, leia:
 
 ## Atenção ao migrar do original para o fork
 
-- O banco do WhatsApp (whatsmeow) passa da versão **14 para a 16**. As migrações **só andam para frente**: depois que o fork abrir o banco, a imagem do original **não consegue mais abri-lo**. **Faça backup do `evogo_auth` antes.**
+- O banco do WhatsApp (whatsmeow) passa da versão **14 para a 16**. As migrações **só andam para frente**: depois que o fork abrir o banco, a imagem do original **não consegue mais abri-lo**. **Faça backup do `whatygo_auth` antes.**
 - A tabela de votos de enquete (`poll_votes`) muda de chave; voltar para a imagem antiga quebra o salvamento de votos (o resto continua).
 - Novas colunas e índices são criados sozinhos na partida (por exemplo, `instances.calls_enabled`).
 

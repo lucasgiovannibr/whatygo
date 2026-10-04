@@ -7,7 +7,7 @@ import (
 	"testing"
 	"time"
 
-	logger_wrapper "github.com/evolution-foundation/evolution-go/pkg/logger"
+	logger_wrapper "github.com/lucasgiovannibr/whatygo/pkg/logger"
 	amqp "github.com/rabbitmq/amqp091-go"
 )
 

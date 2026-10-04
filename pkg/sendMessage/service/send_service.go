@@ -8,8 +8,8 @@ import (
 	"encoding/json"
 	"errors"
 	"fmt"
-	"github.com/evolution-foundation/evolution-go/pkg/apierror"
-	"github.com/evolution-foundation/evolution-go/pkg/safemap"
+	"github.com/lucasgiovannibr/whatygo/pkg/apierror"
+	"github.com/lucasgiovannibr/whatygo/pkg/safemap"
 	"image"
 	"image/jpeg"
 	"image/png"
@@ -24,12 +24,12 @@ import (
 	"time"
 
 	"github.com/chai2010/webp"
-	config "github.com/evolution-foundation/evolution-go/pkg/config"
-	instance_model "github.com/evolution-foundation/evolution-go/pkg/instance/model"
-	logger_wrapper "github.com/evolution-foundation/evolution-go/pkg/logger"
-	"github.com/evolution-foundation/evolution-go/pkg/utils"
-	whatsmeow_service "github.com/evolution-foundation/evolution-go/pkg/whatsmeow/service"
 	"github.com/gabriel-vasile/mimetype"
+	config "github.com/lucasgiovannibr/whatygo/pkg/config"
+	instance_model "github.com/lucasgiovannibr/whatygo/pkg/instance/model"
+	logger_wrapper "github.com/lucasgiovannibr/whatygo/pkg/logger"
+	"github.com/lucasgiovannibr/whatygo/pkg/utils"
+	whatsmeow_service "github.com/lucasgiovannibr/whatygo/pkg/whatsmeow/service"
 	"go.mau.fi/whatsmeow"
 	waBinary "go.mau.fi/whatsmeow/binary"
 	"go.mau.fi/whatsmeow/proto/waE2E"
@@ -253,7 +253,7 @@ type Button struct {
 	// Code placed in the clipboard when type=copy.
 	CopyCode string `json:"copyCode,omitempty" example:"PROMO2026"`
 	// Target URL when type=url.
-	URL string `json:"url,omitempty" example:"https://evolutionapi.com"`
+	URL string `json:"url,omitempty" example:"https://example.com"`
 	// Destination phone number (E.164) when type=call.
 	PhoneNumber string `json:"phoneNumber,omitempty" example:"+5582988898565"`
 	// ISO currency code for type=pix (e.g. BRL).
@@ -3168,7 +3168,7 @@ func (s *sendService) SendStatusMediaUrl(data *StatusMediaStruct, instance *inst
 	if err != nil {
 		return nil, err
 	}
-	req.Header.Set("User-Agent", "Evolution-GO/1.0")
+	req.Header.Set("User-Agent", "WhatyGo/1.0")
 
 	httpClient := utils.DownloadClient
 	resp, err := httpClient.Do(req)

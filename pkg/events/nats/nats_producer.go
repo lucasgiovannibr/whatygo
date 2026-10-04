@@ -5,9 +5,9 @@ import (
 	"strings"
 	"time"
 
-	producer_interfaces "github.com/evolution-foundation/evolution-go/pkg/events/interfaces"
-	logger_wrapper "github.com/evolution-foundation/evolution-go/pkg/logger"
 	"github.com/gomessguii/logger"
+	producer_interfaces "github.com/lucasgiovannibr/whatygo/pkg/events/interfaces"
+	logger_wrapper "github.com/lucasgiovannibr/whatygo/pkg/logger"
 	"github.com/nats-io/nats.go"
 )
 
@@ -23,7 +23,7 @@ type natsProducer struct {
 // and one that goes away later was only retried a few times.
 func connectOptions() []nats.Option {
 	return []nats.Option{
-		nats.Name("evolution-go"),
+		nats.Name("whatygo"),
 		nats.RetryOnFailedConnect(true),
 		nats.MaxReconnects(-1),
 		nats.ReconnectWait(2 * time.Second),
