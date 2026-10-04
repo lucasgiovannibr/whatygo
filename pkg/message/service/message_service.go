@@ -7,7 +7,6 @@ import (
 	"github.com/lucasgiovannibr/whatygo/pkg/apierror"
 	"github.com/lucasgiovannibr/whatygo/pkg/safemap"
 	"net/http"
-	"os"
 	"strings"
 	"time"
 
@@ -352,64 +351,41 @@ func (m *messageService) DownloadMedia(data *DownloadMediaStruct, instance *inst
 		return nil, "", apierror.Invalid("invalid media type")
 	}
 
-	userDirectory := fmt.Sprintf(`files/user_%s`, instance.Id)
-	_, err = os.Stat(userDirectory)
-	if os.IsNotExist(err) {
-		errDir := os.MkdirAll(userDirectory, 0751)
-		if errDir != nil {
-			m.loggerWrapper.GetLogger(instance.Id).LogError("[%s] Could not create user directory (%s)", instance.Id, userDirectory)
-			return nil, "", errDir
-		}
+	// The first media of the message, in the order the handler always looked at them. Only
+	// the type of the file and how big the message says it is are needed from it.
+	var target whatsmeow.DownloadableMessage
+	var kind string
+	var announced uint64
+	switch {
+	case img != nil:
+		target, kind, mimetype, announced = img, "image", img.GetMimetype(), img.GetFileLength()
+	case audio != nil:
+		target, kind, mimetype, announced = audio, "audio", audio.GetMimetype(), audio.GetFileLength()
+	case document != nil:
+		target, kind, mimetype, announced = document, "document", document.GetMimetype(), document.GetFileLength()
+	case video != nil:
+		target, kind, mimetype, announced = video, "video", video.GetMimetype(), video.GetFileLength()
+	default:
+		target, kind, mimetype, announced = sticker, "sticker", sticker.GetMimetype(), sticker.GetFileLength()
 	}
 
-	if img != nil {
-		mediaData, err = client.Download(context.Background(), img)
-		if err != nil {
-			m.loggerWrapper.GetLogger(instance.Id).LogError("[%s] Failed to download image", instance.Id)
-			msg := fmt.Sprintf("Failed to download image %v", err)
-			return nil, "", errors.New(msg)
+	// Through a temporary file, never above MAX_RECEIVED_MEDIA_MB: whatsmeow's Download keeps
+	// the whole file in memory twice, and a document may be 2 GB.
+	file, err := utils.DownloadMedia(context.Background(), int64(announced), utils.MaxReceivedMediaBytes(), func(ctx context.Context, f whatsmeow.File) error {
+		return client.DownloadToFile(ctx, target, f)
+	})
+	if err != nil {
+		m.loggerWrapper.GetLogger(instance.Id).LogError("[%s] Failed to download %s: %v", instance.Id, kind, err)
+		if utils.IsMediaTooLarge(err) {
+			return nil, "", err
 		}
-		mimetype = img.GetMimetype()
+		return nil, "", fmt.Errorf("Failed to download %s %v", kind, err)
 	}
+	defer file.Close()
 
-	if audio != nil {
-		mediaData, err = client.Download(context.Background(), audio)
-		if err != nil {
-			m.loggerWrapper.GetLogger(instance.Id).LogError("[%s] Failed to download audio", instance.Id)
-			msg := fmt.Sprintf("Failed to download audio %v", err)
-			return nil, "", errors.New(msg)
-		}
-		mimetype = audio.GetMimetype()
-	}
-
-	if document != nil {
-		mediaData, err = client.Download(context.Background(), document)
-		if err != nil {
-			m.loggerWrapper.GetLogger(instance.Id).LogError("[%s] Failed to download document", instance.Id)
-			msg := fmt.Sprintf("Failed to download document %v", err)
-			return nil, "", errors.New(msg)
-		}
-		mimetype = document.GetMimetype()
-	}
-
-	if video != nil {
-		mediaData, err = client.Download(context.Background(), video)
-		if err != nil {
-			m.loggerWrapper.GetLogger(instance.Id).LogError("[%s] Failed to download video", instance.Id)
-			msg := fmt.Sprintf("Failed to download video %v", err)
-			return nil, "", errors.New(msg)
-		}
-		mimetype = video.GetMimetype()
-	}
-
-	if sticker != nil {
-		mediaData, err = client.Download(context.Background(), sticker)
-		if err != nil {
-			m.loggerWrapper.GetLogger(instance.Id).LogError("[%s] Failed to download sticker", instance.Id)
-			msg := fmt.Sprintf("Failed to download sticker %v", err)
-			return nil, "", errors.New(msg)
-		}
-		mimetype = sticker.GetMimetype()
+	mediaData, err = file.Bytes()
+	if err != nil {
+		return nil, "", err
 	}
 
 	dataURL := dataurl.New(mediaData, mimetype)

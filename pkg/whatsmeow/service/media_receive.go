@@ -8,6 +8,8 @@ import (
 	"go.mau.fi/whatsmeow"
 	"go.mau.fi/whatsmeow/proto/waE2E"
 	"go.mau.fi/whatsmeow/types/events"
+
+	"github.com/lucasgiovannibr/whatygo/pkg/utils"
 )
 
 // downloadTimeout bounds one download: large videos are slow, but a stalled one must not
@@ -73,22 +75,33 @@ func (mycli *MyClient) attachMedia(evt *events.Message, dataMap map[string]inter
 	id := evt.Info.ID
 	log.LogInfo("[%s] Processing media message - ID: %s (%s, child message: %v, %d bytes announced)", mycli.userID, id, media.kind, media.child, media.size)
 
+	messageMap, ok := dataMap["Message"].(map[string]interface{})
+	if !ok {
+		messageMap = make(map[string]interface{})
+	}
+
 	ctx, cancel := context.WithTimeout(context.Background(), downloadTimeout)
 	defer cancel()
 	start := time.Now()
 
-	data, err := mycli.WAClient.Download(ctx, media.target)
-	if err == nil && media.sticker {
-		if png, convErr := stickerAsPNG(data); convErr != nil {
-			log.LogWarn("[%s] Could not convert the sticker to PNG, keeping raw webp: %v", mycli.userID, convErr)
-			media.extension, media.mimeType = ".webp", "image/webp"
-		} else {
-			data = png
-		}
-	}
+	// The file goes to a temporary file, never above the limit (see utils.DownloadMedia): the
+	// sender decides how big the file is.
+	limit := utils.MaxReceivedMediaBytes()
+	file, err := utils.DownloadMedia(ctx, media.size, limit, func(ctx context.Context, f whatsmeow.File) error {
+		return mycli.WAClient.DownloadToFile(ctx, media.target, f)
+	})
 	took := time.Since(start)
 
 	if err != nil {
+		if utils.IsMediaTooLarge(err) {
+			log.LogWarn("[%s] Media not downloaded, it is over MAX_RECEIVED_MEDIA_MB (%d bytes) - ID: %s, Announced: %d bytes", mycli.userID, limit, id, media.size)
+			// The event still goes out, saying why the file is missing.
+			messageMap["mediaSkipped"] = "too_large"
+			messageMap["mediaSize"] = media.size
+			messageMap["mediaLimit"] = limit
+			dataMap["Message"] = messageMap
+			return
+		}
 		log.LogError("[%s] Failed to download media - ID: %s, Size: %d bytes, Duration: %v, Error: %v", mycli.userID, id, media.size, took, err)
 		if ctx.Err() == context.DeadlineExceeded {
 			log.LogError("[%s] Download timeout exceeded (%v) - ID: %s, Size: %d bytes", mycli.userID, downloadTimeout, id, media.size)
@@ -96,18 +109,32 @@ func (mycli *MyClient) attachMedia(evt *events.Message, dataMap map[string]inter
 		log.LogWarn("[%s] Continuing message processing without media - ID: %s", mycli.userID, id)
 		return
 	}
-	if len(data) == 0 {
+	defer file.Close()
+
+	if file.Size() == 0 {
 		log.LogWarn("[%s] Skipping media storage: empty download - ID: %s", mycli.userID, id)
 		return
 	}
-	log.LogInfo("[%s] Media download successful - ID: %s, Expected: %d bytes, Actual: %d bytes, Duration: %v", mycli.userID, id, media.size, len(data), took)
-	if media.size > 0 && int64(len(data)) != media.size {
-		log.LogWarn("[%s] Size mismatch detected - ID: %s, Expected: %d, Got: %d", mycli.userID, id, media.size, len(data))
+	log.LogInfo("[%s] Media download successful - ID: %s, Expected: %d bytes, Actual: %d bytes, Duration: %v", mycli.userID, id, media.size, file.Size(), took)
+	if media.size > 0 && file.Size() != media.size {
+		log.LogWarn("[%s] Size mismatch detected - ID: %s, Expected: %d, Got: %d", mycli.userID, id, media.size, file.Size())
 	}
 
-	messageMap, ok := dataMap["Message"].(map[string]interface{})
-	if !ok {
-		messageMap = make(map[string]interface{})
+	// A sticker is converted to PNG, which needs it in memory (it is small: a few hundred KB).
+	var data []byte
+	if media.sticker || mycli.config.MinioEnabled {
+		if data, err = file.Bytes(); err != nil {
+			log.LogError("[%s] Could not read the downloaded media - ID: %s, Error: %v", mycli.userID, id, err)
+			return
+		}
+	}
+	if media.sticker {
+		if png, convErr := stickerAsPNG(data); convErr != nil {
+			log.LogWarn("[%s] Could not convert the sticker to PNG, keeping raw webp: %v", mycli.userID, convErr)
+			media.extension, media.mimeType = ".webp", "image/webp"
+		} else {
+			data = png
+		}
 	}
 
 	if mycli.config.MinioEnabled {
@@ -125,8 +152,14 @@ func (mycli *MyClient) attachMedia(evt *events.Message, dataMap map[string]inter
 		}
 	} else {
 		encodeStart := time.Now()
-		encoded := base64.StdEncoding.EncodeToString(data)
-		log.LogInfo("[%s] Base64 encoding completed - ID: %s, Original: %d bytes, Encoded: %d chars, Duration: %v", mycli.userID, id, len(data), len(encoded), time.Since(encodeStart))
+		var encoded string
+		if media.sticker {
+			encoded = base64.StdEncoding.EncodeToString(data)
+		} else if encoded, err = file.Base64(); err != nil {
+			log.LogError("[%s] Could not encode the downloaded media - ID: %s, Error: %v", mycli.userID, id, err)
+			return
+		}
+		log.LogInfo("[%s] Base64 encoding completed - ID: %s, Encoded: %d chars, Duration: %v", mycli.userID, id, len(encoded), time.Since(encodeStart))
 		messageMap["base64"] = encoded
 	}
 	dataMap["Message"] = messageMap
