@@ -75,7 +75,9 @@ Na prática: uma queda curta do seu sistema não perde mensagens, mas uma queda 
 
 ## Mídias (fotos, áudios, documentos)
 
-Por padrão os avisos trazem o **link** da mídia (`WEBHOOK_FILES=true`). Para guardar arquivos num armazenamento próprio, o servidor integra com **MinIO / S3**. No WhatyGo, o bucket **não é mais público**: os arquivos são servidos por links temporários (7 dias por padrão). Detalhes em [Configuração e segurança](./08-configuracao-e-seguranca.md).
+Por padrão os avisos trazem a mídia (`WEBHOOK_FILES=true`): em base64 dentro do aviso ou, com MinIO / S3, o **link** do arquivo. Arquivos acima de `MAX_RECEIVED_MEDIA_MB` (50 MB) não são baixados: o aviso chega sem o arquivo, com `mediaSkipped: "too_large"` (e `mediaSize`, `mediaLimit`) dentro de `data.Message`.
+
+Para guardar arquivos num armazenamento próprio, o servidor integra com **MinIO / S3**. No WhatyGo, o bucket **não é mais público**: os arquivos são servidos por links temporários (7 dias por padrão). Detalhes em [Configuração e segurança](./08-configuracao-e-seguranca.md).
 
 ## Receber sem webhook: guardar no banco
 

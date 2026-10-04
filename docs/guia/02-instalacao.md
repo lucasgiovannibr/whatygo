@@ -82,6 +82,8 @@ A segunda linha deve responder `{"checks":{"authDb":"ok","usersDb":"ok"},"status
 
 No navegador: **http://localhost:4000/manager**
 
+> Por segurança a porta só atende **este computador** (`127.0.0.1`). Para acessar de outra máquina, ponha um proxy reverso com HTTPS na frente (recomendado) ou `BIND_ADDRESS=0.0.0.0` no `.env`.
+
 Se você mudou `HTTP_PORT` no `.env`, troque o `4000` pela porta escolhida.
 
 ### 5. Entre com a chave global

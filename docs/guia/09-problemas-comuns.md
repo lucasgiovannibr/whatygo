@@ -35,7 +35,7 @@ Um dos bancos de dados não responde. Veja `docker compose ps` (o `postgres` dev
 Veja os logs; costuma ser o banco fora do ar. Se persistir, apague a instância e crie de novo.
 
 ### O QR Code expirou
-Vale cerca de 40 s e se renova até `QRCODE_MAX_COUNT` vezes. Clique em conectar de novo e leia mais rápido.
+Vale cerca de 40 s e se renova até `QRCODE_MAX_COUNT` vezes; depois disso a instância **para** (`disconnect_reason: "QR code timeout"`). Clique em conectar de novo (ou abra o QR no painel) e leia mais rápido.
 
 ### Conectei e a instância "caiu" sozinha
 - Se o celular ficou sem internet por muito tempo ou o aparelho foi removido em *Aparelhos conectados*, a sessão acaba e é preciso ler o QR de novo.

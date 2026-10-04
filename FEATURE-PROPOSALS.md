@@ -132,3 +132,18 @@ Análise do stream de chamadas (WebSocket) contra a documentação do `meowcalle
 **Achado no teste da `main` combinada (02/10/2026), corrigido no PR #82:** a biblioteca pede áudio ao cliente desde o início da chamada, inclusive tocando, e o jogava fora; uma saudação enfileirada antes de o outro lado atender se perdia e o `mark` voltava como "tocado". O áudio agora espera a chamada ficar ativa.
 
 **Documentação** de #51–#59, #61 e #82 feita em 02/10/2026: `docs/wiki/guias-api/api-call.md` (opções do stream, histórico, limites, métricas, erros), variáveis, eventos, CHANGELOG, FORK-TRIAGE e Swagger.
+
+## 7. Propostas da segunda análise (04/10/2026)
+
+Resultado da segunda rodada de análise (`ANALISE-SISTEMA.md` §15). Os achados corrigíveis foram
+corrigidos (PRs #91 a #103); o que é funcionalidade nova fica aqui.
+
+| # | Ideia | Por quê | Esforço | Status |
+|---|---|---|---|---|
+| 68 | **Assinatura HMAC dos webhooks** (`X-Webhook-Signature`) | O receptor não consegue provar que o POST veio do WhatyGo; hoje só a URL secreta protege | M | ◐ |
+| 69 | **WebSocket `/ws` com token de instância** (e ticket de uso único) | Hoje só a chave global autentica, então um cliente (inquilino) não pode assinar os próprios eventos; e a chave vai na query string | M | ◐ |
+| 70 | **Paginação em `GET /group/list` e `GET /user/contacts`** | `participants=false` já resolve o tamanho dos grupos; os contatos continuam vindo todos de uma vez | P | ◐ |
+| 71 | **Imagem "slim" sem ffmpeg/poppler** | Quem usa só o conversor externo de áudio (`API_AUDIO_CONVERTER`) carrega ~100 MB de binários que não usa | M | ◐ |
+| 72 | **Token da instância guardado como hash** (`sha256`) | Hoje fica em texto puro; exige mostrar o token uma única vez na criação | M | ◐ |
+| 73 | **Validar `participant` em respostas citadas** | A checagem existe no código mas está morta; ligá-la rejeitaria citações sem `participant` que funcionam hoje em conversas 1:1 | P | ✖ só se houver caso real de citação errada |
+| 74 | **Mídia recebida por URL em vez de base64 no webhook** (transmitir do arquivo temporário para o MinIO sem passar pela memória) | O teto de 50 MB limita o pior caso, mas o base64 ainda custa ~4× o arquivo por mensagem; com MinIO só os bytes são lidos (1×), sem MinIO continua o base64 | M | ◐ |
