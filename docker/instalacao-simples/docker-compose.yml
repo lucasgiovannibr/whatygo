@@ -29,7 +29,17 @@ services:
       postgres:
         condition: service_healthy
     ports:
-      - "${HTTP_PORT:-4000}:4000"
+      # Presa a este computador (127.0.0.1): quem acessa de fora é um proxy reverso com HTTPS.
+      # Para publicar direto, ponha BIND_ADDRESS=0.0.0.0 no .env.
+      - "${BIND_ADDRESS:-127.0.0.1}:${HTTP_PORT:-4000}:4000"
+    security_opt:
+      - no-new-privileges:true
+    cap_drop:
+      - ALL
+    cap_add: # só o que o entrypoint usa para acertar os volumes e baixar os privilégios
+      - CHOWN
+      - SETUID
+      - SETGID
     environment:
       SERVER_PORT: "4000"
       GLOBAL_API_KEY: ${GLOBAL_API_KEY:?preencha GLOBAL_API_KEY no arquivo .env}
