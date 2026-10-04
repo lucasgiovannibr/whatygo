@@ -2,7 +2,7 @@
 
 Guia em linguagem simples para quem **não é programador** (ou está começando) e quer entender, instalar e usar o WhatyGo.
 
-> **WhatyGo é um fork (uma cópia modificada) do [Evolution Go](https://github.com/evolution-foundation/evolution-go)**, projeto da Evolution Foundation. Este guia não é um material oficial da Evolution Foundation, e o WhatyGo não é afiliado nem endossado por ela. Detalhes em [Avisos legais e créditos](./11-avisos-legais-e-creditos.md).
+> **WhatyGo é baseado no [Evolution Go](https://github.com/evolution-foundation/evolution-go)** (uma versão modificada dele), projeto da Evolution Foundation. Este guia não é um material oficial da Evolution Foundation, e o WhatyGo não é afiliado nem endossado por ela. Detalhes em [Avisos legais e créditos](./11-avisos-legais-e-creditos.md).
 
 ## Por onde começar
 
@@ -17,7 +17,7 @@ Guia em linguagem simples para quem **não é programador** (ou está começando
 | Atender e fazer ligações pelo navegador | [7. Chamadas de voz e vídeo](./07-chamadas.md) |
 | Configurar, proteger e manter no ar | [8. Configuração e segurança](./08-configuracao-e-seguranca.md) |
 | Resolver um problema | [9. Problemas comuns](./09-problemas-comuns.md) |
-| Saber o que este fork mudou em relação ao original | [10. O que mudou no fork](./10-o-que-mudou-no-fork.md) |
+| Saber o que o WhatyGo mudou em relação ao original | [10. O que mudou no fork](./10-o-que-mudou-no-fork.md) |
 
 ## Como ler as marcas de maturidade
 
@@ -28,7 +28,7 @@ Nem tudo no projeto tem o mesmo nível de confiança. Nas tabelas deste guia:
 | ✅ **Testado** | Foi usado de verdade, com um número de WhatsApp real, e funcionou. |
 | 🟡 **Parcial** | Funciona nos testes automáticos ou em parte do uso real; algum detalhe não foi visto num aparelho. |
 | 🧪 **Experimental** | Funciona, mas depende de uma biblioteca em desenvolvimento ou foi pouco testado. Use com cuidado. |
-| ⬜ **Herdado** | Já existia no projeto original e este fork não o testou de novo. |
+| ⬜ **Herdado** | Já existia no projeto original e o WhatyGo não o testou de novo. |
 
 ## Precisa de mais detalhe técnico?
 

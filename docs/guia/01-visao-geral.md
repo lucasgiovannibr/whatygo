@@ -10,7 +10,7 @@ O WhatyGo é um **servidor que conecta o WhatsApp a outros sistemas**. Você lig
 
 É o mesmo tipo de ferramenta usado para chatbots, atendimento, notificações automáticas e integrações com CRMs.
 
-> **Origem.** O WhatyGo é um fork do Evolution Go: parte do código e da ideia vêm de lá, e a conexão com o WhatsApp é feita pela biblioteca [whatsmeow](https://github.com/tulir/whatsmeow). Este fork nasceu para **corrigir, melhorar e ajustar** o projeto original, e hoje tem muitas diferenças (veja [O que mudou no fork](./10-o-que-mudou-no-fork.md)).
+> **Origem.** O WhatyGo é baseado no Evolution Go: parte do código e da ideia vêm de lá, e a conexão com o WhatsApp é feita pela biblioteca [whatsmeow](https://github.com/tulir/whatsmeow). O WhatyGo nasceu para **corrigir, melhorar e ajustar** o projeto original, e hoje tem muitas diferenças (veja [O que mudou no fork](./10-o-que-mudou-no-fork.md)).
 
 ## Um desenho simples
 

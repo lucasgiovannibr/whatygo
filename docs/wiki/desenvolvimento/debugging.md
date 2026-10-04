@@ -415,4 +415,4 @@ Quando algo não funciona:
 
 ---
 
-**Mantido por**: mantenedores do fork WhatyGo (baseado no Evolution Go)
+**Mantido por**: mantenedores do WhatyGo (baseado no Evolution Go)

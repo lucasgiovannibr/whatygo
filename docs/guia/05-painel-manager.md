@@ -1,6 +1,6 @@
 # 5. O painel (`/manager`)
 
-O painel é um site que o próprio servidor entrega. Serve para operar o WhatyGo sem programar. Foi **refeito do zero** neste fork (o original não tinha nem o código-fonte no repositório): é mais enxuto, tem tema claro e escuro e um menu em gaveta para telas pequenas.
+O painel é um site que o próprio servidor entrega. Serve para operar o WhatyGo sem programar. Foi **refeito do zero** no WhatyGo (o original não tinha nem o código-fonte no repositório): é mais enxuto, tem tema claro e escuro e um menu em gaveta para telas pequenas.
 
 Endereço: `http://SEU-SERVIDOR:4000/manager`. Para entrar, use a chave global.
 

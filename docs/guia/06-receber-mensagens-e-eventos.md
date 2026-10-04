@@ -64,7 +64,7 @@ Por padrão, eventos de **status** (stories) são ignorados, e os de grupos, nã
 
 ## E se o meu sistema estiver fora do ar?
 
-O fork criou uma **fila por destino** para não perder tudo nem derrubar o servidor:
+O WhatyGo criou uma **fila por destino** para não perder tudo nem derrubar o servidor:
 
 - Se a entrega falha, o servidor **tenta de novo** algumas vezes, esperando cada vez mais (1 s, 5 s, 30 s, 2 min).
 - Se o destino continua fora, ele é marcado como "degradado": os eventos seguintes recebem uma tentativa só, até um passar.
@@ -75,7 +75,7 @@ Na prática: uma queda curta do seu sistema não perde mensagens, mas uma queda 
 
 ## Mídias (fotos, áudios, documentos)
 
-Por padrão os avisos trazem o **link** da mídia (`WEBHOOK_FILES=true`). Para guardar arquivos num armazenamento próprio, o servidor integra com **MinIO / S3**. Neste fork, o bucket **não é mais público**: os arquivos são servidos por links temporários (7 dias por padrão). Detalhes em [Configuração e segurança](./08-configuracao-e-seguranca.md).
+Por padrão os avisos trazem o **link** da mídia (`WEBHOOK_FILES=true`). Para guardar arquivos num armazenamento próprio, o servidor integra com **MinIO / S3**. No WhatyGo, o bucket **não é mais público**: os arquivos são servidos por links temporários (7 dias por padrão). Detalhes em [Configuração e segurança](./08-configuracao-e-seguranca.md).
 
 ## Receber sem webhook: guardar no banco
 

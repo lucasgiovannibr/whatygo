@@ -769,5 +769,5 @@ Após setup completo:
 
 **Dica**: Use `make help` para ver todos os comandos disponíveis!
 
-**Mantido por**: mantenedores do fork WhatyGo (baseado no Evolution Go)  
+**Mantido por**: mantenedores do WhatyGo (baseado no Evolution Go)  
 **Versão**: 1.0.0

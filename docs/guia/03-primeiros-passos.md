@@ -37,7 +37,7 @@ Na janela de conexão, escolha **Código por telefone**, informe o número com D
 
 ### Quando o WhatsApp pede "chave de acesso" (passkey)
 
-Algumas contas exigem uma chave de acesso (biometria ou PIN) para ligar um aparelho, e não mostram QR Code. O painel guia: instale a extensão **Passkey Helper** no Chrome ou Edge (está na pasta `passkey-helper/` do projeto), abra o WhatsApp Web pelo botão do painel e confirme com biometria. Para esse botão aparecer, o servidor precisa da variável `PASSKEY_PUBLIC_URL` (um endereço que o seu navegador alcança). 🟡 *Este caminho foi melhorado no fork, mas não pôde ser testado com uma conta que exija passkey.*
+Algumas contas exigem uma chave de acesso (biometria ou PIN) para ligar um aparelho, e não mostram QR Code. O painel guia: instale a extensão **Passkey Helper** no Chrome ou Edge (está na pasta `passkey-helper/` do projeto), abra o WhatsApp Web pelo botão do painel e confirme com biometria. Para esse botão aparecer, o servidor precisa da variável `PASSKEY_PUBLIC_URL` (um endereço que o seu navegador alcança). 🟡 *Este caminho foi melhorado no WhatyGo, mas não pôde ser testado com uma conta que exija passkey.*
 
 ## 4. Mandar a primeira mensagem
 

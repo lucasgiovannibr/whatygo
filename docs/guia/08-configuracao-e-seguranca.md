@@ -56,11 +56,11 @@ O WhatsApp não tem regra pública de limites, mas a experiência da comunidade 
 - **Varie o texto** e deixe o contato **sair da lista** (responder "SAIR").
 - **Espere entre mensagens** (2 a 5 segundos); os limites acima ajudam.
 - **Não use "Sempre online"** sem necessidade: o celular deixa de notificar.
-- Se aparecer um erro **463** ao enviar, o WhatsApp restringiu o alcance da conta por um tempo; o fork explica o motivo e até quando, quando o WhatsApp informa. Pare de enviar até passar.
+- Se aparecer um erro **463** ao enviar, o WhatsApp restringiu o alcance da conta por um tempo; o WhatyGo explica o motivo e até quando, quando o WhatsApp informa. Pare de enviar até passar.
 
 ## Segurança do servidor
 
-### O que o fork já faz por você
+### O que o WhatyGo já faz por você
 
 - **Recusa chaves de exemplo** (`change-me`, `sua-chave-api-segura-aqui`...). Uma chave de menos de 32 caracteres gera um aviso.
 - **Contêiner sem privilégios de administrador**, com verificação de saúde.
@@ -81,7 +81,7 @@ O WhatsApp não tem regra pública de limites, mas a experiência da comunidade 
 
 ### Telemetria
 
-O README do projeto original informa que o servidor coleta **dados anônimos de uso** (rotas usadas e versão da API) e que dados pessoais ou sensíveis não são coletados. Esse trecho vem do código herdado do projeto original e este fork não o altera.
+O WhatyGo **não envia telemetria nem dados de uso** a ninguém. O envio que o Evolution Go fazia ao serviço de licença dele (registro, sinal periódico e contagem de mensagens) foi removido. O servidor só conversa com o WhatsApp e com os destinos que você configura (webhooks, filas, MinIO/S3 e proxy).
 
 ## Vários servidores (avançado)
 

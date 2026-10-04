@@ -2,7 +2,7 @@
 
 <p align="center">
   API de WhatsApp em Go, com painel web, eventos em tempo real e chamadas de voz e vídeo.<br />
-  <strong>Fork do <a href="https://github.com/evolution-foundation/evolution-go">Evolution Go</a></strong> — não é um produto oficial da Evolution Foundation.
+  <strong>Baseado no <a href="https://github.com/evolution-foundation/evolution-go">Evolution Go</a></strong> — não é um produto oficial da Evolution Foundation.
 </p>
 
 <p align="center">
@@ -46,9 +46,9 @@ Depois abra **http://localhost:4000/manager**, entre com a sua `GLOBAL_API_KEY`.
 
 A imagem pronta é pública: `ghcr.io/lucasgiovannibr/whatygo`.
 
-## Em que este fork é diferente do original
+## Em que o WhatyGo é diferente do original
 
-O fork nasceu para **corrigir, melhorar e ajustar** o Evolution Go v0.7.2. Em resumo:
+O WhatyGo nasceu do Evolution Go v0.7.2 para **corrigir, melhorar e ajustar** o código. Em resumo:
 
 - **Estabilidade:** corrigidas as quedas do servidor (`concurrent map writes`, escrita concorrente em WebSocket), o vazamento de conexões do banco e a reconexão das instâncias.
 - **Painel refeito do zero** (`/manager`, com código-fonte em [`manager/`](./manager/README.md)): tema claro e escuro, 16 tipos de evento, teste de 12 tipos de envio, telefone no navegador.
@@ -70,7 +70,7 @@ A lista completa, com a situação de cada item (✅ testado · 🟡 parcial · 
 | Entender e usar (leigos e iniciantes) | [Guia do WhatyGo](./docs/guia/README.md) |
 | Integrar por código | [Documentação técnica (wiki)](./docs/wiki/README.md) e o Swagger em `/swagger/index.html` |
 | Ver o que mudou | [CHANGELOG.md](./CHANGELOG.md) |
-| Entender as decisões do fork | [FORK-TRIAGE.md](./FORK-TRIAGE.md) e [FEATURE-PROPOSALS.md](./FEATURE-PROPOSALS.md) |
+| Entender as decisões do projeto | [FORK-TRIAGE.md](./FORK-TRIAGE.md) e [FEATURE-PROPOSALS.md](./FEATURE-PROPOSALS.md) |
 | Saber o que o WhatsApp permite e o que não permite | [WHATSMEOW-CAPABILITIES.md](./docs/WHATSMEOW-CAPABILITIES.md) |
 | Comandos de desenvolvimento | [COMMANDS.md](./COMMANDS.md) (`make help`) |
 
@@ -97,14 +97,14 @@ Correções e melhorias são bem-vindas, por *issue* ou *pull request* neste rep
 ## Licença, marca e créditos
 
 - O código é licenciado sob a **Apache License 2.0, com as condições adicionais do projeto original** (manter os avisos de copyright no painel e avisar que o Evolution Go é usado). Veja [LICENSE](./LICENSE).
-- **Este projeto é um fork do [Evolution Go](https://github.com/evolution-foundation/evolution-go)**, © 2026 Evolution Foundation, e não é afiliado nem endossado por ela. "Evolution Foundation", "Evolution" e "Evolution Go" são marcas da Evolution Foundation ([TRADEMARKS.md](./TRADEMARKS.md)); aqui aparecem apenas para indicar a origem.
+- **Este projeto é baseado no [Evolution Go](https://github.com/evolution-foundation/evolution-go)**, © 2026 Evolution Foundation, e não é afiliado nem endossado por ela. "Evolution Foundation", "Evolution" e "Evolution Go" são marcas da Evolution Foundation ([TRADEMARKS.md](./TRADEMARKS.md)); aqui aparecem apenas para indicar a origem.
 - Créditos de terceiros (incluindo o whatsmeow, de Tulir Asokan) em [NOTICE](./NOTICE).
-- Como o fork cumpre cada regra, e o que ainda está pendente: [Avisos legais e créditos](./docs/guia/11-avisos-legais-e-creditos.md).
+- Como o WhatyGo cumpre cada regra, e o que ainda está pendente: [Avisos legais e créditos](./docs/guia/11-avisos-legais-e-creditos.md).
 - "WhatsApp" é marca da WhatsApp LLC. Este projeto usa um caminho **não oficial** e **não** é afiliado a ela; contas que enviam mensagens em massa ou indesejadas podem ser banidas.
 
 ## Telemetria
 
-O servidor herdado do projeto original informa coletar dados anônimos de uso (rotas usadas e versão da API), sem dados pessoais ou sensíveis. Esse trecho faz parte do código do original e o fork não o altera.
+O WhatyGo **não envia telemetria nem dados de uso** a ninguém. O envio que o Evolution Go fazia ao serviço de licença dele (registro, sinal periódico e contagem de mensagens) foi removido. O servidor só conversa com o WhatsApp e com os destinos que você configura (webhooks, filas, MinIO/S3 e proxy).
 
 ---
 

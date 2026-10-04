@@ -429,7 +429,7 @@ func initPostgresAuthDB(config *config.Config) (*sql.DB, error) {
 
 // @title WhatyGo
 // @version 1.0
-// @description WhatyGo (fork do Evolution Go) - whatsmeow
+// @description WhatyGo (baseado no Evolution Go) - whatsmeow
 func main() {
 	flag.Parse()
 	if *devMode {

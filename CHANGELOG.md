@@ -1,11 +1,17 @@
 # WhatyGo - Changelog
 
-## Unreleased (fork lucasgiovannibr/whatygo)
+## Unreleased (lucasgiovannibr/whatygo)
 
 Fixes and hardening on top of upstream v0.7.2. Full triage of the upstream issues
 and pull requests in `FORK-TRIAGE.md`.
 
 ### Upgrade notes
+- **Wording and telemetry notice.** The README, the guide and the Swagger description now say the
+  project is "based on" the Evolution Go instead of calling it a fork (the credit in `LICENSE`,
+  `NOTICE`, the README and the manager footer is unchanged). The README and chapter 8 of the guide
+  used to say the server collects anonymous usage data; that was the license heartbeat, which no
+  longer exists, so they now state that WhatyGo sends no telemetry. The GitHub description,
+  homepage and topics of the repository were updated.
 - **Repository layout.** The entry point moved from `cmd/evolution-go` to `cmd/whatygo`, so
   `go build ./cmd/whatygo`, `go run cmd/whatygo/main.go` and `swag init -g cmd/whatygo/main.go`
   replace the old paths (the `Makefile` and the `Dockerfile` already use them; the binary

@@ -1,7 +1,7 @@
 {
     "swagger": "2.0",
     "info": {
-        "description": "WhatyGo (fork do Evolution Go) - whatsmeow",
+        "description": "WhatyGo (baseado no Evolution Go) - whatsmeow",
         "title": "WhatyGo",
         "contact": {},
         "version": "1.0"
