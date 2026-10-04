@@ -4,6 +4,7 @@ import (
 	"encoding/json"
 	"errors"
 	"strings"
+	"sync"
 
 	instance_model "github.com/lucasgiovannibr/whatygo/pkg/instance/model"
 	"github.com/lucasgiovannibr/whatygo/pkg/internal/event_types"
@@ -34,6 +35,34 @@ func parseSubscriptions(events string) []string {
 		}
 	}
 	return subscriptions
+}
+
+// subscriptionsCache remembers the parsed subscription list of each distinct "A,B,C" string:
+// EventWanted and CallWebhook asked for it on every event (a split and a validation of each
+// name, twice per event). The lists are shared and read-only. It is bounded: a table that
+// outgrows maxCachedSubscriptions (a server with that many different lists) is emptied.
+const maxCachedSubscriptions = 4096
+
+var (
+	subscriptionsMu    sync.RWMutex
+	subscriptionsCache = map[string][]string{}
+)
+
+func cachedSubscriptions(events string) []string {
+	subscriptionsMu.RLock()
+	subs, ok := subscriptionsCache[events]
+	subscriptionsMu.RUnlock()
+	if ok {
+		return subs
+	}
+	subs = parseSubscriptions(events)
+	subscriptionsMu.Lock()
+	if len(subscriptionsCache) >= maxCachedSubscriptions {
+		subscriptionsCache = map[string][]string{}
+	}
+	subscriptionsCache[events] = subs
+	subscriptionsMu.Unlock()
+	return subs
 }
 
 // chatFallback is the subscription that also delivers message-like events of groups and
@@ -107,7 +136,7 @@ func (w *whatsmeowService) EventWanted(instance *instance_model.Instance, eventT
 	if instance == nil {
 		return false
 	}
-	if instanceHasOutput(instance) && eventSubscribed(parseSubscriptions(instance.Events), eventType, chat) {
+	if instanceHasOutput(instance) && eventSubscribed(cachedSubscriptions(instance.Events), eventType, chat) {
 		return true
 	}
 	return w.globalQueueWants(eventType)

@@ -255,9 +255,11 @@ func (p *webhookProducer) deliver(url string, ev webhookEvent, degraded bool) bo
 
 func (p *webhookProducer) sendWithRetry(url string, body []byte, attempts int, userID string) bool {
 	for i := 0; i < attempts; i++ {
-		err, responseBody, statusCode := p.sendWebhook(url, body, userID)
+		err, _, statusCode := p.sendWebhook(url, body, userID)
 		if err == nil {
-			p.loggerWrapper.GetLogger(userID).LogInfo("[%s] webhook sent successfully - url: %s, status: %d, response: %s", userID, url, statusCode, string(responseBody))
+			// Only at debug level, and without the body of the answer (up to 4 KB of whatever the
+			// receiver said, on every delivery).
+			p.loggerWrapper.GetLogger(userID).LogDebug("[%s] webhook sent successfully - url: %s, status: %d", userID, url, statusCode)
 			return true
 		}
 		p.loggerWrapper.GetLogger(userID).LogWarn("[%s] webhook failed - url: %s, attempt: %d, error: %v", userID, url, i+1, err)
