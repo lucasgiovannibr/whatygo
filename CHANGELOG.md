@@ -6,6 +6,38 @@ Fixes and hardening on top of upstream v0.7.2. Full triage of the upstream issue
 and pull requests in `FORK-TRIAGE.md`.
 
 ### Upgrade notes
+- **Security round of October 2026 (PRs #91–#103): behaviour changes to know about.**
+  - **Instance tokens**: `POST /instance/create` refuses a token shorter than 16 characters
+    (`MIN_INSTANCE_TOKEN_LENGTH`) and generates a UUID when none is given (it used to answer
+    `400 token is required`); a token already in use answers `409`. Existing instances are not affected.
+  - **Failed authentications are limited**: 30 a minute per client address (`AUTH_FAIL_LIMIT`, `0`
+    turns it off), then `429` with `Retry-After`. The client address is the connection's own;
+    `X-Forwarded-For` is believed only from `TRUSTED_PROXIES`. **Behind a reverse proxy, list it in
+    `TRUSTED_PROXIES`**, or every client shares the proxy's address and its limit.
+  - **The Compose examples** have no default passwords (`GLOBAL_API_KEY`, `POSTGRES_PASSWORD`,
+    `RABBITMQ_PASSWORD`, `MINIO_PASSWORD` come from `.env` and are required) and every port is
+    bound to `127.0.0.1` (the API through `BIND_ADDRESS`, `0.0.0.0` to publish it). RabbitMQ and
+    MinIO users are `whatygo` (they were `admin` / `minioadmin`). The server container drops all
+    capabilities but the three its entrypoint needs and sets `no-new-privileges`.
+  - **`HTTP_PROXY` / `HTTPS_PROXY` are no longer used** for media, link previews, status and
+    webhooks (through a proxy the check of the destination address saw the proxy, not the URL);
+    `OUTBOUND_PROXY_FROM_ENV=true` brings it back, and the boot warns when a proxy is being
+    ignored. `WEBHOOK_ALLOW_PRIVATE=false` limits webhooks to public addresses.
+  - **QR codes that run out stop the instance** (`QRCODE_MAX_COUNT` > 0, default 5): it used to
+    restart for ever, reconnecting every ~140 s and telling the webhook it had been logged out.
+    It stays off (`disconnect_reason: "QR code timeout"`) until `POST /instance/connect` or until
+    its QR code is opened in the manager. Logged out from the phone: the `jid` is cleared and the
+    instance stops (it used to start a new QR cycle), and `LoggedOut` is published once (it was
+    twice). A request no longer starts an instance with no paired device: `409
+    instance_not_logged_in`. `QRCODE_MAX_COUNT=0` keeps the old behaviour.
+  - **Received media is capped** (`MAX_RECEIVED_MEDIA_MB`, default 50): a larger file is not
+    downloaded and the `Message` event carries `data.Message.mediaSkipped: "too_large"`
+    (`mediaSize`, `mediaLimit`); `POST /message/downloadmedia` answers `413`. The temp directory
+    must be writable.
+  - `PUT /instance/{id}/advanced-settings` with `"msgRejectCall": ""` now clears the message (it
+    could not be cleared); omitting the field leaves it alone. A non-UUID `:instanceId` answers
+    `400` (it was a `500`).
+  - The **log level** of the per-event happy path is `debug` now (`LOG_LEVEL=debug` shows it).
 - **Wording and telemetry notice.** The README, the guide and the Swagger description now say the
   project is "based on" the Evolution Go instead of calling it a fork (the credit in `LICENSE`,
   `NOTICE`, the README and the manager footer is unchanged). The README and chapter 8 of the guide
@@ -502,6 +534,46 @@ returns); every change below has tests, and the structural gains were measured.
   to ~640 lines (received message, receipt, logged out, pair success, media, JID clean-up, quoted
   context and button clicks are functions of their own).
 - Dead code removed; the test logger is closed when a test ends.
+
+### Security and memory round 2 (October 2026, PRs #91–#103)
+Second analysis of the system (`ANALISE-SISTEMA.md` §15–§17). Each change has tests; the ones
+below were also reproduced before and checked after on a throw-away stack.
+
+**Security**
+- Failed-authentication limit, instance-token minimum and generation, `TRUSTED_PROXIES` (a forged
+  `X-Forwarded-For` was believed): 2000 wrong keys were 2000 × 401, now 30 × 401 then 429; a
+  token of `a` was accepted, now 400.
+- Request-supplied URLs and webhooks no longer go through the proxy of the environment (the SSRF
+  check could not see the destination); `WEBHOOK_ALLOW_PRIVATE`.
+- `/ws`: 4 KB read limit, ping/pong with a read deadline, a bounded queue and writer per
+  subscriber (a 300 MB frame took the process from 81 MB to 873 MB, now 57 MB); the event is
+  encoded once for all subscribers.
+- Log ids are validated (`GET /instance/%2e%2e/...` wrote `instance.log` outside the log
+  directory) and `:instanceId` must be a UUID.
+- Compose examples safe by default (see the upgrade notes).
+
+**Memory and speed**
+- Received media goes to a temporary file with a size cap instead of three copies in memory
+  (a file of N bytes cost about 7N at the peak); sends upload large files through a temporary
+  file (64 MB file: +64 MB above the file → 0) and read multipart files and URLs into buffers of
+  their size.
+- Messages nobody receives are no longer converted to a map (144 → 32 allocations for a short
+  text), the subscription list is cached, and the happy-path logs (6–10 lines per message) are
+  `debug`.
+- The Go soft memory limit follows the container's (`MEMORY_LIMIT_RATIO`, 0.8; `MEM_LIMIT` in the
+  Compose files); `GET /group/list?participants=false`; the instance supervisor receives a kill
+  at once; the webhook queues have a global budget (`WEBHOOK_QUEUE_GLOBAL_MB`, 256) and a 4xx
+  answer (other than 408/425/429) is not retried five times.
+- Sends ask for a reconnection through the backoff instead of forcing one (`RequestReconnect`):
+  with traffic, a dropped account was reconnected every ~15 s.
+- Dependencies updated (gin 1.12, gorm 1.31, minio-go 7.3, nats.go 1.54, amqp091 1.15, mimetype
+  1.4.15, x/image 0.46, sqlite 1.60...); a database made by the previous image is served by the new
+  one.
+
+**Fixes**
+- The presence goroutine could take the whole process down without tzdata (`time/tzdata` embedded,
+  UTC fallback, `recover`).
+- `LoggedOut` reached the webhook twice.
 
 ### Interactive messages that render (October 2026)
 Tested live on a WhatsApp Business account linked as a device, sending to an iPhone and to

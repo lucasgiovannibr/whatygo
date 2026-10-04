@@ -64,7 +64,7 @@ POSTGRES_USERS_DB=postgresql://user:pass@host:5432/whatygo_users?sslmode=disable
 |----------|--------|-----------|
 | `CONNECT_ON_STARTUP` | `false` | Conectar instâncias ao iniciar servidor |
 | `WEBHOOK_FILES` | `true` | Enviar URLs de mídia em webhooks |
-| `QRCODE_MAX_COUNT` | `5` | Tentativas máximas de QR Code |
+| `QRCODE_MAX_COUNT` | `5` | QR Codes gerados antes de a instância parar (`0` nunca para e continua pedindo códigos novos). Parada, ela volta com `POST /instance/connect` ou ao abrir o QR no painel |
 | `CHECK_USER_EXISTS` | `true` | Validar destinatário antes de enviar |
 | `CHECK_USER_CACHE_TTL_MIN` | `720` | Minutos que "este número está no WhatsApp" é lembrado antes de perguntar de novo (`0` pergunta a cada envio; "não registrado" é lembrado por 5 min) |
 | `WEBHOOK_INCLUDE_TOKEN` | `false` | Inclui `instanceToken` no payload dos eventos. Desligado: o token é a chave de API da instância |
@@ -214,7 +214,12 @@ Só têm efeito nas instâncias com `callsEnabled` ligado. Valores inválidos ou
 | Variável | Padrão | Descrição |
 |----------|--------|-----------|
 | `ALLOW_INSECURE_API_KEY` | `false` | O servidor se recusa a iniciar com uma `GLOBAL_API_KEY` publicada (as dos exemplos, `change-me`...). `true` inicia mesmo assim, só para desenvolvimento local |
-| `ALLOW_PRIVATE_URLS` | `false` | URLs recebidas em requisições (mídia, figurinhas, preview de link, status) só podem apontar para endereços públicos; `true` libera redes privadas. Loopback e o endpoint de metadados da nuvem continuam bloqueados. Webhooks podem sempre apontar para a rede interna |
+| `ALLOW_PRIVATE_URLS` | `false` | URLs recebidas em requisições (mídia, figurinhas, preview de link, status) só podem apontar para endereços públicos; `true` libera redes privadas. Loopback e o endpoint de metadados da nuvem continuam bloqueados. Webhooks podem apontar para a rede interna (veja `WEBHOOK_ALLOW_PRIVATE`) |
+| `WEBHOOK_ALLOW_PRIVATE` | `true` | `false` restringe os webhooks a endereços públicos (servidor em que cada cliente define o próprio `webhookUrl`); `ALLOW_PRIVATE_URLS` não reabre |
+| `OUTBOUND_PROXY_FROM_ENV` | `false` | Mídia, preview, status e webhooks **não** passam por `HTTP_PROXY`/`HTTPS_PROXY` (por um proxy, a checagem do endereço de destino não enxerga o endereço real). `true` usa o proxy do ambiente mesmo assim; o servidor avisa no início quando há um proxy sendo ignorado |
+| `TRUSTED_PROXIES` | vazio | Proxies (IPs ou CIDRs, separados por vírgula) em que se acredita no `X-Forwarded-For`. Vazio não confia em ninguém: o IP do cliente é o da conexão. Atrás de um proxy reverso, liste-o; sem isso todos os clientes compartilham o IP do proxy |
+| `AUTH_FAIL_LIMIT` | `30` | Autenticações erradas por minuto por IP; acima disso o IP recebe `429` com `Retry-After` até o fim da janela (`0` desliga). Só falhas contam |
+| `MIN_INSTANCE_TOKEN_LENGTH` | `16` | Menor token aceito em `POST /instance/create`; sem `token` o servidor gera um UUID. Instâncias existentes não são afetadas |
 | `CORS_ORIGINS` | vazio | Origens de navegador autorizadas, separadas por vírgula. Vazio ou `*` libera todas |
 | `MAX_BODY_MB` | `4` | Tamanho máximo do corpo de uma requisição |
 | `MAX_MEDIA_BODY_MB` | `150` | Tamanho máximo nas rotas que recebem arquivo |
@@ -230,11 +235,14 @@ Só têm efeito nas instâncias com `callsEnabled` ligado. Valores inválidos ou
 | `SEND_MAX_CONCURRENT` | `4` | Envios de uma mesma instância dentro da chamada de rede ao mesmo tempo; os demais esperam a vez (`0` desliga) |
 | `SEND_RATE_PER_MIN` | desligado | Taxa sustentada de mensagens por minuto, por instância (rajada de ~6 s) |
 | `SEND_QUEUE_WAIT_SEC` | `30` | Quanto um envio espera pela vez antes de receber `429` com `Retry-After` |
+| `MAX_RECEIVED_MEDIA_MB` | `50` | Mídia recebida é baixada para um arquivo temporário e recusada acima deste tamanho (MB), pois quem envia decide o tamanho. O evento sai sem o arquivo, com `data.Message.mediaSkipped: "too_large"`, `mediaSize` e `mediaLimit`; `POST /message/downloadmedia` responde `413`. Precisa de diretório temporário gravável (`TMPDIR`) |
 | `MEDIA_WORKERS` | `4` | Mensagens recebidas com mídia processadas ao mesmo tempo (download, conversão, upload), no processo todo |
 | `MEDIA_WORKERS_PER_INSTANCE` | `2` | Parte de uma instância nesse limite |
 | `MEDIA_ORDERED` | `false` | `true` processa a mídia dentro do handler, na ordem exata de chegada |
 | `WEBHOOK_QUEUE_MAX_EVENTS` | `1000` | Eventos por destino na fila de webhook (acima disso o mais antigo é descartado) |
 | `WEBHOOK_QUEUE_MAX_MB` | `64` | Bytes por destino na fila de webhook |
+| `WEBHOOK_QUEUE_GLOBAL_MB` | `256` | Bytes de todos os destinos juntos; ao estourar, saem os eventos mais antigos do destino que mais guarda (`0` desliga). Respostas 4xx (exceto 408, 425 e 429) não são repetidas |
+| `MEMORY_LIMIT_RATIO` | `0.8` | Com limite de memória no contêiner, o limite suave do Go é essa fração dele (`GOMEMLIMIT`, se definido, vale no lugar; `0` desliga) |
 | `WEBHOOK_QUEUE_WORKERS` | `4` | Entregas simultâneas por destino (`1` entrega em ordem estrita) |
 
 ---
