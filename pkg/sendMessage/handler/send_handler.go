@@ -2,7 +2,6 @@ package send_handler
 
 import (
 	"encoding/base64"
-	"io"
 	"net/http"
 	"strconv"
 	"strings"
@@ -202,14 +201,8 @@ func (s *sendHandler) SendMedia(ctx *gin.Context) {
 			return
 		}
 
-		// Open file
-		fileData, err := file.Open()
-		if err != nil {
-			apierror.Fail(ctx, http.StatusInternalServerError, "cannot open file")
-			return
-		}
-		defer fileData.Close()
-		fileBytes, err := io.ReadAll(fileData)
+		// Read the file into a buffer of its size
+		fileBytes, err := readUpload(file)
 		if err != nil {
 			apierror.Fail(ctx, http.StatusInternalServerError, "cannot read file")
 			return
@@ -807,13 +800,7 @@ func (s *sendHandler) SendStatusMedia(ctx *gin.Context) {
 			return
 		}
 
-		fileData, err := file.Open()
-		if err != nil {
-			apierror.Fail(ctx, http.StatusInternalServerError, "cannot open file")
-			return
-		}
-		defer fileData.Close()
-		fileBytes, err := io.ReadAll(fileData)
+		fileBytes, err := readUpload(file)
 		if err != nil {
 			apierror.Fail(ctx, http.StatusInternalServerError, "cannot read file")
 			return

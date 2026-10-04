@@ -1242,7 +1242,7 @@ func (s *sendService) sendMediaFileWithRetry(data *MediaStruct, fileData []byte,
 			s.loggerWrapper.GetLogger(instance.Id).LogInfo("[%s] Newsletter upload - Handle: %s", instance.Id, uploaded.Handle)
 		} else {
 			// Normal: upload COM criptografia
-			uploaded, err = client.Upload(context.Background(), fileData, uploadType)
+			uploaded, err = uploadMedia(context.Background(), client, fileData, uploadType)
 		}
 
 		if err != nil {
@@ -1492,7 +1492,7 @@ func (s *sendService) sendMediaUrlWithRetry(data *MediaStruct, instance *instanc
 			s.loggerWrapper.GetLogger(instance.Id).LogInfo("[%s] Newsletter upload - Handle: %s", instance.Id, uploaded.Handle)
 		} else {
 			// Upload normal com criptografia
-			uploaded, err = client.Upload(context.Background(), fileData, uploadType)
+			uploaded, err = uploadMedia(context.Background(), client, fileData, uploadType)
 		}
 
 		if err != nil {
@@ -1769,7 +1769,7 @@ func (s *sendService) SendSticker(data *StickerStruct, instance *instance_model.
 
 		filedata = webpData
 
-		uploaded, err = client.Upload(context.Background(), filedata, whatsmeow.MediaImage)
+		uploaded, err = uploadMedia(context.Background(), client, filedata, whatsmeow.MediaImage)
 		if err != nil {
 			return nil, fmt.Errorf("failed to upload sticker: %v", err)
 		}
@@ -2100,7 +2100,7 @@ func (s *sendService) buttonHeader(client *whatsmeow.Client, instanceID string, 
 			s.loggerWrapper.GetLogger(instanceID).LogWarn("[%s] Button header ImageUrl not attached: %v", instanceID, err)
 			return nil
 		}
-		uploaded, err := client.Upload(context.Background(), fileData, whatsmeow.MediaImage)
+		uploaded, err := uploadMedia(context.Background(), client, fileData, whatsmeow.MediaImage)
 		if err != nil {
 			s.loggerWrapper.GetLogger(instanceID).LogWarn("[%s] Button header image upload failed: %v", instanceID, err)
 			return nil
@@ -2129,7 +2129,7 @@ func (s *sendService) buttonHeader(client *whatsmeow.Client, instanceID string, 
 			s.loggerWrapper.GetLogger(instanceID).LogWarn("[%s] Button header VideoUrl not attached: %v", instanceID, err)
 			return nil
 		}
-		uploaded, err := client.Upload(context.Background(), fileData, whatsmeow.MediaVideo)
+		uploaded, err := uploadMedia(context.Background(), client, fileData, whatsmeow.MediaVideo)
 		if err != nil {
 			s.loggerWrapper.GetLogger(instanceID).LogWarn("[%s] Button header video upload failed: %v", instanceID, err)
 			return nil
@@ -2950,7 +2950,7 @@ func (s *sendService) SendCarousel(data *CarouselStruct, instance *instance_mode
 					s.loggerWrapper.GetLogger(instance.Id).LogWarn("[%s] Carousel card image not attached: %v", instance.Id, err)
 				} else {
 					{
-						uploaded, err := client.Upload(context.Background(), fileData, whatsmeow.MediaImage)
+						uploaded, err := uploadMedia(context.Background(), client, fileData, whatsmeow.MediaImage)
 						if err == nil {
 							// Generate JPEG thumbnail for iOS compatibility
 							jpegThumb := makeJPEGThumbnail(fileData, 72)
@@ -2982,7 +2982,7 @@ func (s *sendService) SendCarousel(data *CarouselStruct, instance *instance_mode
 					s.loggerWrapper.GetLogger(instance.Id).LogWarn("[%s] Carousel card video not attached: %v", instance.Id, err)
 				} else {
 					{
-						uploaded, err := client.Upload(context.Background(), fileData, whatsmeow.MediaVideo)
+						uploaded, err := uploadMedia(context.Background(), client, fileData, whatsmeow.MediaVideo)
 						if err == nil {
 							header.HasMediaAttachment = proto.Bool(true)
 							header.Media = &waE2E.InteractiveMessage_Header_VideoMessage{
@@ -3230,7 +3230,7 @@ func (s *sendService) sendStatusMedia(client *whatsmeow.Client, data *StatusMedi
 		return nil, apierror.Invalid("invalid media type")
 	}
 
-	uploaded, err := client.Upload(context.Background(), fileData, uploadType)
+	uploaded, err := uploadMedia(context.Background(), client, fileData, uploadType)
 	if err != nil {
 		return nil, err
 	}
