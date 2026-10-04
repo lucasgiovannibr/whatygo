@@ -170,7 +170,9 @@ func (i instances) Create(data *CreateStruct) (*instance_model.Instance, error) 
 		if data.AdvancedSettings.RejectCall != nil {
 			instance.RejectCall = *data.AdvancedSettings.RejectCall
 		}
-		instance.MsgRejectCall = data.AdvancedSettings.MsgRejectCall
+		if data.AdvancedSettings.MsgRejectCall != nil {
+			instance.MsgRejectCall = *data.AdvancedSettings.MsgRejectCall
+		}
 		if data.AdvancedSettings.ReadMessages != nil {
 			instance.ReadMessages = *data.AdvancedSettings.ReadMessages
 		}

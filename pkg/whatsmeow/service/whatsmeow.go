@@ -23,6 +23,8 @@ import (
 	"golang.org/x/image/webp"
 	"google.golang.org/protobuf/proto"
 
+	_ "time/tzdata" // the presence schedule needs America/Sao_Paulo even where the system has no zone files
+
 	_ "github.com/lib/pq"
 	"github.com/patrickmn/go-cache"
 	"github.com/skip2/go-qrcode"
@@ -1042,6 +1044,8 @@ func startPresenceUpdates(mycli *MyClient) bool {
 	}
 	go func() {
 		defer mycli.presenceRunning.Store(false)
+		// A panic here is outside whatsmeow's safety net and used to end the whole process.
+		defer recoverAndLog(mycli.loggerWrapper, mycli.userID, "presence scheduler")
 		schedulePresenceUpdates(mycli)
 	}()
 	return true
@@ -1110,7 +1114,10 @@ func schedulePresenceUpdates(mycli *MyClient) {
 
 func processPresenceUpdates(mycli *MyClient) {
 	now := time.Now()
-	location, _ := time.LoadLocation("America/Sao_Paulo")
+	location, err := time.LoadLocation("America/Sao_Paulo")
+	if err != nil {
+		location = time.UTC // a nil location makes Time.In panic
+	}
 	nowSp := now.In(location)
 
 	if nowSp.Hour() >= 1 && nowSp.Hour() < 24 {

@@ -35,11 +35,29 @@ func TestBuildAdvancedSettingsUpdates(t *testing.T) {
 	})
 
 	t.Run("msgRejectCall non-empty", func(t *testing.T) {
+		busy := "busy"
 		updates := buildAdvancedSettingsUpdates(&instance_model.AdvancedSettings{
-			MsgRejectCall: "busy",
+			MsgRejectCall: &busy,
 		})
 		if updates["msg_reject_call"] != "busy" {
 			t.Fatalf("msg_reject_call = %#v, want busy", updates["msg_reject_call"])
+		}
+	})
+
+	// The message could never be cleared: "" was indistinguishable from "not sent".
+	t.Run("msgRejectCall empty clears it", func(t *testing.T) {
+		empty := ""
+		updates := buildAdvancedSettingsUpdates(&instance_model.AdvancedSettings{MsgRejectCall: &empty})
+		if v, ok := updates["msg_reject_call"]; !ok || v != "" {
+			t.Fatalf("an empty msgRejectCall must be written, got %#v", updates)
+		}
+	})
+
+	t.Run("msgRejectCall not sent is left alone", func(t *testing.T) {
+		on := true
+		updates := buildAdvancedSettingsUpdates(&instance_model.AdvancedSettings{AlwaysOnline: &on})
+		if _, ok := updates["msg_reject_call"]; ok {
+			t.Fatalf("an omitted msgRejectCall must not be written, got %#v", updates)
 		}
 	})
 
