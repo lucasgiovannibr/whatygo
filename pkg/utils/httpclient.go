@@ -43,6 +43,10 @@ const (
 	// PolicyAny: no restriction. Only for endpoints the operator configured (the audio
 	// converter API), never for a URL that came from a request.
 	PolicyAny
+	// PolicyPublicOnly is PolicyPublic that ALLOW_PRIVATE_URLS does not relax. For webhooks
+	// when WEBHOOK_ALLOW_PRIVATE=false (a multi-tenant server whose tenants set their own
+	// webhook URL).
+	PolicyPublicOnly
 )
 
 // allowPrivate relaxes PolicyPublic to PolicyNoMetadata (ALLOW_PRIVATE_URLS=true), for
@@ -50,6 +54,32 @@ const (
 var allowPrivate atomic.Bool
 
 func init() { allowPrivate.Store(os.Getenv("ALLOW_PRIVATE_URLS") == "true") }
+
+// envProxy is the proxy HTTP_PROXY / HTTPS_PROXY / NO_PROXY ask for. A variable so that the
+// tests can stand in for the environment (the standard library reads it only once).
+var envProxy = http.ProxyFromEnvironment
+
+// ProxyFromEnvAllowed reports whether the clients that fetch URLs a request supplied may use
+// the proxy of the environment (OUTBOUND_PROXY_FROM_ENV=true). They do not by default: through
+// a proxy the connection is made to the proxy, so the check of the destination address
+// (net.Dialer.Control) sees the proxy's address and never the one the URL names, and the
+// protection against reaching the internal network or the cloud metadata endpoint is gone.
+func ProxyFromEnvAllowed() bool { return os.Getenv("OUTBOUND_PROXY_FROM_ENV") == "true" }
+
+// WarnIfEnvProxyIgnored calls warn, once, when the environment names a proxy that the clients
+// of request-supplied URLs are not going to use, so that an egress-only deployment finds out
+// from the log and not from failing downloads.
+func WarnIfEnvProxyIgnored(warn func(format string, args ...interface{})) {
+	if ProxyFromEnvAllowed() {
+		return
+	}
+	for _, name := range []string{"HTTPS_PROXY", "HTTP_PROXY", "https_proxy", "http_proxy"} {
+		if os.Getenv(name) != "" {
+			warn("[CONFIG] %s is set, but media/link/webhook requests do not go through it: the check of the destination address cannot see past a proxy. Set OUTBOUND_PROXY_FROM_ENV=true to use it anyway", name)
+			return
+		}
+	}
+}
 
 // SetAllowPrivateURLs sets what ALLOW_PRIVATE_URLS sets, at runtime (for tests, which
 // serve files from 127.0.0.1).
@@ -143,6 +173,13 @@ func newClient(total time.Duration, policy NetPolicy) *http.Client {
 		t = &http.Transport{}
 	}
 	t.DialContext = (&net.Dialer{Timeout: 10 * time.Second, KeepAlive: 30 * time.Second, Control: controlFor(policy)}).DialContext
+	// http.DefaultTransport sends everything through the proxy of the environment, which would
+	// hide the real destination from the check above (see ProxyFromEnvAllowed). Only the
+	// clients for operator-configured endpoints keep it, and the others on request.
+	t.Proxy = nil
+	if policy == PolicyAny || ProxyFromEnvAllowed() {
+		t.Proxy = envProxy
+	}
 	t.TLSHandshakeTimeout = 10 * time.Second
 	// Time to the first byte of the answer; the body may take as long as the total.
 	t.ResponseHeaderTimeout = 30 * time.Second
@@ -161,7 +198,14 @@ func newClient(total time.Duration, policy NetPolicy) *http.Client {
 }
 
 // NewWebhookClient is the client that delivers events to the webhook URL of an instance.
+//
+// Webhook receivers are very often on the internal network (n8n, the CRM, the application next
+// door), so they may be there by default; WEBHOOK_ALLOW_PRIVATE=false restricts them to public
+// addresses, for a server whose tenants set their own webhook URL.
 func NewWebhookClient(timeout time.Duration) *http.Client {
+	if os.Getenv("WEBHOOK_ALLOW_PRIVATE") == "false" {
+		return newClient(timeout, PolicyPublicOnly)
+	}
 	return newClient(timeout, PolicyNoMetadata)
 }
 
@@ -178,6 +222,11 @@ var DownloadClient = newClient(5*time.Minute, PolicyPublic)
 // QuickClient is for small lookups (link previews, the WhatsApp Web version). Public
 // addresses only.
 var QuickClient = newClient(15*time.Second, PolicyPublic)
+
+// FixedURLClient is for URLs the code itself names (the WhatsApp Web version page), never one
+// from a request: it may use the proxy of the environment, which is how an egress-only
+// deployment reaches the internet.
+var FixedURLClient = newClient(15*time.Second, PolicyAny)
 
 // TrustedClient is for endpoints the operator configured (the audio converter API), which
 // may well be a container next door. Never use it for a URL that came from a request.
