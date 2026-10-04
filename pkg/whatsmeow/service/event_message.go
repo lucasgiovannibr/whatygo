@@ -36,7 +36,7 @@ func (mycli *MyClient) handleMessage(evt *events.Message, postMap map[string]int
 		messageSize = fmt.Sprintf("%d bytes", *evt.Message.GetAudioMessage().FileLength)
 	}
 
-	mycli.loggerWrapper.GetLogger(mycli.userID).LogInfo("[%s] ===== MESSAGE RECEIVED ===== ID: %s, From: %s, Type: %s, Size: %s", mycli.userID, evt.Info.ID, evt.Info.Chat.String(), evt.Info.Type, messageSize)
+	mycli.loggerWrapper.GetLogger(mycli.userID).LogDebug("[%s] ===== MESSAGE RECEIVED ===== ID: %s, From: %s, Type: %s, Size: %s", mycli.userID, evt.Info.ID, evt.Info.Chat.String(), evt.Info.Type, messageSize)
 
 	// readMessages: the message is marked as read once, further below, after the
 	// ignore filters and the LID/PN swap (it used to be marked here too, before any
@@ -106,7 +106,14 @@ func (mycli *MyClient) handleMessage(evt *events.Message, postMap map[string]int
 	eventChat = evt.Info.Chat.String()
 	wantMessage := mycli.service.EventWanted(mycli.inst(), "Message", eventChat)
 
-	if postMap["data"] != nil {
+	// The conversion of the whole event to a map (a marshal and an unmarshal) is only needed
+	// when somebody receives the message or it is a button click, which is built from it.
+	buttonClickData := buttonClickOf(evt.Message)
+	needPayload := wantMessage || buttonClickData != nil
+
+	if !needPayload {
+		postMap["data"] = make(map[string]interface{})
+	} else if postMap["data"] != nil {
 		jsonBytes, err := json.Marshal(postMap["data"])
 		if err != nil {
 			mycli.loggerWrapper.GetLogger(mycli.userID).LogError("[%s] Failed to marshal postMap['data']: %v", mycli.userID, err)
@@ -260,9 +267,8 @@ func (mycli *MyClient) handleMessage(evt *events.Message, postMap map[string]int
 	// ===== BUTTON CLICK EVENT DETECTION =====
 	// A click is a message of its own (legacy buttons, native flow, template button, list): it
 	// also goes out as a separate "ButtonClick" event.
-	buttonClickData := buttonClickOf(evt.Message)
 	if buttonClickData != nil {
-		mycli.loggerWrapper.GetLogger(mycli.userID).LogInfo("[%s] Button click detected (%v): buttonId=%v, buttonText=%v", mycli.userID, buttonClickData["type"], buttonClickData["buttonId"], buttonClickData["buttonText"])
+		mycli.loggerWrapper.GetLogger(mycli.userID).LogDebug("[%s] Button click detected (%v): buttonId=%v, buttonText=%v", mycli.userID, buttonClickData["type"], buttonClickData["buttonId"], buttonClickData["buttonText"])
 	}
 
 	// Se detectou clique em botão, emite evento separado "ButtonClick"
@@ -294,10 +300,10 @@ func (mycli *MyClient) handleMessage(evt *events.Message, postMap map[string]int
 			if mycli.config.AmqpGlobalEnabled || mycli.config.NatsGlobalEnabled {
 				go mycli.service.SendToGlobalQueues("ButtonClick", buttonClickJSON, mycli.userID)
 			}
-			mycli.loggerWrapper.GetLogger(mycli.userID).LogInfo("[%s] ===== BUTTON CLICK EVENT DISPATCHED ===== Type: %s, ButtonId: %s", mycli.userID, buttonClickData["type"], buttonClickData["buttonId"])
+			mycli.loggerWrapper.GetLogger(mycli.userID).LogDebug("[%s] ===== BUTTON CLICK EVENT DISPATCHED ===== Type: %s, ButtonId: %s", mycli.userID, buttonClickData["type"], buttonClickData["buttonId"])
 		}
 	}
 
-	mycli.loggerWrapper.GetLogger(mycli.userID).LogInfo("[%s] ===== MESSAGE PROCESSING COMPLETED ===== ID: %s, From: %s, Type: %s, Webhook: %v", mycli.userID, evt.Info.ID, evt.Info.Chat.String(), evt.Info.Type, true)
+	mycli.loggerWrapper.GetLogger(mycli.userID).LogDebug("[%s] ===== MESSAGE PROCESSING COMPLETED ===== ID: %s, From: %s, Type: %s, Webhook: %v", mycli.userID, evt.Info.ID, evt.Info.Chat.String(), evt.Info.Type, true)
 	return true, eventChat
 }

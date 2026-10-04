@@ -292,7 +292,7 @@ func (p *websocketProducer) Produce(queueName string, payload []byte, instanceID
 
 	for _, c := range instanceConns {
 		if c.enqueue(frame) {
-			p.loggerWrapper.GetLogger(instanceID).LogInfo("Mensagem websocket enfileirada para instância %s na fila %s", instanceID, queueName)
+			p.loggerWrapper.GetLogger(instanceID).LogDebug("Mensagem websocket enfileirada para instância %s na fila %s", instanceID, queueName)
 			continue
 		}
 		p.loggerWrapper.GetLogger(instanceID).LogError("Assinante websocket de %s não acompanha os eventos (fila cheia ou conexão encerrada): desconectando", instanceID)

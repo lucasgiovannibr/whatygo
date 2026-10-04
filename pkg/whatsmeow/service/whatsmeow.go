@@ -1615,9 +1615,9 @@ func (mycli *MyClient) handleEvent(rawEvt interface{}) {
 		doWebhook = true
 		postMap["event"] = "HistorySync"
 
-		mycli.loggerWrapper.GetLogger(mycli.userID).LogInfo("[%s] History sync event received %+v", mycli.userID, evt.Data.SyncType)
+		mycli.loggerWrapper.GetLogger(mycli.userID).LogDebug("[%s] History sync event received %+v", mycli.userID, evt.Data.SyncType)
 	case *events.AppState:
-		mycli.loggerWrapper.GetLogger(mycli.userID).LogInfo("[%s] App state event received %+v", mycli.userID, evt)
+		mycli.loggerWrapper.GetLogger(mycli.userID).LogDebug("[%s] App state event received %+v", mycli.userID, evt)
 	case *events.LoggedOut:
 		if dispatch, chat := mycli.handleLoggedOut(evt, postMap); !dispatch {
 			return
@@ -1627,7 +1627,7 @@ func (mycli *MyClient) handleEvent(rawEvt interface{}) {
 	case *events.ChatPresence:
 		doWebhook = true
 		postMap["event"] = "ChatPresence"
-		mycli.loggerWrapper.GetLogger(mycli.userID).LogInfo("[%s] Chat presence received %+v", mycli.userID, evt)
+		mycli.loggerWrapper.GetLogger(mycli.userID).LogDebug("[%s] Chat presence received %+v", mycli.userID, evt)
 	case *events.CallOffer:
 		doWebhook = true
 		postMap["event"] = "CallOffer"
@@ -1665,23 +1665,23 @@ func (mycli *MyClient) handleEvent(rawEvt interface{}) {
 			return
 		}
 
-		mycli.loggerWrapper.GetLogger(mycli.userID).LogInfo("[%s] Got call offer %+v", mycli.userID, evt)
+		mycli.loggerWrapper.GetLogger(mycli.userID).LogDebug("[%s] Got call offer %+v", mycli.userID, evt)
 	case *events.CallAccept:
 		doWebhook = true
 		postMap["event"] = "CallAccept"
-		mycli.loggerWrapper.GetLogger(mycli.userID).LogInfo("[%s] Got call accept %+v", mycli.userID, evt)
+		mycli.loggerWrapper.GetLogger(mycli.userID).LogDebug("[%s] Got call accept %+v", mycli.userID, evt)
 	case *events.CallTerminate:
 		doWebhook = true
 		postMap["event"] = "CallTerminate"
-		mycli.loggerWrapper.GetLogger(mycli.userID).LogInfo("[%s] Got call terminate %+v", mycli.userID, evt)
+		mycli.loggerWrapper.GetLogger(mycli.userID).LogDebug("[%s] Got call terminate %+v", mycli.userID, evt)
 	case *events.CallOfferNotice:
 		doWebhook = true
 		postMap["event"] = "CallOfferNotice"
-		mycli.loggerWrapper.GetLogger(mycli.userID).LogInfo("[%s] Got call offer notice %+v", mycli.userID, evt)
+		mycli.loggerWrapper.GetLogger(mycli.userID).LogDebug("[%s] Got call offer notice %+v", mycli.userID, evt)
 	case *events.CallRelayLatency:
 		doWebhook = true
 		postMap["event"] = "CallRelayLatency"
-		mycli.loggerWrapper.GetLogger(mycli.userID).LogInfo("[%s] Got call relay latency %+v", mycli.userID, evt)
+		mycli.loggerWrapper.GetLogger(mycli.userID).LogDebug("[%s] Got call relay latency %+v", mycli.userID, evt)
 	case *events.OfflineSyncCompleted:
 		doWebhook = true
 		postMap["event"] = "OfflineSyncCompleted"
@@ -1826,7 +1826,7 @@ func (mycli *MyClient) handleEvent(rawEvt interface{}) {
 	case *events.LabelEdit:
 		doWebhook = true
 		postMap["event"] = "LabelEdit"
-		mycli.loggerWrapper.GetLogger(mycli.userID).LogInfo("[%s] Got label edit %+v", mycli.userID, evt.Action)
+		mycli.loggerWrapper.GetLogger(mycli.userID).LogDebug("[%s] Got label edit %+v", mycli.userID, evt.Action)
 
 		// A label deleted on the phone used to stay in the local table (and in
 		// GET /label/list) forever, because only the upsert existed.
@@ -1853,12 +1853,12 @@ func (mycli *MyClient) handleEvent(rawEvt interface{}) {
 		doWebhook = true
 		postMap["event"] = "LabelAssociationChat"
 
-		mycli.loggerWrapper.GetLogger(mycli.userID).LogInfo("[%s] Label association chat received %+v", mycli.userID, evt)
+		mycli.loggerWrapper.GetLogger(mycli.userID).LogDebug("[%s] Label association chat received %+v", mycli.userID, evt)
 	case *events.LabelAssociationMessage:
 		doWebhook = true
 		postMap["event"] = "LabelAssociationMessage"
 
-		mycli.loggerWrapper.GetLogger(mycli.userID).LogInfo("[%s] Label association message received %+v", mycli.userID, evt)
+		mycli.loggerWrapper.GetLogger(mycli.userID).LogDebug("[%s] Label association message received %+v", mycli.userID, evt)
 	case *events.Contact:
 		doWebhook = true
 		postMap["event"] = "Contact"
@@ -1890,11 +1890,7 @@ func (mycli *MyClient) handleEvent(rawEvt interface{}) {
 		doWebhook = true
 		postMap["event"] = "NewsletterLeave"
 	case *events.UndecryptableMessage:
-		jsonEvt, err := json.Marshal(evt)
-		if err != nil {
-			mycli.loggerWrapper.GetLogger(mycli.userID).LogWarn("[%s] Undecryptable message received: %s", mycli.userID, evt.Info.ID)
-		}
-		mycli.loggerWrapper.GetLogger(mycli.userID).LogWarn("[%s] Undecryptable message received all: %+v", mycli.userID, string(jsonEvt))
+		mycli.loggerWrapper.GetLogger(mycli.userID).LogWarn("[%s] Undecryptable message received: %s (%s)", mycli.userID, evt.Info.ID, evt.UnavailableType)
 
 		if evt.UnavailableType == "view_once" {
 			mycli.loggerWrapper.GetLogger(mycli.userID).LogWarn("[%s] Undecryptable message received view_once: %s", mycli.userID, evt.Info.ID)
@@ -1928,7 +1924,7 @@ func (mycli *MyClient) handleEvent(rawEvt interface{}) {
 			postMap["data"] = undecryptableEventData(evt)
 		}
 	default:
-		mycli.loggerWrapper.GetLogger(mycli.userID).LogWarn("[%s] Unhandled event %s: %+v", mycli.userID, fmt.Sprintf("%T", evt), evt)
+		mycli.loggerWrapper.GetLogger(mycli.userID).LogWarn("[%s] Unhandled event %T", mycli.userID, evt)
 		return
 	}
 
@@ -1961,16 +1957,16 @@ func (mycli *MyClient) handleEvent(rawEvt interface{}) {
 		}
 
 		dataSize := len(values)
-		mycli.loggerWrapper.GetLogger(mycli.userID).LogInfo("[%s] ===== DISPATCHING WEBHOOK ===== Event: %s, Queue: %s, DataSize: %d bytes", mycli.userID, eventType, queueName, dataSize)
+		mycli.loggerWrapper.GetLogger(mycli.userID).LogDebug("[%s] ===== DISPATCHING WEBHOOK ===== Event: %s, Queue: %s, DataSize: %d bytes", mycli.userID, eventType, queueName, dataSize)
 
 		go mycli.service.CallWebhook(mycli.inst(), queueName, values)
 
 		if mycli.config.AmqpGlobalEnabled || mycli.config.NatsGlobalEnabled {
-			mycli.loggerWrapper.GetLogger(mycli.userID).LogInfo("[%s] Sending to global queues - Event: %s, AMQP: %v, NATS: %v", mycli.userID, eventType, mycli.config.AmqpGlobalEnabled, mycli.config.NatsGlobalEnabled)
+			mycli.loggerWrapper.GetLogger(mycli.userID).LogDebug("[%s] Sending to global queues - Event: %s, AMQP: %v, NATS: %v", mycli.userID, eventType, mycli.config.AmqpGlobalEnabled, mycli.config.NatsGlobalEnabled)
 			go mycli.service.SendToGlobalQueues(postMap["event"].(string), values, mycli.userID)
 		}
 	} else {
-		mycli.loggerWrapper.GetLogger(mycli.userID).LogWarn("[%s] ===== WEBHOOK SKIPPED ===== doWebhook=false", mycli.userID)
+		mycli.loggerWrapper.GetLogger(mycli.userID).LogDebug("[%s] ===== WEBHOOK SKIPPED ===== doWebhook=false", mycli.userID)
 	}
 }
 
@@ -1983,11 +1979,11 @@ func (w *whatsmeowService) CallWebhook(instance *instance_model.Instance, queueN
 	if !ok {
 		return
 	}
-	if !eventSubscribed(parseSubscriptions(instance.Events), env.Event, env.chat()) {
+	if !eventSubscribed(cachedSubscriptions(instance.Events), env.Event, env.chat()) {
 		return
 	}
 
-	w.loggerWrapper.GetLogger(instance.Id).LogInfo("[%s] Event received of type %s", instance.Id, env.Event)
+	w.loggerWrapper.GetLogger(instance.Id).LogDebug("[%s] Event received of type %s", instance.Id, env.Event)
 	w.sendToQueueOrWebhook(instance, queueName, jsonData)
 }
 
@@ -2046,7 +2042,7 @@ func (w *whatsmeowService) sendToQueueOrWebhook(instance *instance_model.Instanc
 				w.loggerWrapper.GetLogger(instance.Id).LogError("[%s] Failed to send message to %s: %s", instance.Id, out.name, err)
 				return
 			}
-			w.loggerWrapper.GetLogger(instance.Id).LogInfo("[%s] Message sent to %s successfully", instance.Id, out.name)
+			w.loggerWrapper.GetLogger(instance.Id).LogDebug("[%s] Message sent to %s successfully", instance.Id, out.name)
 		}(out)
 	}
 	wg.Wait()
@@ -2277,7 +2273,7 @@ func globalEventTypeFor(eventType string) string {
 
 func (w *whatsmeowService) SendToGlobalQueues(eventType string, payload []byte, userId string) {
 	defer recoverAndLog(w.loggerWrapper, userId, "SendToGlobalQueues")
-	w.loggerWrapper.GetLogger(userId).LogInfo("[%s] Starting sendToGlobalQueues for event: %s", userId, eventType)
+	w.loggerWrapper.GetLogger(userId).LogDebug("[%s] Starting sendToGlobalQueues for event: %s", userId, eventType)
 
 	// AMQP: AMQP_SPECIFIC_EVENTS tem prioridade sobre AMQP_GLOBAL_EVENTS
 	if w.config.AmqpGlobalEnabled {
@@ -2286,21 +2282,21 @@ func (w *whatsmeowService) SendToGlobalQueues(eventType string, payload []byte, 
 
 		// Se AMQP_SPECIFIC_EVENTS estiver configurada, ela tem prioridade
 		if len(w.config.AmqpSpecificEvents) > 0 {
-			w.loggerWrapper.GetLogger(userId).LogInfo("[%s] Using AMQP_SPECIFIC_EVENTS (priority over AMQP_GLOBAL_EVENTS)", userId)
+			w.loggerWrapper.GetLogger(userId).LogDebug("[%s] Using AMQP_SPECIFIC_EVENTS (priority over AMQP_GLOBAL_EVENTS)", userId)
 			// Verifica se o evento específico está na lista
 			if utils.Find(w.config.AmqpSpecificEvents, eventType) {
 				shouldSendToAmqp = true
 				amqpQueueName = strings.ToLower(eventType)
-				w.loggerWrapper.GetLogger(userId).LogInfo("[%s] Event %s found in AMQP_SPECIFIC_EVENTS", userId, eventType)
+				w.loggerWrapper.GetLogger(userId).LogDebug("[%s] Event %s found in AMQP_SPECIFIC_EVENTS", userId, eventType)
 			}
 		} else {
 			// Fallback para AMQP_GLOBAL_EVENTS (modo antigo com grupos de eventos)
-			w.loggerWrapper.GetLogger(userId).LogInfo("[%s] Using AMQP_GLOBAL_EVENTS (fallback mode)", userId)
+			w.loggerWrapper.GetLogger(userId).LogDebug("[%s] Using AMQP_GLOBAL_EVENTS (fallback mode)", userId)
 
 			// Mapeia o evento do Whatsmeow para o tipo de evento global
 			globalEventType := globalEventTypeFor(eventType)
 			if globalEventType == "" {
-				w.loggerWrapper.GetLogger(userId).LogInfo("[%s] Event %s not mapped to global event type", userId, eventType)
+				w.loggerWrapper.GetLogger(userId).LogDebug("[%s] Event %s not mapped to global event type", userId, eventType)
 				return
 			}
 
@@ -2308,21 +2304,21 @@ func (w *whatsmeowService) SendToGlobalQueues(eventType string, payload []byte, 
 			if utils.Find(w.config.AmqpGlobalEvents, globalEventType) {
 				shouldSendToAmqp = true
 				amqpQueueName = strings.ToLower(eventType)
-				w.loggerWrapper.GetLogger(userId).LogInfo("[%s] Event group %s found in AMQP_GLOBAL_EVENTS", userId, globalEventType)
+				w.loggerWrapper.GetLogger(userId).LogDebug("[%s] Event group %s found in AMQP_GLOBAL_EVENTS", userId, globalEventType)
 			}
 		}
 
 		// Envia para RabbitMQ se necessário
 		if shouldSendToAmqp {
-			w.loggerWrapper.GetLogger(userId).LogInfo("[%s] Sending to AMQP queue: %s", userId, amqpQueueName)
+			w.loggerWrapper.GetLogger(userId).LogDebug("[%s] Sending to AMQP queue: %s", userId, amqpQueueName)
 			err := w.rabbitmqProducer.Produce(amqpQueueName, payload, "global", userId)
 			if err != nil {
 				w.loggerWrapper.GetLogger(userId).LogError("[%s] Failed to send message to RabbitMQ global queue %s: %v", userId, amqpQueueName, err)
 			} else {
-				w.loggerWrapper.GetLogger(userId).LogInfo("[%s] Successfully sent message to RabbitMQ global queue %s", userId, amqpQueueName)
+				w.loggerWrapper.GetLogger(userId).LogDebug("[%s] Successfully sent message to RabbitMQ global queue %s", userId, amqpQueueName)
 			}
 		} else {
-			w.loggerWrapper.GetLogger(userId).LogInfo("[%s] Event %s not configured for AMQP", userId, eventType)
+			w.loggerWrapper.GetLogger(userId).LogDebug("[%s] Event %s not configured for AMQP", userId, eventType)
 		}
 	}
 
@@ -2334,13 +2330,13 @@ func (w *whatsmeowService) SendToGlobalQueues(eventType string, payload []byte, 
 		// Verifica se o evento está na lista de eventos globais NATS
 		if globalEventType != "" && utils.Find(w.config.NatsGlobalEvents, globalEventType) {
 			queueName := strings.ToLower(eventType)
-			w.loggerWrapper.GetLogger(userId).LogInfo("[%s] Sending to NATS subject: %s", userId, queueName)
+			w.loggerWrapper.GetLogger(userId).LogDebug("[%s] Sending to NATS subject: %s", userId, queueName)
 
 			err := w.natsProducer.Produce(queueName, payload, "global", userId)
 			if err != nil {
 				w.loggerWrapper.GetLogger(userId).LogError("[%s] Failed to send message to NATS global subject %s: %v", userId, queueName, err)
 			} else {
-				w.loggerWrapper.GetLogger(userId).LogInfo("[%s] Successfully sent message to NATS global subject %s", userId, queueName)
+				w.loggerWrapper.GetLogger(userId).LogDebug("[%s] Successfully sent message to NATS global subject %s", userId, queueName)
 			}
 		}
 	}
