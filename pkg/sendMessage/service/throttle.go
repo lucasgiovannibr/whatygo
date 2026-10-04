@@ -11,7 +11,7 @@ import (
 	"sync"
 	"time"
 
-	"github.com/evolution-foundation/evolution-go/pkg/metrics"
+	"github.com/lucasgiovannibr/whatygo/pkg/metrics"
 )
 
 // Sends are limited per instance, not per process: an account is what WhatsApp restricts.

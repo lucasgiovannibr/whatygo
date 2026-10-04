@@ -3,12 +3,12 @@ package community_service
 import (
 	"context"
 	"errors"
-	"github.com/evolution-foundation/evolution-go/pkg/safemap"
+	"github.com/lucasgiovannibr/whatygo/pkg/safemap"
 
-	instance_model "github.com/evolution-foundation/evolution-go/pkg/instance/model"
-	logger_wrapper "github.com/evolution-foundation/evolution-go/pkg/logger"
-	"github.com/evolution-foundation/evolution-go/pkg/utils"
-	whatsmeow_service "github.com/evolution-foundation/evolution-go/pkg/whatsmeow/service"
+	instance_model "github.com/lucasgiovannibr/whatygo/pkg/instance/model"
+	logger_wrapper "github.com/lucasgiovannibr/whatygo/pkg/logger"
+	"github.com/lucasgiovannibr/whatygo/pkg/utils"
+	whatsmeow_service "github.com/lucasgiovannibr/whatygo/pkg/whatsmeow/service"
 	"github.com/gin-gonic/gin"
 	"go.mau.fi/whatsmeow"
 	"go.mau.fi/whatsmeow/types"

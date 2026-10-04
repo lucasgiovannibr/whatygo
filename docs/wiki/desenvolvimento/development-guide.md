@@ -65,7 +65,7 @@ git clone https://github.com/lucasgiovannibr/whatygo.git
 cd whatygo
 
 # Ou via SSH (se configurado)
-git clone git@git.evochat.com:Evolution/evolution-go.git
+git clone https://github.com/lucasgiovannibr/whatygo.git
 cd whatygo
 ```
 
@@ -94,8 +94,8 @@ brew services start postgresql@15
 
 # Criar databases
 sudo -u postgres psql << EOF
-CREATE DATABASE evogo_auth;
-CREATE DATABASE evogo_users;
+CREATE DATABASE whatygo_auth;
+CREATE DATABASE whatygo_users;
 EOF
 ```
 
@@ -111,8 +111,8 @@ docker run -d \
 
 # Criar databases
 docker exec -i postgres psql -U postgres << EOF
-CREATE DATABASE evogo_auth;
-CREATE DATABASE evogo_users;
+CREATE DATABASE whatygo_auth;
+CREATE DATABASE whatygo_users;
 EOF
 ```
 
@@ -131,14 +131,14 @@ nano .env
 ```env
 # Servidor
 SERVER_PORT=4000
-CLIENT_NAME=evolution-dev
+CLIENT_NAME=whatygo-dev
 
 # API Key (gere uma segura)
 GLOBAL_API_KEY=dev-key-12345
 
 # PostgreSQL
-POSTGRES_AUTH_DB=postgresql://postgres:postgres@localhost:5432/evogo_auth?sslmode=disable
-POSTGRES_USERS_DB=postgresql://postgres:postgres@localhost:5432/evogo_users?sslmode=disable
+POSTGRES_AUTH_DB=postgresql://postgres:postgres@localhost:5432/whatygo_auth?sslmode=disable
+POSTGRES_USERS_DB=postgresql://postgres:postgres@localhost:5432/whatygo_users?sslmode=disable
 DATABASE_SAVE_MESSAGES=false
 
 # Logs
@@ -170,9 +170,9 @@ go build ./cmd/whatygo
 ## Estrutura do Projeto
 
 ```
-evolution-go/
+whatygo/
 ├── cmd/
-│   └── evolution-go/
+│   └── whatygo/
 │       └── main.go              # Entry point da aplicação
 │
 ├── pkg/                         # Pacotes principais
@@ -275,7 +275,7 @@ go run cmd/whatygo/main.go -dev
 [GIN-debug] [WARNING] Running in "debug" mode. Switch to "release" mode in production.
 [GIN-debug] GET    /swagger/*any             --> github.com/swaggo/gin-swagger.CustomWrapHandler.func1 (3 handlers)
 [GIN-debug] GET    /server/ok                --> main.main.func1 (3 handlers)
-[GIN-debug] POST   /instance/create          --> evolution-go/pkg/instance.(*InstanceHandler).Create-fm (4 handlers)
+[GIN-debug] POST   /instance/create          --> whatygo/pkg/instance.(*InstanceHandler).Create-fm (4 handlers)
 ...
 [GIN-debug] Listening and serving HTTP on :4000
 ```
@@ -287,7 +287,7 @@ go run cmd/whatygo/main.go -dev
 make build-local
 
 # Executar binário
-./build/evolution-go
+./build/whatygo
 ```
 
 ### Com Docker Compose
@@ -303,7 +303,7 @@ nano docker-compose.yml
 docker-compose up -d
 
 # Ver logs
-docker-compose logs -f evolution-go
+docker-compose logs -f whatygo
 ```
 
 ### Acessar a Aplicação
@@ -639,7 +639,7 @@ func (h *Handler) Create(c *gin.Context) {
 ### Logging
 
 ```go
-import "evolution-go/pkg/utils/logger"
+import "whatygo/pkg/utils/logger"
 
 // Níveis de log
 logger.LogInfo("Instance %s created successfully", instanceName)

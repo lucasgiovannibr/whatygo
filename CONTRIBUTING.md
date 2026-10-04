@@ -18,7 +18,7 @@ Se você só quer **usar** o WhatyGo, veja o [Guia do WhatyGo](./docs/guia/READM
 
 1. Procure se o problema já foi relatado.
 2. Diga o que você fez, o que esperava e o que aconteceu, a **versão** (etiqueta da imagem ou commit) e como instalou.
-3. Anexe as últimas linhas do log (`docker compose logs evolution-go`).
+3. Anexe as últimas linhas do log (`docker compose logs whatygo`).
 4. **Apague chaves de API, tokens, senhas e números de telefone** de tudo que colar. Se não tiver certeza, troque por `XXXX`.
 
 ## Preparar o ambiente

@@ -36,24 +36,24 @@ import (
 	"go.mau.fi/whatsmeow/types/events"
 	waLog "go.mau.fi/whatsmeow/util/log"
 
-	"github.com/evolution-foundation/evolution-go/pkg/apierror"
-	call_engine "github.com/evolution-foundation/evolution-go/pkg/call/engine"
-	"github.com/evolution-foundation/evolution-go/pkg/config"
-	producer_interfaces "github.com/evolution-foundation/evolution-go/pkg/events/interfaces"
-	instance_model "github.com/evolution-foundation/evolution-go/pkg/instance/model"
-	instance_repository "github.com/evolution-foundation/evolution-go/pkg/instance/repository"
-	"github.com/evolution-foundation/evolution-go/pkg/internal/event_types"
-	label_model "github.com/evolution-foundation/evolution-go/pkg/label/model"
-	label_repository "github.com/evolution-foundation/evolution-go/pkg/label/repository"
-	logger_wrapper "github.com/evolution-foundation/evolution-go/pkg/logger"
-	message_model "github.com/evolution-foundation/evolution-go/pkg/message/model"
-	message_repository "github.com/evolution-foundation/evolution-go/pkg/message/repository"
-	"github.com/evolution-foundation/evolution-go/pkg/metrics"
-	"github.com/evolution-foundation/evolution-go/pkg/passkey/ceremony"
-	poll_service "github.com/evolution-foundation/evolution-go/pkg/poll/service"
-	"github.com/evolution-foundation/evolution-go/pkg/safemap"
-	storage_interfaces "github.com/evolution-foundation/evolution-go/pkg/storage/interfaces"
-	"github.com/evolution-foundation/evolution-go/pkg/utils"
+	"github.com/lucasgiovannibr/whatygo/pkg/apierror"
+	call_engine "github.com/lucasgiovannibr/whatygo/pkg/call/engine"
+	"github.com/lucasgiovannibr/whatygo/pkg/config"
+	producer_interfaces "github.com/lucasgiovannibr/whatygo/pkg/events/interfaces"
+	instance_model "github.com/lucasgiovannibr/whatygo/pkg/instance/model"
+	instance_repository "github.com/lucasgiovannibr/whatygo/pkg/instance/repository"
+	"github.com/lucasgiovannibr/whatygo/pkg/internal/event_types"
+	label_model "github.com/lucasgiovannibr/whatygo/pkg/label/model"
+	label_repository "github.com/lucasgiovannibr/whatygo/pkg/label/repository"
+	logger_wrapper "github.com/lucasgiovannibr/whatygo/pkg/logger"
+	message_model "github.com/lucasgiovannibr/whatygo/pkg/message/model"
+	message_repository "github.com/lucasgiovannibr/whatygo/pkg/message/repository"
+	"github.com/lucasgiovannibr/whatygo/pkg/metrics"
+	"github.com/lucasgiovannibr/whatygo/pkg/passkey/ceremony"
+	poll_service "github.com/lucasgiovannibr/whatygo/pkg/poll/service"
+	"github.com/lucasgiovannibr/whatygo/pkg/safemap"
+	storage_interfaces "github.com/lucasgiovannibr/whatygo/pkg/storage/interfaces"
+	"github.com/lucasgiovannibr/whatygo/pkg/utils"
 )
 
 type WhatsmeowService interface {
@@ -1463,7 +1463,7 @@ func (mycli *MyClient) handleEvent(rawEvt interface{}) {
 		openURL := "https://web.whatsapp.com/#wapk=" + wapk
 
 		mycli.loggerWrapper.GetLogger(mycli.userID).LogInfo(
-			"[%s] Passkey required. Open this URL in a browser with the Evolution Passkey Helper extension:\n%s\n(ceremony token=%s, base=%s)",
+			"[%s] Passkey required. Open this URL in a browser with the WhatyGo Passkey Helper extension:\n%s\n(ceremony token=%s, base=%s)",
 			mycli.userID, openURL, token, publicBase,
 		)
 

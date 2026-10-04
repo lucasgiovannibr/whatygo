@@ -7,8 +7,8 @@ import (
 	"strings"
 	"time"
 
-	"github.com/evolution-foundation/evolution-go/pkg/apierror"
-	whatsmeow_service "github.com/evolution-foundation/evolution-go/pkg/whatsmeow/service"
+	"github.com/lucasgiovannibr/whatygo/pkg/apierror"
+	whatsmeow_service "github.com/lucasgiovannibr/whatygo/pkg/whatsmeow/service"
 	"go.mau.fi/whatsmeow"
 )
 

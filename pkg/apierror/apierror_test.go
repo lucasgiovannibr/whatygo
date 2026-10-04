@@ -13,7 +13,7 @@ import (
 	"go.mau.fi/whatsmeow"
 	"gorm.io/gorm"
 
-	"github.com/evolution-foundation/evolution-go/pkg/utils"
+	"github.com/lucasgiovannibr/whatygo/pkg/utils"
 )
 
 type throttled struct{}

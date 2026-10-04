@@ -26,8 +26,8 @@ import (
 
 	"github.com/chai2010/webp"
 
-	"github.com/evolution-foundation/evolution-go/pkg/apierror"
-	"github.com/evolution-foundation/evolution-go/pkg/utils"
+	"github.com/lucasgiovannibr/whatygo/pkg/apierror"
+	"github.com/lucasgiovannibr/whatygo/pkg/utils"
 )
 
 const (

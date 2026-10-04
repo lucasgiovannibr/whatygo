@@ -7,7 +7,7 @@ import (
 
 	"go.mau.fi/whatsmeow"
 
-	"github.com/evolution-foundation/evolution-go/pkg/safemap"
+	"github.com/lucasgiovannibr/whatygo/pkg/safemap"
 )
 
 // The errors every service reports when the instance has no usable client. They used to be

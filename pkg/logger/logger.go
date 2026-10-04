@@ -10,7 +10,7 @@ import (
 	"sync/atomic"
 	"time"
 
-	"github.com/evolution-foundation/evolution-go/pkg/config"
+	"github.com/lucasgiovannibr/whatygo/pkg/config"
 	"github.com/gomessguii/logger"
 	"gopkg.in/natefinch/lumberjack.v2"
 )

@@ -5,15 +5,15 @@ import (
 	"net/http"
 	"time"
 
-	"github.com/evolution-foundation/evolution-go/pkg/apierror"
+	"github.com/lucasgiovannibr/whatygo/pkg/apierror"
 	"github.com/gin-gonic/gin"
 	"github.com/google/uuid"
 	"gorm.io/gorm"
 
-	config "github.com/evolution-foundation/evolution-go/pkg/config"
-	instance_model "github.com/evolution-foundation/evolution-go/pkg/instance/model"
-	instance_service "github.com/evolution-foundation/evolution-go/pkg/instance/service"
-	"github.com/evolution-foundation/evolution-go/pkg/utils"
+	config "github.com/lucasgiovannibr/whatygo/pkg/config"
+	instance_model "github.com/lucasgiovannibr/whatygo/pkg/instance/model"
+	instance_service "github.com/lucasgiovannibr/whatygo/pkg/instance/service"
+	"github.com/lucasgiovannibr/whatygo/pkg/utils"
 )
 
 type InstanceHandler interface {

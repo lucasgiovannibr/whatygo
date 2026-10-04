@@ -8,7 +8,7 @@ import (
 	"strings"
 	"time"
 
-	call_engine "github.com/evolution-foundation/evolution-go/pkg/call/engine"
+	call_engine "github.com/lucasgiovannibr/whatygo/pkg/call/engine"
 	"gorm.io/gorm"
 	"gorm.io/gorm/clause"
 )

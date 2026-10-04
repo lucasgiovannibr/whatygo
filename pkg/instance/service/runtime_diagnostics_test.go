@@ -3,9 +3,9 @@ package instance_service
 import (
 	"testing"
 
-	call_engine "github.com/evolution-foundation/evolution-go/pkg/call/engine"
-	instance_model "github.com/evolution-foundation/evolution-go/pkg/instance/model"
-	whatsmeow_service "github.com/evolution-foundation/evolution-go/pkg/whatsmeow/service"
+	call_engine "github.com/lucasgiovannibr/whatygo/pkg/call/engine"
+	instance_model "github.com/lucasgiovannibr/whatygo/pkg/instance/model"
+	whatsmeow_service "github.com/lucasgiovannibr/whatygo/pkg/whatsmeow/service"
 )
 
 func codesOf(d RuntimeDiagnostics) map[string]bool {

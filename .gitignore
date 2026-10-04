@@ -9,7 +9,6 @@ coverage.*
 .DS_Store
 
 # Binários compilados na raiz (nunca versionar)
-/evolution-go
 /whatygo
 /server
 *.exe

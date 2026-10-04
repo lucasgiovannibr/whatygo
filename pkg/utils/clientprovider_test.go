@@ -9,7 +9,7 @@ import (
 	"go.mau.fi/whatsmeow"
 	"go.mau.fi/whatsmeow/store"
 
-	"github.com/evolution-foundation/evolution-go/pkg/safemap"
+	"github.com/lucasgiovannibr/whatygo/pkg/safemap"
 )
 
 type fakeStarter struct {

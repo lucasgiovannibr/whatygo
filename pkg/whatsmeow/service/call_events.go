@@ -5,7 +5,7 @@ import (
 	"fmt"
 	"strings"
 
-	instance_model "github.com/evolution-foundation/evolution-go/pkg/instance/model"
+	instance_model "github.com/lucasgiovannibr/whatygo/pkg/instance/model"
 )
 
 // publishCallEvent sends a call lifecycle event of the call engine (CallReady,

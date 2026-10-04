@@ -69,7 +69,7 @@ Entenda como o WhatyGo funciona por dentro.
 | [**Arquitetura**](./conceitos-core/architecture.md) | Arquitetura em camadas, componentes e fluxos |
 | [**Instâncias**](./conceitos-core/instances.md) | Como funcionam as instâncias WhatsApp |
 | [**Autenticação**](./conceitos-core/authentication.md) | API Keys, tokens e segurança |
-| [**Banco de Dados**](./conceitos-core/database.md) | Estrutura dual: evogo_auth + evogo_users |
+| [**Banco de Dados**](./conceitos-core/database.md) | Estrutura dual: whatygo_auth + whatygo_users |
 
 ### 📡 API Reference
 

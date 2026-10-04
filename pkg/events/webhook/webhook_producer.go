@@ -14,9 +14,9 @@ import (
 	"sync"
 	"time"
 
-	producer_interfaces "github.com/evolution-foundation/evolution-go/pkg/events/interfaces"
-	logger_wrapper "github.com/evolution-foundation/evolution-go/pkg/logger"
-	"github.com/evolution-foundation/evolution-go/pkg/utils"
+	producer_interfaces "github.com/lucasgiovannibr/whatygo/pkg/events/interfaces"
+	logger_wrapper "github.com/lucasgiovannibr/whatygo/pkg/logger"
+	"github.com/lucasgiovannibr/whatygo/pkg/utils"
 )
 
 // Webhook delivery goes through one bounded queue per destination URL.

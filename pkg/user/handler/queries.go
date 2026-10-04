@@ -4,9 +4,9 @@ import (
 	"errors"
 	"net/http"
 
-	"github.com/evolution-foundation/evolution-go/pkg/apierror"
-	instance_model "github.com/evolution-foundation/evolution-go/pkg/instance/model"
-	user_service "github.com/evolution-foundation/evolution-go/pkg/user/service"
+	"github.com/lucasgiovannibr/whatygo/pkg/apierror"
+	instance_model "github.com/lucasgiovannibr/whatygo/pkg/instance/model"
+	user_service "github.com/lucasgiovannibr/whatygo/pkg/user/service"
 	"github.com/gin-gonic/gin"
 )
 

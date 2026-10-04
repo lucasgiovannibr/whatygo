@@ -33,9 +33,9 @@ docker compose -f docker/test-stack/docker-compose.yml down       # para, manté
 docker compose -f docker/test-stack/docker-compose.yml down -v    # para e APAGA os dados
 ```
 
-Os dados (banco, sessões do WhatsApp e logs) ficam em volumes do Docker chamados `evofork-test_*`.
-O nome do projeto Compose não segue o nome atual de propósito: trocá-lo criaria volumes novos e
-faria a pilha começar vazia. Apague os volumes (`down -v`) se quiser renomear.
+Os dados (banco, sessões do WhatsApp e logs) ficam em volumes do Docker chamados `whatygo-test_*`.
+O nome do projeto Compose (`name:` no `docker-compose.yml`) é que dá o prefixo aos volumes: trocá-lo
+cria volumes novos e a pilha começa vazia, então copie os dados antes se houver um número pareado.
 
 ## O que mais há aqui
 

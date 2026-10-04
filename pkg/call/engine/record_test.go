@@ -5,8 +5,8 @@ import (
 	"testing"
 	"time"
 
-	call_engine "github.com/evolution-foundation/evolution-go/pkg/call/engine"
-	"github.com/evolution-foundation/evolution-go/pkg/call/engine/enginetest"
+	call_engine "github.com/lucasgiovannibr/whatygo/pkg/call/engine"
+	"github.com/lucasgiovannibr/whatygo/pkg/call/engine/enginetest"
 )
 
 func TestClassify(t *testing.T) {

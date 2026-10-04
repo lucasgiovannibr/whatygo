@@ -4,8 +4,8 @@ import (
 	"strings"
 	"testing"
 
-	instance_model "github.com/evolution-foundation/evolution-go/pkg/instance/model"
-	event_types "github.com/evolution-foundation/evolution-go/pkg/internal/event_types"
+	instance_model "github.com/lucasgiovannibr/whatygo/pkg/instance/model"
+	event_types "github.com/lucasgiovannibr/whatygo/pkg/internal/event_types"
 )
 
 func TestApplyConnectSettings(t *testing.T) {

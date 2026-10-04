@@ -27,7 +27,7 @@ Guia de deploy do WhatyGo usando Docker, Docker Compose, Swarm e Kubernetes.
 
 ```
 ┌─────────────────────────────────────────────────────────────────┐
-│                     EVOLUTION GO STACK                          │
+│                     WHATYGO STACK                          │
 ├─────────────────────────────────────────────────────────────────┤
 │                                                                 │
 │  ┌──────────────┐      ┌──────────────┐      ┌──────────────┐ │
@@ -50,7 +50,7 @@ Guia de deploy do WhatyGo usando Docker, Docker Compose, Swarm e Kubernetes.
 - **Registry**: `ghcr.io/lucasgiovannibr/whatygo`
 - **Tags**: `latest`, `v1.x.x`
 - **Base**: Alpine Linux 3.24
-- **Usuário**: `evolution` (uid 10001), sem root; o entrypoint ajusta o dono dos volumes
+- **Usuário**: `whatygo` (uid 10001), sem root; o entrypoint ajusta o dono dos volumes
 - **Healthcheck**: `GET /server/ok` (liveness); `GET /health` é a prontidão (bancos e saturação do pool)
 - **Tamanho**: ~50MB (compactada)
 - **Arquiteturas**: amd64, arm64
@@ -77,19 +77,19 @@ Configuração mínima com WhatyGo + PostgreSQL.
 version: '3.8'
 
 services:
-  evolution-go:
+  whatygo:
     image: ghcr.io/lucasgiovannibr/whatygo:latest
-    container_name: evolution-go
+    container_name: whatygo
     restart: unless-stopped
     ports:
       - "4000:4000"
     environment:
       SERVER_PORT: 4000
-      CLIENT_NAME: "evolution"
+      CLIENT_NAME: "whatygo"
       GLOBAL_API_KEY: "SUBSTITUA-POR-UUID-FORTE"
 
-      POSTGRES_AUTH_DB: "postgresql://postgres:postgres@postgres:5432/evogo_auth?sslmode=disable"
-      POSTGRES_USERS_DB: "postgresql://postgres:postgres@postgres:5432/evogo_users?sslmode=disable"
+      POSTGRES_AUTH_DB: "postgresql://postgres:postgres@postgres:5432/whatygo_auth?sslmode=disable"
+      POSTGRES_USERS_DB: "postgresql://postgres:postgres@postgres:5432/whatygo_users?sslmode=disable"
       DATABASE_SAVE_MESSAGES: "false"
 
       WADEBUG: "INFO"
@@ -98,10 +98,10 @@ services:
       WEBHOOK_FILES: "true"
 
     volumes:
-      - evolution_data:/app/dbdata
-      - evolution_logs:/app/logs
+      - whatygo_data:/app/dbdata
+      - whatygo_logs:/app/logs
     networks:
-      - evolution_network
+      - whatygo_network
     depends_on:
       - postgres
 
@@ -119,23 +119,23 @@ services:
       - postgres_data:/var/lib/postgresql/data
       - ./init-db.sql:/docker-entrypoint-initdb.d/init-db.sql
     networks:
-      - evolution_network
+      - whatygo_network
 
 volumes:
-  evolution_data:
-  evolution_logs:
+  whatygo_data:
+  whatygo_logs:
   postgres_data:
 
 networks:
-  evolution_network:
+  whatygo_network:
     driver: bridge
 ```
 
 #### init-db.sql
 
 ```sql
-CREATE DATABASE evogo_auth;
-CREATE DATABASE evogo_users;
+CREATE DATABASE whatygo_auth;
+CREATE DATABASE whatygo_users;
 SELECT 'Databases criados com sucesso!' as message;
 ```
 
@@ -151,7 +151,7 @@ uuidgen
 docker-compose up -d
 
 # Verificar
-docker-compose logs -f evolution-go
+docker-compose logs -f whatygo
 curl http://localhost:4000/server/ok
 ```
 
@@ -163,7 +163,7 @@ Incluindo RabbitMQ, MinIO e NATS.
 version: '3.8'
 
 services:
-  evolution-go:
+  whatygo:
     image: ghcr.io/lucasgiovannibr/whatygo:latest
     restart: unless-stopped
     ports:
@@ -172,8 +172,8 @@ services:
       SERVER_PORT: 4000
       GLOBAL_API_KEY: "SUA-CHAVE-AQUI"
 
-      POSTGRES_AUTH_DB: "postgresql://postgres:senha@postgres:5432/evogo_auth?sslmode=disable"
-      POSTGRES_USERS_DB: "postgresql://postgres:senha@postgres:5432/evogo_users?sslmode=disable"
+      POSTGRES_AUTH_DB: "postgresql://postgres:senha@postgres:5432/whatygo_auth?sslmode=disable"
+      POSTGRES_USERS_DB: "postgresql://postgres:senha@postgres:5432/whatygo_users?sslmode=disable"
       DATABASE_SAVE_MESSAGES: "true"
 
       AMQP_URL: "amqp://admin:admin@rabbitmq:5672/default"
@@ -184,12 +184,12 @@ services:
       MINIO_ENDPOINT: "minio:9000"
       MINIO_ACCESS_KEY: "minioadmin"
       MINIO_SECRET_KEY: "minioadmin"
-      MINIO_BUCKET: "evolution-media"
+      MINIO_BUCKET: "whatygo-media"
       MINIO_USE_SSL: "false"
 
     volumes:
-      - evolution_data:/app/dbdata
-      - evolution_logs:/app/logs
+      - whatygo_data:/app/dbdata
+      - whatygo_logs:/app/logs
     depends_on:
       - postgres
       - rabbitmq
@@ -240,8 +240,8 @@ services:
       - "8222:8222"
 
 volumes:
-  evolution_data:
-  evolution_logs:
+  whatygo_data:
+  whatygo_logs:
   postgres_data:
   rabbitmq_data:
   minio_data:
@@ -259,11 +259,11 @@ volumes:
 
 ```bash
 # .env
-EVOLUTION_VERSION=latest
+WHATYGO_VERSION=latest
 POSTGRES_VERSION=15-alpine
 
 # Portas
-EVOLUTION_PORT=4000
+WHATYGO_PORT=4000
 POSTGRES_PORT=5432
 
 # Credenciais
@@ -274,16 +274,16 @@ RABBITMQ_PASS=senha_forte
 
 # WhatyGo
 GLOBAL_API_KEY=df16caad-d0d2-41b2-bec5-75b90048a0db
-CLIENT_NAME=evolution-prod
+CLIENT_NAME=whatygo-prod
 ```
 
 Referência no compose:
 ```yaml
 services:
-  evolution-go:
-    image: ghcr.io/lucasgiovannibr/whatygo:${EVOLUTION_VERSION:-latest}
+  whatygo:
+    image: ghcr.io/lucasgiovannibr/whatygo:${WHATYGO_VERSION:-latest}
     ports:
-      - "${EVOLUTION_PORT:-4000}:4000"
+      - "${WHATYGO_PORT:-4000}:4000"
     environment:
       GLOBAL_API_KEY: "${GLOBAL_API_KEY}"
 ```
@@ -292,7 +292,7 @@ services:
 
 ```yaml
 services:
-  evolution-go:
+  whatygo:
     healthcheck:
       test: ["CMD", "wget", "-q", "--spider", "http://localhost:4000/server/ok"]
       interval: 30s
@@ -319,7 +319,7 @@ services:
 
 ```yaml
 services:
-  evolution-go:
+  whatygo:
     deploy:
       resources:
         limits:
@@ -361,8 +361,8 @@ docker node ls
 
 ```bash
 # Volumes
-docker volume create evolution_go_data
-docker volume create evolution_go_logs
+docker volume create whatygo_data
+docker volume create whatygo_logs
 
 # Rede
 docker network create --driver overlay network_public
@@ -374,19 +374,19 @@ docker network create --driver overlay network_public
 version: '3.8'
 
 services:
-  evolution_go:
+  whatygo:
     image: ghcr.io/lucasgiovannibr/whatygo:latest
     networks:
       - network_public
     environment:
       SERVER_PORT: 4000
       GLOBAL_API_KEY: "sua-chave-api"
-      POSTGRES_AUTH_DB: "postgresql://user:pass@postgres:5432/evogo_auth"
-      POSTGRES_USERS_DB: "postgresql://user:pass@postgres:5432/evogo_users"
+      POSTGRES_AUTH_DB: "postgresql://user:pass@postgres:5432/whatygo_auth"
+      POSTGRES_USERS_DB: "postgresql://user:pass@postgres:5432/whatygo_users"
 
     volumes:
-      - evolution_go_data:/app/dbdata
-      - evolution_go_logs:/app/logs
+      - whatygo_data:/app/dbdata
+      - whatygo_logs:/app/logs
 
     deploy:
       replicas: 3
@@ -408,15 +408,15 @@ services:
         delay: 5s
       labels:
         - traefik.enable=true
-        - traefik.http.routers.evolution.rule=Host(`evolution.domain.com`)
-        - traefik.http.routers.evolution.entrypoints=websecure
-        - traefik.http.routers.evolution.tls.certresolver=letsencrypt
-        - traefik.http.services.evolution.loadbalancer.server.port=4000
+        - traefik.http.routers.whatygo.rule=Host(`whatygo.domain.com`)
+        - traefik.http.routers.whatygo.entrypoints=websecure
+        - traefik.http.routers.whatygo.tls.certresolver=letsencrypt
+        - traefik.http.services.whatygo.loadbalancer.server.port=4000
 
 volumes:
-  evolution_go_data:
+  whatygo_data:
     external: true
-  evolution_go_logs:
+  whatygo_logs:
     external: true
 
 networks:
@@ -428,24 +428,24 @@ networks:
 
 ```bash
 # Deploy
-docker stack deploy -c docker-compose.swarm.yml evolution
+docker stack deploy -c docker-compose.swarm.yml whatygo
 
 # Status
 docker stack ls
 docker service ls
-docker service ps evolution_evolution_go
+docker service ps whatygo_whatygo
 
 # Logs
-docker service logs evolution_evolution_go -f
+docker service logs whatygo_whatygo -f
 
 # Escalar
-docker service scale evolution_evolution_go=5
+docker service scale whatygo_whatygo=5
 
 # Atualizar (rolling update)
-docker service update --image ghcr.io/lucasgiovannibr/whatygo:v1.2.0 evolution_evolution_go
+docker service update --image ghcr.io/lucasgiovannibr/whatygo:v1.2.0 whatygo_whatygo
 
 # Remover
-docker stack rm evolution
+docker stack rm whatygo
 ```
 
 ---
@@ -461,7 +461,7 @@ docker stack rm evolution
 apiVersion: v1
 kind: Namespace
 metadata:
-    name: evolution-go
+    name: whatygo
 ```
 
 #### ConfigMap
@@ -471,11 +471,11 @@ metadata:
 apiVersion: v1
 kind: ConfigMap
 metadata:
-  name: evolution-config
-  namespace: evolution-go
+  name: whatygo-config
+  namespace: whatygo
 data:
   SERVER_PORT: "4000"
-  CLIENT_NAME: "evolution"
+  CLIENT_NAME: "whatygo"
   WADEBUG: "INFO"
   LOGTYPE: "console"
   CONNECT_ON_STARTUP: "false"
@@ -486,10 +486,10 @@ data:
 #### Secrets
 
 ```bash
-kubectl create secret generic evolution-secrets \
+kubectl create secret generic whatygo-secrets \
   --from-literal=GLOBAL_API_KEY=$(uuidgen) \
   --from-literal=POSTGRES_PASSWORD=$(openssl rand -base64 32) \
-  --namespace=evolution-go
+  --namespace=whatygo
 ```
 
 #### Deployment
@@ -499,20 +499,20 @@ kubectl create secret generic evolution-secrets \
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: evolution-go
-  namespace: evolution-go
+  name: whatygo
+  namespace: whatygo
 spec:
   replicas: 3
   selector:
     matchLabels:
-      app: evolution-go
+      app: whatygo
   template:
     metadata:
       labels:
-        app: evolution-go
+        app: whatygo
     spec:
       containers:
-      - name: evolution-go
+      - name: whatygo
         image: ghcr.io/lucasgiovannibr/whatygo:latest
         ports:
         - containerPort: 4000
@@ -520,12 +520,12 @@ spec:
         - name: SERVER_PORT
           valueFrom:
             configMapKeyRef:
-              name: evolution-config
+              name: whatygo-config
               key: SERVER_PORT
         - name: GLOBAL_API_KEY
           valueFrom:
             secretKeyRef:
-              name: evolution-secrets
+              name: whatygo-secrets
               key: GLOBAL_API_KEY
         resources:
           requests:
@@ -547,17 +547,17 @@ spec:
           initialDelaySeconds: 10
           periodSeconds: 5
         volumeMounts:
-        - name: evolution-data
+        - name: whatygo-data
           mountPath: /app/dbdata
-        - name: evolution-logs
+        - name: whatygo-logs
           mountPath: /app/logs
       volumes:
-      - name: evolution-data
+      - name: whatygo-data
         persistentVolumeClaim:
-          claimName: evolution-data-pvc
-      - name: evolution-logs
+          claimName: whatygo-data-pvc
+      - name: whatygo-logs
         persistentVolumeClaim:
-          claimName: evolution-logs-pvc
+          claimName: whatygo-logs-pvc
 ```
 
 #### Service
@@ -567,12 +567,12 @@ spec:
 apiVersion: v1
 kind: Service
 metadata:
-  name: evolution-go-service
-  namespace: evolution-go
+  name: whatygo-service
+  namespace: whatygo
 spec:
   type: LoadBalancer
   selector:
-    app: evolution-go
+    app: whatygo
   ports:
   - port: 4000
     targetPort: 4000
@@ -585,25 +585,25 @@ spec:
 apiVersion: networking.k8s.io/v1
 kind: Ingress
 metadata:
-  name: evolution-ingress
-  namespace: evolution-go
+  name: whatygo-ingress
+  namespace: whatygo
   annotations:
     kubernetes.io/ingress.class: "nginx"
     cert-manager.io/cluster-issuer: "letsencrypt-prod"
 spec:
   tls:
   - hosts:
-    - evolution.domain.com
-    secretName: evolution-tls
+    - whatygo.domain.com
+    secretName: whatygo-tls
   rules:
-  - host: evolution.domain.com
+  - host: whatygo.domain.com
     http:
       paths:
       - path: /
         pathType: Prefix
         backend:
           service:
-            name: evolution-go-service
+            name: whatygo-service
             port:
               number: 4000
 ```
@@ -615,13 +615,13 @@ spec:
 apiVersion: autoscaling/v2
 kind: HorizontalPodAutoscaler
 metadata:
-  name: evolution-hpa
-  namespace: evolution-go
+  name: whatygo-hpa
+  namespace: whatygo
 spec:
   scaleTargetRef:
     apiVersion: apps/v1
     kind: Deployment
-    name: evolution-go
+    name: whatygo
   minReplicas: 3
   maxReplicas: 10
   metrics:
@@ -652,22 +652,22 @@ kubectl apply -f ingress.yaml
 kubectl apply -f hpa.yaml
 
 # Verificar
-kubectl get all -n evolution-go
-kubectl get pods -n evolution-go
+kubectl get all -n whatygo
+kubectl get pods -n whatygo
 
 # Logs
-kubectl logs -f deployment/evolution-go -n evolution-go
+kubectl logs -f deployment/whatygo -n whatygo
 
 # Escalar
-kubectl scale deployment evolution-go --replicas=5 -n evolution-go
+kubectl scale deployment whatygo --replicas=5 -n whatygo
 
 # Atualizar
-kubectl set image deployment/evolution-go \
-  evolution-go=ghcr.io/lucasgiovannibr/whatygo:v1.2.0 \
-  -n evolution-go
+kubectl set image deployment/whatygo \
+  whatygo=ghcr.io/lucasgiovannibr/whatygo:v1.2.0 \
+  -n whatygo
 
 # Rollback
-kubectl rollout undo deployment/evolution-go -n evolution-go
+kubectl rollout undo deployment/whatygo -n whatygo
 ```
 
 ---
@@ -681,13 +681,13 @@ kubectl rollout undo deployment/evolution-go -n evolution-go
 ```bash
 # Backup volume
 docker run --rm \
-  -v evolution_data:/data \
+  -v whatygo_data:/data \
   -v $(pwd):/backup \
   alpine tar czf /backup/backup-$(date +%Y%m%d).tar.gz -C /data .
 
 # Restaurar
 docker run --rm \
-  -v evolution_data:/data \
+  -v whatygo_data:/data \
   -v $(pwd):/backup \
   alpine tar xzf /backup/backup-20250111.tar.gz -C /data
 ```
@@ -696,7 +696,7 @@ docker run --rm \
 
 ```yaml
 services:
-  evolution-go:
+  whatygo:
 logging:
   driver: "json-file"
   options:
@@ -733,7 +733,7 @@ logging:
 
 ```bash
 # Ver logs
-docker-compose logs evolution-go
+docker-compose logs whatygo
 
 # Verificar variáveis obrigatórias
 # - GLOBAL_API_KEY
@@ -744,13 +744,13 @@ docker-compose logs evolution-go
 
 ```bash
 # Testar conexão
-docker-compose exec evolution-go ping postgres
+docker-compose exec whatygo ping postgres
 
 # Verificar porta
-docker-compose exec evolution-go nc -zv postgres 5432
+docker-compose exec whatygo nc -zv postgres 5432
 
 # Inspecionar rede
-docker network inspect evolution_network
+docker network inspect whatygo_network
 ```
 
 ### Sem Espaço em Disco
@@ -773,7 +773,7 @@ docker system prune -a
 docker events --filter 'event=oom'
 
 # Ver uso de memória
-docker stats evolution-go
+docker stats whatygo
 
 # Aumentar limite
 deploy:

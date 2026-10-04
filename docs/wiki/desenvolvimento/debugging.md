@@ -32,20 +32,20 @@ LOGTYPE=console  # ou 'file'
 make dev
 
 # Logs em arquivo
-tail -f logs/evolution-go.log
+tail -f logs/whatygo.log
 
 # Docker
-docker-compose logs -f evolution-go
+docker-compose logs -f whatygo
 
 # Filtrar logs de erro
-docker-compose logs evolution-go | grep ERROR
+docker-compose logs whatygo | grep ERROR
 ```
 
 ### Onde olhar primeiro
 
 - `GET /health`: prontidão (bancos com limite de 2 s, saturação do pool).
 - `GET /instance/{id}/runtime` e `GET /instance/runtimes`: o que o processo realmente roda por instância (cliente, supervisor, QR, proxy) comparado com o banco, com avisos codificados; inclui a fila de webhook.
-- `GET /metrics` (chave global): latência por rota, eventos recebidos, mensagens descartadas, envios limitados (`evolution_send_throttled_total`), fila de mídia (`evolution_media_pending`), chamadas (`evolution_calls_active{phase}`, `evolution_calls_ended_total{direction,reason}`, `evolution_call_stream_dropped_total`, `evolution_call_media_stalls_total`, `evolution_call_history_failed_total`; lista em [API de Chamadas](../guias-api/api-call.md#limites-e-configuração)).
+- `GET /metrics` (chave global): latência por rota, eventos recebidos, mensagens descartadas, envios limitados (`whatygo_send_throttled_total`), fila de mídia (`whatygo_media_pending`), chamadas (`whatygo_calls_active{phase}`, `whatygo_calls_ended_total{direction,reason}`, `whatygo_call_stream_dropped_total`, `whatygo_call_media_stalls_total`, `whatygo_call_history_failed_total`; lista em [API de Chamadas](../guias-api/api-call.md#limites-e-configuração)).
 - `X-Request-ID`: todo erro traz o cabeçalho; o mesmo valor aparece como `req=` na linha do log de acesso.
 - Os logs de cada instância são gravados por uma goroutine própria (fila limitada); se o disco não acompanha, o descarte é contado em vez de travar o processo.
 
@@ -100,26 +100,26 @@ sudo systemctl start postgresql
 docker start postgres
 
 # Testar conexão
-psql -h localhost -U postgres -d evogo_auth
+psql -h localhost -U postgres -d whatygo_auth
 ```
 
 ### 3. Erro: "database does not exist"
 
-**Causa**: Databases `evogo_auth` ou `evogo_users` não criados.
+**Causa**: Databases `whatygo_auth` ou `whatygo_users` não criados.
 
 **Solução**:
 
 ```bash
 # Criar databases
 sudo -u postgres psql << EOF
-CREATE DATABASE evogo_auth;
-CREATE DATABASE evogo_users;
+CREATE DATABASE whatygo_auth;
+CREATE DATABASE whatygo_users;
 EOF
 
 # Ou via Docker
 docker exec -i postgres psql -U postgres << EOF
-CREATE DATABASE evogo_auth;
-CREATE DATABASE evogo_users;
+CREATE DATABASE whatygo_auth;
+CREATE DATABASE whatygo_users;
 EOF
 ```
 
@@ -147,7 +147,7 @@ curl -H "apikey: SUA-CHAVE" http://localhost:4000/server/ok
 
 ```bash
 # Verificar logs
-docker-compose logs -f evolution-go | grep QR
+docker-compose logs -f whatygo | grep QR
 
 # Deletar e recriar instância
 curl -X DELETE http://localhost:4000/instance/delete/NOME \
@@ -172,7 +172,7 @@ curl -X POST https://seu-webhook.com/endpoint \
   -d '{"test": true}'
 
 # Verificar logs
-docker-compose logs evolution-go | grep webhook
+docker-compose logs whatygo | grep webhook
 
 # Verificar configuração
 curl http://localhost:4000/instance/connectionState/NOME \
@@ -191,7 +191,7 @@ curl http://localhost:4000/instance/connectionState/NOME \
   -H "apikey: SUA-CHAVE"
 
 # Verificar logs
-docker-compose logs -f evolution-go
+docker-compose logs -f whatygo
 
 # Verificar formato do número
 # Correto: 5511999999999 (DDI + DDD + número)
@@ -289,7 +289,7 @@ go tool pprof goroutine.prof
 
 ```sql
 -- Habilitar log de queries lentas (PostgreSQL)
-ALTER DATABASE evogo_users SET log_min_duration_statement = 1000;
+ALTER DATABASE whatygo_users SET log_min_duration_statement = 1000;
 
 -- Ver queries lentas
 SELECT query, calls, total_time, mean_time
@@ -306,7 +306,7 @@ SELECT count(*) FROM pg_stat_activity;
 
 SELECT datname, usename, state, query
 FROM pg_stat_activity
-WHERE datname IN ('evogo_auth', 'evogo_users');
+WHERE datname IN ('whatygo_auth', 'whatygo_users');
 ```
 
 ### Índices Faltantes
@@ -377,17 +377,17 @@ Importar collection Swagger:
 Conectar ao PostgreSQL:
 - Host: localhost
 - Port: 5432
-- Database: evogo_users
+- Database: whatygo_users
 - Username: postgres
 
 ### 4. Docker Stats
 
 ```bash
 # Ver uso de recursos
-docker stats evolution-go
+docker stats whatygo
 
 # Inspecionar container
-docker inspect evolution-go
+docker inspect whatygo
 ```
 
 ---

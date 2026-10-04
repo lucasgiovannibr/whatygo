@@ -5,7 +5,7 @@ import (
 	"path/filepath"
 	"testing"
 
-	"github.com/evolution-foundation/evolution-go/pkg/config"
+	"github.com/lucasgiovannibr/whatygo/pkg/config"
 )
 
 func TestReleaseFreesTheInstanceLogger(t *testing.T) {

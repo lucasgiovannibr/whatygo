@@ -5,9 +5,9 @@ import (
 	"errors"
 	"strings"
 
-	instance_model "github.com/evolution-foundation/evolution-go/pkg/instance/model"
-	"github.com/evolution-foundation/evolution-go/pkg/internal/event_types"
-	"github.com/evolution-foundation/evolution-go/pkg/utils"
+	instance_model "github.com/lucasgiovannibr/whatygo/pkg/instance/model"
+	"github.com/lucasgiovannibr/whatygo/pkg/internal/event_types"
+	"github.com/lucasgiovannibr/whatygo/pkg/utils"
 )
 
 // Which events go where is decided in three small, pure steps so that the expensive part

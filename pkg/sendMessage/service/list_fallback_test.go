@@ -5,7 +5,7 @@ import (
 	"strings"
 	"testing"
 
-	"github.com/evolution-foundation/evolution-go/pkg/apierror"
+	"github.com/lucasgiovannibr/whatygo/pkg/apierror"
 )
 
 func sampleList(rows ...Row) *ListStruct {

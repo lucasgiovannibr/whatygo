@@ -3,14 +3,14 @@ package instance_repository
 import (
 	"fmt"
 
-	instance_model "github.com/evolution-foundation/evolution-go/pkg/instance/model"
+	instance_model "github.com/lucasgiovannibr/whatygo/pkg/instance/model"
 	"github.com/gomessguii/logger"
 	"github.com/google/uuid"
 	"gorm.io/gorm"
 
-	label_model "github.com/evolution-foundation/evolution-go/pkg/label/model"
+	label_model "github.com/lucasgiovannibr/whatygo/pkg/label/model"
 
-	message_model "github.com/evolution-foundation/evolution-go/pkg/message/model"
+	message_model "github.com/lucasgiovannibr/whatygo/pkg/message/model"
 )
 
 type InstanceRepository interface {

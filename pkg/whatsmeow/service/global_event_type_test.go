@@ -3,7 +3,7 @@ package whatsmeow_service
 import (
 	"testing"
 
-	"github.com/evolution-foundation/evolution-go/pkg/internal/event_types"
+	"github.com/lucasgiovannibr/whatygo/pkg/internal/event_types"
 )
 
 func TestGlobalEventTypeFor(t *testing.T) {

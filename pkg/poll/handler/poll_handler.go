@@ -5,10 +5,10 @@ import (
 	"errors"
 	"net/http"
 
-	"github.com/evolution-foundation/evolution-go/pkg/apierror"
-	logger_wrapper "github.com/evolution-foundation/evolution-go/pkg/logger"
-	poll_model "github.com/evolution-foundation/evolution-go/pkg/poll/model"
-	poll_service "github.com/evolution-foundation/evolution-go/pkg/poll/service"
+	"github.com/lucasgiovannibr/whatygo/pkg/apierror"
+	logger_wrapper "github.com/lucasgiovannibr/whatygo/pkg/logger"
+	poll_model "github.com/lucasgiovannibr/whatygo/pkg/poll/model"
+	poll_service "github.com/lucasgiovannibr/whatygo/pkg/poll/service"
 	"github.com/gin-gonic/gin"
 )
 

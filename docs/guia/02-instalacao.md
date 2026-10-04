@@ -109,8 +109,8 @@ docker compose up -d
 Antes de atualizar uma versão que mexa no banco (as notas ficam no [CHANGELOG](../../CHANGELOG.md)), **faça backup**:
 
 ```bash
-docker compose exec postgres pg_dump -U postgres evogo_auth > backup-evogo_auth.sql
-docker compose exec postgres pg_dump -U postgres evogo_users > backup-evogo_users.sql
+docker compose exec postgres pg_dump -U postgres whatygo_auth > backup-whatygo_auth.sql
+docker compose exec postgres pg_dump -U postgres whatygo_users > backup-whatygo_users.sql
 ```
 
 > **Importante:** este fork atualizou a biblioteca do WhatsApp, e as migrações do banco só andam para frente. Quem volta para a imagem do projeto original depois de usar o fork **não consegue** reabrir o mesmo banco. Por isso, o backup antes de trocar.
@@ -119,10 +119,10 @@ docker compose exec postgres pg_dump -U postgres evogo_users > backup-evogo_user
 
 | O que fazer | Comando (na pasta `docker/instalacao-simples`) |
 |---|---|
-| Ver os logs | `docker compose logs -f evolution-go` |
+| Ver os logs | `docker compose logs -f whatygo` |
 | Parar (mantém os dados) | `docker compose stop` |
 | Ligar de novo | `docker compose start` |
-| Reiniciar | `docker compose restart evolution-go` |
+| Reiniciar | `docker compose restart whatygo` |
 | **Apagar tudo, inclusive os números conectados** | `docker compose down -v` |
 
 ## Colocar na internet (servidor de verdade)
@@ -145,6 +145,6 @@ Mais sobre isso em [Configuração e segurança](./08-configuracao-e-seguranca.m
 | Docker Swarm | Vários servidores | `docker/examples/docker-compose.swarm.yml` |
 | Compilar do código (Go) | Desenvolvedores | [Guia de desenvolvimento](../wiki/desenvolvimento/development-guide.md) |
 
-> Os exemplos de `docker/examples/` também usam a imagem do WhatyGo (`ghcr.io/lucasgiovannibr/whatygo`). Quem tiver um arquivo antigo apontando para `evoapicloud/evolution-go` está usando a imagem do projeto original, **sem** as correções deste fork.
+> Os exemplos de `docker/examples/` também usam a imagem do WhatyGo (`ghcr.io/lucasgiovannibr/whatygo`). Quem tiver um arquivo antigo apontando para `evoapicloud/whatygo` está usando a imagem do projeto original, **sem** as correções deste fork.
 
 Próximo passo: [3. Primeiros passos](./03-primeiros-passos.md).

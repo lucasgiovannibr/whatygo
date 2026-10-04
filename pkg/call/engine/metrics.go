@@ -50,24 +50,24 @@ func (s *streamSum) add(st *StreamStats) {
 func newCallMetrics() *callMetrics {
 	return &callMetrics{
 		started: prometheus.NewCounterVec(prometheus.CounterOpts{
-			Name: "evolution_calls_started_total",
+			Name: "whatygo_calls_started_total",
 			Help: "Calls the engine started following, by direction and whether they began with video.",
 		}, []string{"direction", "video"}),
 		ended: prometheus.NewCounterVec(prometheus.CounterOpts{
-			Name: "evolution_calls_ended_total",
+			Name: "whatygo_calls_ended_total",
 			Help: "Calls that ended, by direction and reason (peer_hangup, hangup, rejected, rejected_busy, ring_timeout, stream_closed, media_stalled, max_duration, silence_timeout, instance_stopped, server, other).",
 		}, []string{"direction", "reason"}),
 		talk: prometheus.NewHistogramVec(prometheus.HistogramOpts{
-			Name:    "evolution_call_talk_seconds",
+			Name:    "whatygo_call_talk_seconds",
 			Help:    "How long answered calls lasted, from the media being ready to the end.",
 			Buckets: []float64{5, 15, 30, 60, 120, 300, 600, 1800, 3600},
 		}, []string{"direction"}),
 		dials: prometheus.NewCounterVec(prometheus.CounterOpts{
-			Name: "evolution_call_dials_total",
+			Name: "whatygo_call_dials_total",
 			Help: "Outgoing call attempts by result (ok, failed, rate_limited, busy, unavailable).",
 		}, []string{"result"}),
 		stalls: prometheus.NewCounter(prometheus.CounterOpts{
-			Name: "evolution_call_media_stalls_total",
+			Name: "whatygo_call_media_stalls_total",
 			Help: "Times an active call with a stream stopped receiving the peer's audio.",
 		}),
 		live: make(map[*StreamStats]struct{}),
@@ -152,16 +152,16 @@ func (m *Manager) Collectors() []prometheus.Collector {
 	}
 
 	for _, phase := range []Phase{PhaseCalling, PhaseRinging, PhaseConnecting, PhaseActive} {
-		gauge("evolution_calls_active", "Calls being followed right now, by phase.", prometheus.Labels{"phase": string(phase)},
+		gauge("whatygo_calls_active", "Calls being followed right now, by phase.", prometheus.Labels{"phase": string(phase)},
 			func() float64 { return float64(m.countCalls(func(t *Tracked) bool { return t.call.Phase() == phase })) })
 	}
 	for _, state := range []State{StateActive, StateHookFailed, StateBlockedProxy} {
-		gauge("evolution_call_engines", "Instances with a call engine, by state.", prometheus.Labels{"state": string(state)},
+		gauge("whatygo_call_engines", "Instances with a call engine, by state.", prometheus.Labels{"state": string(state)},
 			func() float64 { return float64(m.countEngines(state)) })
 	}
-	gauge("evolution_call_media_stalled", "Active calls that are not receiving the peer's audio right now.", nil,
+	gauge("whatygo_call_media_stalled", "Active calls that are not receiving the peer's audio right now.", nil,
 		func() float64 { return float64(m.countCalls(func(t *Tracked) bool { return t.stalled.Load() })) })
-	gauge("evolution_call_streams_attached", "Audio streams attached to a call right now.", nil,
+	gauge("whatygo_call_streams_attached", "Audio streams attached to a call right now.", nil,
 		func() float64 { _, n := c.streamTotals(); return float64(n) })
 
 	for _, kind := range []string{"audio", "video"} {
@@ -173,16 +173,16 @@ func (m *Manager) Collectors() []prometheus.Collector {
 			}
 			return v
 		}
-		counter("evolution_call_stream_frames_total", "Audio frames (60 ms) and video access units moved by the streams, to or from the client.",
+		counter("whatygo_call_stream_frames_total", "Audio frames (60 ms) and video access units moved by the streams, to or from the client.",
 			to, pick(func(s streamSum) uint64 { return s.toClient }, func(s streamSum) uint64 { return s.videoToClient }))
-		counter("evolution_call_stream_frames_total", "Audio frames (60 ms) and video access units moved by the streams, to or from the client.",
+		counter("whatygo_call_stream_frames_total", "Audio frames (60 ms) and video access units moved by the streams, to or from the client.",
 			from, pick(func(s streamSum) uint64 { return s.fromClient }, func(s streamSum) uint64 { return s.videoFromClient }))
-		counter("evolution_call_stream_dropped_total", "Audio frames and video access units the streams dropped: the client read too slowly (to_client) or the call refused them (from_client).",
+		counter("whatygo_call_stream_dropped_total", "Audio frames and video access units the streams dropped: the client read too slowly (to_client) or the call refused them (from_client).",
 			to, pick(func(s streamSum) uint64 { return s.droppedToClient }, func(s streamSum) uint64 { return s.videoDroppedToClient }))
-		counter("evolution_call_stream_dropped_total", "Audio frames and video access units the streams dropped: the client read too slowly (to_client) or the call refused them (from_client).",
+		counter("whatygo_call_stream_dropped_total", "Audio frames and video access units the streams dropped: the client read too slowly (to_client) or the call refused them (from_client).",
 			from, pick(func(s streamSum) uint64 { return s.droppedFromClient }, func(s streamSum) uint64 { return s.videoDroppedFromClient }))
 	}
-	counter("evolution_call_keyframe_requests_total", "Times WhatsApp asked for a video keyframe.", nil,
+	counter("whatygo_call_keyframe_requests_total", "Times WhatsApp asked for a video keyframe.", nil,
 		func(s streamSum) uint64 { return s.key })
 	return out
 }

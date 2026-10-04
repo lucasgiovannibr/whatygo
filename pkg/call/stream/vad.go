@@ -4,7 +4,7 @@ import (
 	"math"
 	"time"
 
-	call_engine "github.com/evolution-foundation/evolution-go/pkg/call/engine"
+	call_engine "github.com/lucasgiovannibr/whatygo/pkg/call/engine"
 )
 
 // The voice detector behind the speech_start and speech_end events: an energy detector

@@ -7,7 +7,7 @@ import (
 	"sync"
 	"time"
 
-	logger_wrapper "github.com/evolution-foundation/evolution-go/pkg/logger"
+	logger_wrapper "github.com/lucasgiovannibr/whatygo/pkg/logger"
 	"github.com/gomessguii/logger"
 	"github.com/gorilla/websocket"
 )

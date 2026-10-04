@@ -238,10 +238,10 @@ Tudo isso acontece em menos de 1 segundo! ⚡
 ### Estrutura Simplificada
 
 ```
-evolution-go/
+whatygo/
 │
 ├── cmd/
-│   └── evolution-go/
+│   └── whatygo/
 │       └── main.go          ← Arquivo principal (inicia tudo)
 │
 ├── pkg/                     ← Código principal

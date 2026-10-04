@@ -6,8 +6,8 @@ import (
 	"testing"
 	"time"
 
-	call_engine "github.com/evolution-foundation/evolution-go/pkg/call/engine"
-	call_history "github.com/evolution-foundation/evolution-go/pkg/call/history"
+	call_engine "github.com/lucasgiovannibr/whatygo/pkg/call/engine"
+	call_history "github.com/lucasgiovannibr/whatygo/pkg/call/history"
 )
 
 // fakeHistory is a call history that remembers what it was asked.

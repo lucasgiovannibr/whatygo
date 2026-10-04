@@ -40,8 +40,8 @@ A política de marcas ([`TRADEMARKS.md`](../../TRADEMARKS.md)) é separada da li
 | Textos e links de apoio do original (suporte, comunidade, termos, hospedagem parceira) | ✅ Removidos. O WhatyGo não fala em nome deles. |
 | Menção ao original | ✅ Só como origem: "Baseado no Evolution Go" e "fork do Evolution Go". |
 | Imagem Docker | ✅ `ghcr.io/lucasgiovannibr/whatygo` (a antiga `.../evolution-go` não é mais atualizada). |
-| Nome do **repositório** no GitHub (`evolution-go`) | ⚠️ **Pendente (ação sua, no GitHub):** renomear em *Settings → Repository name*. O GitHub redireciona os endereços antigos. |
-| Nomes **internos** do código (módulo Go `github.com/evolution-foundation/evolution-go`, nomes das métricas `evolution_*`, usuário `evolution` do contêiner, pasta `cmd/evolution-go`) | ➖ Mantidos de propósito: não são interface nem material de divulgação, e trocá-los quebraria painéis de monitoramento e integrações. O caminho do módulo Go também referencia a origem do código. |
+| Nome do **repositório** no GitHub | ✅ `lucasgiovannibr/whatygo`. |
+| Nomes **internos** do código (módulo Go `github.com/lucasgiovannibr/whatygo`, métricas `whatygo_*`, usuário `whatygo` do contêiner, pasta `cmd/whatygo`, bancos `whatygo_auth` e `whatygo_users`) | ✅ Trocados. A origem do código continua creditada em `LICENSE`, `NOTICE`, no README e no aviso do painel. |
 
 ### Uma contradição nos documentos do original
 

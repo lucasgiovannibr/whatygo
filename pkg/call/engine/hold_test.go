@@ -4,8 +4,8 @@ import (
 	"sync/atomic"
 	"testing"
 
-	call_engine "github.com/evolution-foundation/evolution-go/pkg/call/engine"
-	"github.com/evolution-foundation/evolution-go/pkg/call/engine/enginetest"
+	call_engine "github.com/lucasgiovannibr/whatygo/pkg/call/engine"
+	"github.com/lucasgiovannibr/whatygo/pkg/call/engine/enginetest"
 )
 
 // countingSource is a client with audio ready: it counts how often the call took a frame.

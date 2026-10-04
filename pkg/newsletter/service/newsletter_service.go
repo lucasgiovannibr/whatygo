@@ -2,12 +2,12 @@ package newsletter_service
 
 import (
 	"context"
-	"github.com/evolution-foundation/evolution-go/pkg/safemap"
-	"github.com/evolution-foundation/evolution-go/pkg/utils"
+	"github.com/lucasgiovannibr/whatygo/pkg/safemap"
+	"github.com/lucasgiovannibr/whatygo/pkg/utils"
 
-	instance_model "github.com/evolution-foundation/evolution-go/pkg/instance/model"
-	logger_wrapper "github.com/evolution-foundation/evolution-go/pkg/logger"
-	whatsmeow_service "github.com/evolution-foundation/evolution-go/pkg/whatsmeow/service"
+	instance_model "github.com/lucasgiovannibr/whatygo/pkg/instance/model"
+	logger_wrapper "github.com/lucasgiovannibr/whatygo/pkg/logger"
+	whatsmeow_service "github.com/lucasgiovannibr/whatygo/pkg/whatsmeow/service"
 	"go.mau.fi/whatsmeow"
 	"go.mau.fi/whatsmeow/types"
 )

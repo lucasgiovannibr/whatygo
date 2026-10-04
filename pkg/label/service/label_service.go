@@ -2,15 +2,15 @@ package label_service
 
 import (
 	"context"
-	"github.com/evolution-foundation/evolution-go/pkg/apierror"
-	"github.com/evolution-foundation/evolution-go/pkg/safemap"
+	"github.com/lucasgiovannibr/whatygo/pkg/apierror"
+	"github.com/lucasgiovannibr/whatygo/pkg/safemap"
 
-	instance_model "github.com/evolution-foundation/evolution-go/pkg/instance/model"
-	label_model "github.com/evolution-foundation/evolution-go/pkg/label/model"
-	label_repository "github.com/evolution-foundation/evolution-go/pkg/label/repository"
-	logger_wrapper "github.com/evolution-foundation/evolution-go/pkg/logger"
-	"github.com/evolution-foundation/evolution-go/pkg/utils"
-	whatsmeow_service "github.com/evolution-foundation/evolution-go/pkg/whatsmeow/service"
+	instance_model "github.com/lucasgiovannibr/whatygo/pkg/instance/model"
+	label_model "github.com/lucasgiovannibr/whatygo/pkg/label/model"
+	label_repository "github.com/lucasgiovannibr/whatygo/pkg/label/repository"
+	logger_wrapper "github.com/lucasgiovannibr/whatygo/pkg/logger"
+	"github.com/lucasgiovannibr/whatygo/pkg/utils"
+	whatsmeow_service "github.com/lucasgiovannibr/whatygo/pkg/whatsmeow/service"
 	"go.mau.fi/whatsmeow"
 	"go.mau.fi/whatsmeow/appstate"
 )

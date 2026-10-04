@@ -3,9 +3,9 @@ package chat_handler
 import (
 	"net/http"
 
-	"github.com/evolution-foundation/evolution-go/pkg/apierror"
-	chat_service "github.com/evolution-foundation/evolution-go/pkg/chat/service"
-	instance_model "github.com/evolution-foundation/evolution-go/pkg/instance/model"
+	"github.com/lucasgiovannibr/whatygo/pkg/apierror"
+	chat_service "github.com/lucasgiovannibr/whatygo/pkg/chat/service"
+	instance_model "github.com/lucasgiovannibr/whatygo/pkg/instance/model"
 	"github.com/gin-gonic/gin"
 )
 

@@ -39,7 +39,7 @@ type InstanceLocker interface {
 
 func lockKey(instanceID string) int64 {
 	h := fnv.New64a()
-	_, _ = h.Write([]byte("evolution-go:instance:" + instanceID))
+	_, _ = h.Write([]byte("whatygo:instance:" + instanceID))
 	return int64(h.Sum64())
 }
 

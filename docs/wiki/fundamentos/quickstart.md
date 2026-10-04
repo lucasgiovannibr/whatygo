@@ -295,7 +295,7 @@ Status deve ser `open`.
 
 3. **Logs do servidor:**
 ```bash
-docker-compose logs -f evolution-go
+docker-compose logs -f whatygo
 ```
 
 ### Erro de Autenticação

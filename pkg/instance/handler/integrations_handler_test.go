@@ -10,8 +10,8 @@ import (
 	"github.com/gin-gonic/gin"
 	"gorm.io/gorm"
 
-	instance_model "github.com/evolution-foundation/evolution-go/pkg/instance/model"
-	instance_service "github.com/evolution-foundation/evolution-go/pkg/instance/service"
+	instance_model "github.com/lucasgiovannibr/whatygo/pkg/instance/model"
+	instance_service "github.com/lucasgiovannibr/whatygo/pkg/instance/service"
 )
 
 const validID = "6f1c1b2e-3c1d-4a51-9a4b-0d3a7d9f2b11"

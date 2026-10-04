@@ -15,8 +15,8 @@ import (
 	"github.com/prometheus/client_golang/prometheus/promhttp"
 	"go.mau.fi/whatsmeow"
 
-	producer_interfaces "github.com/evolution-foundation/evolution-go/pkg/events/interfaces"
-	"github.com/evolution-foundation/evolution-go/pkg/safemap"
+	producer_interfaces "github.com/lucasgiovannibr/whatygo/pkg/events/interfaces"
+	"github.com/lucasgiovannibr/whatygo/pkg/safemap"
 )
 
 // Registry is the one the handler serves.
@@ -24,61 +24,61 @@ var Registry = prometheus.NewRegistry()
 
 var (
 	httpRequests = prometheus.NewCounterVec(prometheus.CounterOpts{
-		Name: "evolution_http_requests_total",
+		Name: "whatygo_http_requests_total",
 		Help: "HTTP requests by method, route pattern and status code.",
 	}, []string{"method", "route", "status"})
 
 	httpDuration = prometheus.NewHistogramVec(prometheus.HistogramOpts{
-		Name:    "evolution_http_request_duration_seconds",
+		Name:    "whatygo_http_request_duration_seconds",
 		Help:    "HTTP request duration by method and route pattern.",
 		Buckets: []float64{.005, .01, .025, .05, .1, .25, .5, 1, 2.5, 5, 10, 30, 60},
 	}, []string{"method", "route"})
 
 	httpInFlight = prometheus.NewGauge(prometheus.GaugeOpts{
-		Name: "evolution_http_requests_in_flight",
+		Name: "whatygo_http_requests_in_flight",
 		Help: "HTTP requests being served right now.",
 	})
 
 	// Events counts what the WhatsApp clients delivered, by event type (a bounded set).
 	Events = prometheus.NewCounterVec(prometheus.CounterOpts{
-		Name: "evolution_whatsapp_events_total",
+		Name: "whatygo_whatsapp_events_total",
 		Help: "Events received from WhatsApp, by event type.",
 	}, []string{"type"})
 
 	// MessagesDropped counts messages that were not written to the database: the write
 	// queue was full or the batch failed.
 	MessagesDropped = prometheus.NewCounter(prometheus.CounterOpts{
-		Name: "evolution_messages_dropped_total",
+		Name: "whatygo_messages_dropped_total",
 		Help: "Messages not persisted (write queue full or batch failed).",
 	})
 
 	// SendThrottled counts sends refused because the instance was over its send limit
 	// (answered with 429).
 	SendThrottled = prometheus.NewCounter(prometheus.CounterOpts{
-		Name: "evolution_send_throttled_total",
+		Name: "whatygo_send_throttled_total",
 		Help: "Sends refused with 429 because the instance was over its send limit.",
 	})
 
 	// CallHistorySaved and CallHistoryFailed count the call records written to the
 	// database and the ones that could not be (the call itself is never affected).
 	CallHistorySaved = prometheus.NewCounter(prometheus.CounterOpts{
-		Name: "evolution_call_history_saved_total",
+		Name: "whatygo_call_history_saved_total",
 		Help: "Call history records saved.",
 	})
 	CallHistoryFailed = prometheus.NewCounter(prometheus.CounterOpts{
-		Name: "evolution_call_history_failed_total",
+		Name: "whatygo_call_history_failed_total",
 		Help: "Call history records that could not be saved.",
 	})
 
 	// MediaPending is the number of received messages with media waiting for a worker.
 	MediaPending = prometheus.NewGauge(prometheus.GaugeOpts{
-		Name: "evolution_media_pending",
+		Name: "whatygo_media_pending",
 		Help: "Received messages with media waiting for a media worker.",
 	})
 
 	// MessageBatchSize is how many messages each database write carried.
 	MessageBatchSize = prometheus.NewHistogram(prometheus.HistogramOpts{
-		Name:    "evolution_message_batch_size",
+		Name:    "whatygo_message_batch_size",
 		Help:    "Messages per batched database write.",
 		Buckets: []float64{1, 2, 5, 10, 25, 50, 100, 200},
 	})
@@ -127,7 +127,7 @@ func RegisterDBStats(name string, db *sql.DB) {
 	labels := prometheus.Labels{"db": name}
 	gauge := func(metric, help string, value func(sql.DBStats) float64) {
 		Registry.MustRegister(prometheus.NewGaugeFunc(prometheus.GaugeOpts{
-			Name: "evolution_db_" + metric, Help: help, ConstLabels: labels,
+			Name: "whatygo_db_" + metric, Help: help, ConstLabels: labels,
 		}, func() float64 { return value(db.Stats()) }))
 	}
 	gauge("connections_open", "Open connections (in use + idle).", func(s sql.DBStats) float64 { return float64(s.OpenConnections) })
@@ -154,9 +154,9 @@ func RegisterInstances(clients *safemap.Map[*whatsmeow.Client]) {
 		name, help string
 		pred       func(*whatsmeow.Client) bool
 	}{
-		{"evolution_instances_registered", "Instances with a WhatsApp client in this process.", func(*whatsmeow.Client) bool { return true }},
-		{"evolution_instances_connected", "Instances whose websocket is connected.", func(c *whatsmeow.Client) bool { return c.IsConnected() }},
-		{"evolution_instances_logged_in", "Instances logged in to WhatsApp.", func(c *whatsmeow.Client) bool { return c.IsLoggedIn() }},
+		{"whatygo_instances_registered", "Instances with a WhatsApp client in this process.", func(*whatsmeow.Client) bool { return true }},
+		{"whatygo_instances_connected", "Instances whose websocket is connected.", func(c *whatsmeow.Client) bool { return c.IsConnected() }},
+		{"whatygo_instances_logged_in", "Instances logged in to WhatsApp.", func(c *whatsmeow.Client) bool { return c.IsLoggedIn() }},
 	} {
 		Registry.MustRegister(prometheus.NewGaugeFunc(prometheus.GaugeOpts{Name: g.name, Help: g.help}, count(g.pred)))
 	}
@@ -178,12 +178,12 @@ func RegisterWebhookQueues(stats func() *producer_interfaces.WebhookStats) {
 	counter := func(name, help string, value func(*producer_interfaces.WebhookStats) float64) {
 		Registry.MustRegister(prometheus.NewCounterFunc(prometheus.CounterOpts{Name: name, Help: help}, read(value)))
 	}
-	gauge("evolution_webhook_pending_events", "Events waiting in the webhook queues.", func(s *producer_interfaces.WebhookStats) float64 { return float64(s.Pending) })
-	gauge("evolution_webhook_pending_bytes", "Bytes waiting in the webhook queues.", func(s *producer_interfaces.WebhookStats) float64 { return float64(s.PendingBytes) })
-	gauge("evolution_webhook_in_flight", "Webhook deliveries in progress.", func(s *producer_interfaces.WebhookStats) float64 { return float64(s.InFlight) })
-	gauge("evolution_webhook_destinations", "Webhook URLs with events pending or in flight.", func(s *producer_interfaces.WebhookStats) float64 { return float64(s.Destinations) })
-	gauge("evolution_webhook_degraded_destinations", "Webhook URLs whose last event exhausted its retries.", func(s *producer_interfaces.WebhookStats) float64 { return float64(s.DegradedDestinations) })
-	counter("evolution_webhook_sent_total", "Webhook events delivered.", func(s *producer_interfaces.WebhookStats) float64 { return float64(s.Sent) })
-	counter("evolution_webhook_failed_total", "Webhook events that exhausted their retries.", func(s *producer_interfaces.WebhookStats) float64 { return float64(s.Failed) })
-	counter("evolution_webhook_dropped_total", "Webhook events dropped from a full queue.", func(s *producer_interfaces.WebhookStats) float64 { return float64(s.Dropped) })
+	gauge("whatygo_webhook_pending_events", "Events waiting in the webhook queues.", func(s *producer_interfaces.WebhookStats) float64 { return float64(s.Pending) })
+	gauge("whatygo_webhook_pending_bytes", "Bytes waiting in the webhook queues.", func(s *producer_interfaces.WebhookStats) float64 { return float64(s.PendingBytes) })
+	gauge("whatygo_webhook_in_flight", "Webhook deliveries in progress.", func(s *producer_interfaces.WebhookStats) float64 { return float64(s.InFlight) })
+	gauge("whatygo_webhook_destinations", "Webhook URLs with events pending or in flight.", func(s *producer_interfaces.WebhookStats) float64 { return float64(s.Destinations) })
+	gauge("whatygo_webhook_degraded_destinations", "Webhook URLs whose last event exhausted its retries.", func(s *producer_interfaces.WebhookStats) float64 { return float64(s.DegradedDestinations) })
+	counter("whatygo_webhook_sent_total", "Webhook events delivered.", func(s *producer_interfaces.WebhookStats) float64 { return float64(s.Sent) })
+	counter("whatygo_webhook_failed_total", "Webhook events that exhausted their retries.", func(s *producer_interfaces.WebhookStats) float64 { return float64(s.Failed) })
+	counter("whatygo_webhook_dropped_total", "Webhook events dropped from a full queue.", func(s *producer_interfaces.WebhookStats) float64 { return float64(s.Dropped) })
 }

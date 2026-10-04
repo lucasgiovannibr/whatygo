@@ -7,8 +7,8 @@ import (
 
 	"github.com/gomessguii/logger"
 
-	message_model "github.com/evolution-foundation/evolution-go/pkg/message/model"
-	"github.com/evolution-foundation/evolution-go/pkg/metrics"
+	message_model "github.com/lucasgiovannibr/whatygo/pkg/message/model"
+	"github.com/lucasgiovannibr/whatygo/pkg/metrics"
 )
 
 const (

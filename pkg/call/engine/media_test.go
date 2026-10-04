@@ -6,8 +6,8 @@ import (
 	"testing"
 	"time"
 
-	call_engine "github.com/evolution-foundation/evolution-go/pkg/call/engine"
-	"github.com/evolution-foundation/evolution-go/pkg/call/engine/enginetest"
+	call_engine "github.com/lucasgiovannibr/whatygo/pkg/call/engine"
+	"github.com/lucasgiovannibr/whatygo/pkg/call/engine/enginetest"
 	"github.com/prometheus/client_golang/prometheus"
 )
 
@@ -196,24 +196,24 @@ func TestCallMetricsFollowACall(t *testing.T) {
 	r := newMediaRig(t, call_engine.Options{MediaStall: -1}, true)
 	reg := registry(t, r.m)
 
-	if got := scrape(t, reg, "evolution_calls_started_total", map[string]string{"direction": "incoming", "video": "false"}); got != 1 {
+	if got := scrape(t, reg, "whatygo_calls_started_total", map[string]string{"direction": "incoming", "video": "false"}); got != 1 {
 		t.Errorf("started = %v", got)
 	}
-	if got := scrape(t, reg, "evolution_calls_active", map[string]string{"phase": "active"}); got != 1 {
+	if got := scrape(t, reg, "whatygo_calls_active", map[string]string{"phase": "active"}); got != 1 {
 		t.Errorf("active calls = %v", got)
 	}
-	if got := scrape(t, reg, "evolution_call_streams_attached", nil); got != 1 {
+	if got := scrape(t, reg, "whatygo_call_streams_attached", nil); got != 1 {
 		t.Errorf("streams attached = %v", got)
 	}
 
 	r.call.End("") // the peer hangs up: WhatsApp sends no reason
-	if got := scrape(t, reg, "evolution_calls_ended_total", map[string]string{"direction": "incoming", "reason": "peer_hangup"}); got != 1 {
+	if got := scrape(t, reg, "whatygo_calls_ended_total", map[string]string{"direction": "incoming", "reason": "peer_hangup"}); got != 1 {
 		t.Errorf("ended = %v", got)
 	}
-	if got := scrape(t, reg, "evolution_call_talk_seconds", map[string]string{"direction": "incoming"}); got != 1 {
+	if got := scrape(t, reg, "whatygo_call_talk_seconds", map[string]string{"direction": "incoming"}); got != 1 {
 		t.Errorf("talk time observations = %v", got)
 	}
-	if got := scrape(t, reg, "evolution_calls_active", map[string]string{"phase": "active"}); got != 0 {
+	if got := scrape(t, reg, "whatygo_calls_active", map[string]string{"phase": "active"}); got != 0 {
 		t.Errorf("active calls after the end = %v", got)
 	}
 }
@@ -227,10 +227,10 @@ func TestACallThatNeverRanIsNotTalkTime(t *testing.T) {
 		t.Fatal(err)
 	}
 	f.Reject()
-	if got := scrape(t, reg, "evolution_calls_ended_total", map[string]string{"reason": "rejected"}); got != 1 {
+	if got := scrape(t, reg, "whatygo_calls_ended_total", map[string]string{"reason": "rejected"}); got != 1 {
 		t.Errorf("ended = %v", got)
 	}
-	if got := scrape(t, reg, "evolution_call_talk_seconds", nil); got != 0 {
+	if got := scrape(t, reg, "whatygo_call_talk_seconds", nil); got != 0 {
 		t.Errorf("a call that was never answered has talk time (%v)", got)
 	}
 }
@@ -245,10 +245,10 @@ func TestEndReasonLabelStaysBounded(t *testing.T) {
 		}
 		f.End(reason)
 	}
-	if got := scrape(t, reg, "evolution_calls_ended_total", map[string]string{"reason": "server"}); got != 2 {
+	if got := scrape(t, reg, "whatygo_calls_ended_total", map[string]string{"reason": "server"}); got != 2 {
 		t.Errorf("server reasons = %v, want 2 under one label", got)
 	}
-	if got := scrape(t, reg, "evolution_calls_ended_total", map[string]string{"reason": "other"}); got != 2 {
+	if got := scrape(t, reg, "whatygo_calls_ended_total", map[string]string{"reason": "other"}); got != 2 {
 		t.Errorf("free-text reasons = %v, want 2 under \"other\"", got)
 	}
 }
@@ -259,7 +259,7 @@ func TestStreamCountersNeverGoDown(t *testing.T) {
 	r := newMediaRig(t, call_engine.Options{MediaStall: -1}, true)
 	reg := registry(t, r.m)
 	toClient := map[string]string{"direction": "to_client", "kind": "audio"}
-	const name = "evolution_call_stream_frames_total"
+	const name = "whatygo_call_stream_frames_total"
 
 	r.stats.ToClient.Add(5)
 	if got := scrape(t, reg, name, toClient); got != 5 {
@@ -272,7 +272,7 @@ func TestStreamCountersNeverGoDown(t *testing.T) {
 	if got := scrape(t, reg, name, toClient); got != 5 {
 		t.Fatalf("after detach = %v, want 5", got)
 	}
-	if got := scrape(t, reg, "evolution_call_streams_attached", nil); got != 0 {
+	if got := scrape(t, reg, "whatygo_call_streams_attached", nil); got != 0 {
 		t.Errorf("streams attached after detach = %v", got)
 	}
 
@@ -295,10 +295,10 @@ func TestStreamCountersNeverGoDown(t *testing.T) {
 	if got := scrape(t, reg, name, toClient); got != 8 {
 		t.Fatalf("after the last detach = %v, want 8", got)
 	}
-	if got := scrape(t, reg, "evolution_call_stream_dropped_total", toClient); got != 2 {
+	if got := scrape(t, reg, "whatygo_call_stream_dropped_total", toClient); got != 2 {
 		t.Errorf("dropped = %v, want 2", got)
 	}
-	if got := scrape(t, reg, "evolution_call_keyframe_requests_total", nil); got != 1 {
+	if got := scrape(t, reg, "whatygo_call_keyframe_requests_total", nil); got != 1 {
 		t.Errorf("keyframe requests = %v, want 1", got)
 	}
 }
@@ -309,7 +309,7 @@ func TestDialMetrics(t *testing.T) {
 	if _, err := m.Dial(context.Background(), "nobody", "5511999990000", call_engine.DialOptions{}); !errors.Is(err, call_engine.ErrEngineUnavailable) {
 		t.Fatalf("Dial = %v", err)
 	}
-	if got := scrape(t, reg, "evolution_call_dials_total", map[string]string{"result": "unavailable"}); got != 1 {
+	if got := scrape(t, reg, "whatygo_call_dials_total", map[string]string{"result": "unavailable"}); got != 1 {
 		t.Errorf("unavailable dials = %v", got)
 	}
 }

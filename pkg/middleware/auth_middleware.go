@@ -4,9 +4,9 @@ import (
 	"crypto/subtle"
 	"net/http"
 
-	"github.com/evolution-foundation/evolution-go/pkg/apierror"
-	"github.com/evolution-foundation/evolution-go/pkg/config"
-	instance_service "github.com/evolution-foundation/evolution-go/pkg/instance/service"
+	"github.com/lucasgiovannibr/whatygo/pkg/apierror"
+	"github.com/lucasgiovannibr/whatygo/pkg/config"
+	instance_service "github.com/lucasgiovannibr/whatygo/pkg/instance/service"
 	"github.com/gin-gonic/gin"
 )
 

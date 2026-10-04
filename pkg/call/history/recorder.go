@@ -4,8 +4,8 @@ import (
 	"strings"
 	"time"
 
-	call_engine "github.com/evolution-foundation/evolution-go/pkg/call/engine"
-	"github.com/evolution-foundation/evolution-go/pkg/metrics"
+	call_engine "github.com/lucasgiovannibr/whatygo/pkg/call/engine"
+	"github.com/lucasgiovannibr/whatygo/pkg/metrics"
 )
 
 // PhoneResolver turns the peer of a call into a phone number (digits only), or "" when it

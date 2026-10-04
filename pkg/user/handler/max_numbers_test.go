@@ -9,8 +9,8 @@ import (
 
 	"github.com/gin-gonic/gin"
 
-	instance_model "github.com/evolution-foundation/evolution-go/pkg/instance/model"
-	user_service "github.com/evolution-foundation/evolution-go/pkg/user/service"
+	instance_model "github.com/lucasgiovannibr/whatygo/pkg/instance/model"
+	user_service "github.com/lucasgiovannibr/whatygo/pkg/user/service"
 )
 
 // The service must never be reached with a list above the cap.

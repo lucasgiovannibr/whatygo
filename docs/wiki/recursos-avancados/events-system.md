@@ -393,13 +393,13 @@ NATS_ENABLED=true
 Eventos são publicados em tópicos no formato:
 
 ```
-evolution.{instance}.{event_type}
+whatygo.{instance}.{event_type}
 ```
 
 **Exemplos**:
-- `evolution.vendas.message` - Mensagens da instância "vendas"
-- `evolution.suporte.calloffer` - Chamadas da instância "suporte"
-- `evolution.*.message` - Mensagens de todas as instâncias (wildcard)
+- `whatygo.vendas.message` - Mensagens da instância "vendas"
+- `whatygo.suporte.calloffer` - Chamadas da instância "suporte"
+- `whatygo.*.message` - Mensagens de todas as instâncias (wildcard)
 
 ### Consumindo Eventos
 
@@ -421,7 +421,7 @@ func main() {
     defer nc.Close()
 
     // Subscrever a eventos de mensagens de todas as instâncias
-    sub, err := nc.Subscribe("evolution.*.message", func(m *nats.Msg) {
+    sub, err := nc.Subscribe("whatygo.*.message", func(m *nats.Msg) {
         fmt.Printf("Recebido no tópico %s: %s
 ", m.Subject, string(m.Data))
     })
@@ -826,7 +826,7 @@ curl -X POST http://localhost:4000/instance/connect \
 1. ✅ Webhook global (`WEBHOOK_URL`)
 2. ✅ Webhook da instância (`webhookUrl`)
 3. ✅ Fila RabbitMQ `message`
-4. ✅ Tópico NATS `evolution.vendas.message`
+4. ✅ Tópico NATS `whatygo.vendas.message`
 5. ✅ Clientes WebSocket conectados
 
 **Total**: **5 destinos** para o mesmo evento!
@@ -987,7 +987,7 @@ http://localhost:15672
 **NATS**:
 ```bash
 nats server list
-nats sub "evolution.>"
+nats sub "whatygo.>"
 ```
 
 ### 5. Configure Dead Letter Queue

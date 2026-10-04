@@ -5,7 +5,7 @@ import (
 	"strings"
 	"time"
 
-	message_model "github.com/evolution-foundation/evolution-go/pkg/message/model"
+	message_model "github.com/lucasgiovannibr/whatygo/pkg/message/model"
 	"go.mau.fi/whatsmeow/types"
 	"go.mau.fi/whatsmeow/types/events"
 )

@@ -9,7 +9,7 @@ import (
 	"strings"
 	"time"
 
-	storage_interfaces "github.com/evolution-foundation/evolution-go/pkg/storage/interfaces"
+	storage_interfaces "github.com/lucasgiovannibr/whatygo/pkg/storage/interfaces"
 	"github.com/minio/minio-go/v7"
 	"github.com/minio/minio-go/v7/pkg/credentials"
 )
@@ -18,7 +18,7 @@ import (
 // its own folder: message ids are not unique across accounts (two instances in the same
 // group receive the same message), so a flat <messageID>.<ext> let one instance overwrite
 // another's object, and made it impossible to remove one instance's files.
-const mediaFolder = "evolution-go-medias"
+const mediaFolder = "whatygo-medias"
 
 // maxPresignTTL is the longest an S3 presigned URL can live (7 days).
 const maxPresignTTL = 7 * 24 * time.Hour

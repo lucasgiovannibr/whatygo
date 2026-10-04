@@ -6,8 +6,8 @@ import (
 	"strings"
 	"testing"
 
-	"github.com/evolution-foundation/evolution-go/pkg/config"
-	logger_wrapper "github.com/evolution-foundation/evolution-go/pkg/logger"
+	"github.com/lucasgiovannibr/whatygo/pkg/config"
+	logger_wrapper "github.com/lucasgiovannibr/whatygo/pkg/logger"
 	"golang.org/x/net/html"
 )
 

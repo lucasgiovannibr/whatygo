@@ -160,7 +160,7 @@ Resumo (detalhes em [Receber mensagens e eventos](./06-receber-mensagens-e-event
 
 | Funcionalidade | Situação |
 |---|---|
-| **PostgreSQL** (dois bancos, `evogo_auth` e `evogo_users`; o servidor os cria sozinho) | ✅ |
+| **PostgreSQL** (dois bancos, `whatygo_auth` e `whatygo_users`; o servidor os cria sozinho) | ✅ |
 | **Pool de conexões** limitado, e correção do vazamento que causava `too many clients already` | ✅ 🆕 |
 | **Guardar mensagens** (`DATABASE_SAVE_MESSAGES`) | ⬜ |
 | **MinIO / S3** para mídias: bucket **privado**, links temporários, apaga ao remover a instância | 🟡 🆕 |

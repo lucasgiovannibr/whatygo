@@ -3,7 +3,7 @@ package instance_repository
 import (
 	"testing"
 
-	instance_model "github.com/evolution-foundation/evolution-go/pkg/instance/model"
+	instance_model "github.com/lucasgiovannibr/whatygo/pkg/instance/model"
 )
 
 func TestBuildAdvancedSettingsUpdates(t *testing.T) {

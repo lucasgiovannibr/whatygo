@@ -4,8 +4,8 @@ import (
 	"testing"
 	"time"
 
-	call_engine "github.com/evolution-foundation/evolution-go/pkg/call/engine"
-	"github.com/evolution-foundation/evolution-go/pkg/call/engine/enginetest"
+	call_engine "github.com/lucasgiovannibr/whatygo/pkg/call/engine"
+	"github.com/lucasgiovannibr/whatygo/pkg/call/engine/enginetest"
 )
 
 // A greeting queued while the other phone rings plays when it answers, and a mark set

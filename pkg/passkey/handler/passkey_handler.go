@@ -1,5 +1,5 @@
 // Package handler exposes the PUBLIC passkey-ceremony HTTP endpoints that the
-// Evolution Passkey Helper browser extension calls from the web.whatsapp.com
+// WhatyGo Passkey Helper browser extension calls from the web.whatsapp.com
 // origin. These routes are intentionally unauthenticated (no apikey): access is
 // gated only by an opaque, short-lived ceremony token minted per pairing.
 //
@@ -13,8 +13,8 @@ package handler
 import (
 	"net/http"
 
-	"github.com/evolution-foundation/evolution-go/pkg/apierror"
-	whatsmeow_service "github.com/evolution-foundation/evolution-go/pkg/whatsmeow/service"
+	"github.com/lucasgiovannibr/whatygo/pkg/apierror"
+	whatsmeow_service "github.com/lucasgiovannibr/whatygo/pkg/whatsmeow/service"
 	"github.com/gin-gonic/gin"
 	"go.mau.fi/whatsmeow/types"
 )
@@ -32,7 +32,7 @@ func NewPasskeyHandler(svc whatsmeow_service.WhatsmeowService) *PasskeyHandler {
 // GetCeremony returns the current ceremony state for a token. The extension
 // polls this and drives its UI off the `stage` field.
 // @Summary Get passkey ceremony state
-// @Description Returns the current WebAuthn passkey-pairing ceremony state for a token. PUBLIC endpoint (no apikey) — access is gated by the opaque short-lived ceremony token. Polled by the Evolution Passkey Helper browser extension.
+// @Description Returns the current WebAuthn passkey-pairing ceremony state for a token. PUBLIC endpoint (no apikey) — access is gated by the opaque short-lived ceremony token. Polled by the WhatyGo Passkey Helper browser extension.
 // @Tags Passkey
 // @Produce json
 // @Param token path string true "Ceremony token"

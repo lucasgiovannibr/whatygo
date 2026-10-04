@@ -1,4 +1,4 @@
-module github.com/evolution-foundation/evolution-go
+module github.com/lucasgiovannibr/whatygo
 
 go 1.26.8
 

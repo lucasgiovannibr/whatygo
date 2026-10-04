@@ -3,9 +3,9 @@ package group_handler
 import (
 	"net/http"
 
-	"github.com/evolution-foundation/evolution-go/pkg/apierror"
-	group_service "github.com/evolution-foundation/evolution-go/pkg/group/service"
-	instance_model "github.com/evolution-foundation/evolution-go/pkg/instance/model"
+	"github.com/lucasgiovannibr/whatygo/pkg/apierror"
+	group_service "github.com/lucasgiovannibr/whatygo/pkg/group/service"
+	instance_model "github.com/lucasgiovannibr/whatygo/pkg/instance/model"
 	"github.com/gin-gonic/gin"
 )
 

@@ -5,7 +5,7 @@ import (
 	"testing"
 	"time"
 
-	call_engine "github.com/evolution-foundation/evolution-go/pkg/call/engine"
+	call_engine "github.com/lucasgiovannibr/whatygo/pkg/call/engine"
 )
 
 func testBridge() (*bridge, *call_engine.StreamStats, *time.Time) {

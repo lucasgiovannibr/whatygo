@@ -19,7 +19,6 @@ const defaultUrl = () => (typeof window !== 'undefined' ? window.location.origin
  */
 try {
   localStorage.removeItem('whatygo-auth');
-  localStorage.removeItem('evolution-auth');
 } catch {
   /* storage blocked: nothing to clean */
 }
