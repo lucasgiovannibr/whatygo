@@ -2,9 +2,11 @@ package websocket_producer
 
 import (
 	"context"
+	"encoding/json"
 	"net/http"
 	"strings"
 	"sync"
+	"sync/atomic"
 	"time"
 
 	"github.com/gomessguii/logger"
@@ -12,9 +14,35 @@ import (
 	logger_wrapper "github.com/lucasgiovannibr/whatygo/pkg/logger"
 )
 
-// writeTimeout bounds a single frame write so one stalled subscriber cannot
-// hold the event pipeline (and its per-connection write lock) forever.
-const writeTimeout = 10 * time.Second
+// Limits of a subscriber connection.
+//
+// The socket is for the server to talk to the client: a subscriber never has to send more
+// than control frames. There used to be no limit on what it could send (one 300 MB frame took
+// the process from 81 MB to 873 MB), no check that it was still there (a half-open connection
+// lived until a write failed), and events were written to every subscriber one after the other
+// from the goroutine that produced them, so a subscriber that stopped reading held those
+// goroutines, and the payloads they carry, for the whole write timeout, event after event.
+const (
+	// writeTimeout bounds a single frame write so one stalled subscriber cannot
+	// hold its writer forever.
+	writeTimeout = 10 * time.Second
+
+	// readLimit is the largest message a subscriber may send.
+	readLimit = 4 << 10
+	// sendQueueMessages and sendQueueBytes bound what waits for a subscriber that reads
+	// slower than events arrive. When either is exceeded the subscriber is disconnected (it
+	// can reconnect) instead of piling up events in memory.
+	sendQueueMessages = 1024
+	sendQueueBytes    = 32 << 20
+)
+
+// pongWait is how long a subscriber may stay silent before it is dropped: the server pings
+// every pingPeriod and any answer (or message) renews the deadline. Variables so the tests
+// do not wait for them.
+var (
+	pongWait   = 60 * time.Second
+	pingPeriod = 25 * time.Second
+)
 
 var upgrader = websocket.Upgrader{
 	ReadBufferSize:  1024,
@@ -25,21 +53,83 @@ var upgrader = websocket.Upgrader{
 	},
 }
 
-// wsConn serializes writes to a gorilla connection. gorilla/websocket supports
-// at most one concurrent writer per connection; without this lock, two events
-// produced at the same time (e.g. a Receipt during a HistorySync burst) made the
-// library panic with "concurrent write to websocket connection" and took the
-// whole process down (issue #99).
+// wsConn is one subscriber. Events are queued to it and written by its own goroutine, the
+// only one that writes data frames (gorilla/websocket supports a single concurrent writer;
+// two events produced at the same time used to make the library panic with "concurrent
+// write to websocket connection", issue #99).
 type wsConn struct {
-	conn    *websocket.Conn
+	conn *websocket.Conn
+
+	// writeMu serializes the writer goroutine and the close frame sent on shutdown.
 	writeMu sync.Mutex
+
+	send   chan []byte
+	queued atomic.Int64 // bytes waiting in send
+
+	closeOnce sync.Once
+	done      chan struct{}
 }
 
-func (c *wsConn) writeJSON(v interface{}) error {
-	c.writeMu.Lock()
-	defer c.writeMu.Unlock()
-	_ = c.conn.SetWriteDeadline(time.Now().Add(writeTimeout))
-	return c.conn.WriteJSON(v)
+func newWsConn(conn *websocket.Conn) *wsConn {
+	return &wsConn{conn: conn, send: make(chan []byte, sendQueueMessages), done: make(chan struct{})}
+}
+
+// enqueue hands a frame to the writer without blocking. It reports false when the subscriber
+// is gone or has too much waiting; the caller disconnects it.
+func (c *wsConn) enqueue(frame []byte) bool {
+	select {
+	case <-c.done:
+		return false
+	default:
+	}
+	if c.queued.Add(int64(len(frame))) > sendQueueBytes {
+		c.queued.Add(-int64(len(frame)))
+		return false
+	}
+	select {
+	case c.send <- frame:
+		return true
+	default:
+		c.queued.Add(-int64(len(frame)))
+		return false
+	}
+}
+
+// close ends the connection and its writer (once). The reader of ServeWs notices and
+// removes the subscriber from the registry.
+func (c *wsConn) close() {
+	c.closeOnce.Do(func() {
+		close(c.done)
+		_ = c.conn.Close()
+	})
+}
+
+// writeLoop writes the queued frames and pings the subscriber; it ends when the connection is
+// closed or a write fails.
+func (c *wsConn) writeLoop(pingEvery time.Duration) {
+	ping := time.NewTicker(pingEvery)
+	defer ping.Stop()
+	for {
+		select {
+		case <-c.done:
+			return
+		case frame := <-c.send:
+			c.queued.Add(-int64(len(frame)))
+			c.writeMu.Lock()
+			_ = c.conn.SetWriteDeadline(time.Now().Add(writeTimeout))
+			err := c.conn.WriteMessage(websocket.TextMessage, frame)
+			c.writeMu.Unlock()
+			if err != nil {
+				c.close()
+				return
+			}
+		case <-ping.C:
+			if err := c.conn.WriteControl(websocket.PingMessage, nil, time.Now().Add(writeTimeout)); err != nil {
+				c.close()
+				return
+			}
+		}
+	}
 }
 
 type websocketProducer struct {
@@ -69,13 +159,23 @@ func ServeWs(w http.ResponseWriter, r *http.Request, instanceId string, producer
 
 	logger.LogInfo("Conexão WebSocket estabelecida com sucesso")
 
-	conn := &wsConn{conn: rawConn}
+	// The subscriber has nothing to say but control frames, and must answer the pings.
+	wait, pingEvery := pongWait, pingPeriod
+	rawConn.SetReadLimit(readLimit)
+	_ = rawConn.SetReadDeadline(time.Now().Add(wait))
+	rawConn.SetPongHandler(func(string) error {
+		return rawConn.SetReadDeadline(time.Now().Add(wait))
+	})
+
+	conn := newWsConn(rawConn)
 
 	if instanceId == "" {
 		producer.AddBroadcastClient(conn)
 	} else {
 		producer.AddClient(instanceId, conn)
 	}
+
+	go conn.writeLoop(pingEvery)
 
 	// Goroutine para limpar conexão quando fechada
 	go func() {
@@ -87,9 +187,10 @@ func ServeWs(w http.ResponseWriter, r *http.Request, instanceId string, producer
 				} else {
 					producer.RemoveClient(instanceId, conn)
 				}
-				rawConn.Close()
+				conn.close()
 				break
 			}
+			_ = rawConn.SetReadDeadline(time.Now().Add(wait))
 		}
 	}()
 }
@@ -113,7 +214,7 @@ func (p *websocketProducer) Close(ctx context.Context) error {
 		c.writeMu.Lock()
 		_ = c.conn.WriteControl(websocket.CloseMessage, msg, time.Now().Add(time.Second))
 		c.writeMu.Unlock()
-		_ = c.conn.Close()
+		c.close()
 	}
 	return nil
 }
@@ -166,45 +267,47 @@ func removeConn(list []*wsConn, conn *wsConn) []*wsConn {
 	return out
 }
 
+// Produce queues the event for every subscriber of the instance and every broadcast
+// subscriber. It never waits for a socket: a subscriber that cannot keep up is disconnected.
 func (p *websocketProducer) Produce(queueName string, payload []byte, instanceID string, _ string) error {
-	message := map[string]interface{}{
-		"queue":   strings.ToLower(queueName),
-		"payload": string(payload),
-	}
-
-	// Snapshot the subscribers and release the lock before writing: writes are
-	// network I/O and must not be done while holding the registry lock.
+	// Snapshot the subscribers and release the lock: nothing below holds the registry.
 	p.clientsMux.RLock()
 	instanceConns := append([]*wsConn(nil), p.clients[instanceID]...)
 	broadcastConns := append([]*wsConn(nil), p.broadcast...)
 	p.clientsMux.RUnlock()
 
-	var firstErr error
+	if len(instanceConns) == 0 && len(broadcastConns) == 0 {
+		return nil
+	}
 
-	// Envia para todos os clientes da instância
+	// One encoding for every subscriber (the payload, media included, used to be encoded once
+	// per subscriber).
+	frame, err := json.Marshal(map[string]interface{}{
+		"queue":   strings.ToLower(queueName),
+		"payload": string(payload),
+	})
+	if err != nil {
+		return err
+	}
+
 	for _, c := range instanceConns {
-		if err := c.writeJSON(message); err != nil {
-			p.loggerWrapper.GetLogger(instanceID).LogError("Erro ao enviar mensagem websocket para %s: %v", instanceID, err)
-			if firstErr == nil {
-				firstErr = err
-			}
-			// Fecha a conexão: a goroutine de leitura de ServeWs faz a limpeza do registro.
-			c.conn.Close()
+		if c.enqueue(frame) {
+			p.loggerWrapper.GetLogger(instanceID).LogInfo("Mensagem websocket enfileirada para instância %s na fila %s", instanceID, queueName)
 			continue
 		}
-		p.loggerWrapper.GetLogger(instanceID).LogInfo("Mensagem websocket enviada com sucesso para instância %s na fila %s", instanceID, queueName)
+		p.loggerWrapper.GetLogger(instanceID).LogError("Assinante websocket de %s não acompanha os eventos (fila cheia ou conexão encerrada): desconectando", instanceID)
+		// Fecha a conexão: a goroutine de leitura de ServeWs faz a limpeza do registro.
+		c.close()
 	}
 
-	// Envia para todos os clientes broadcast
 	for _, c := range broadcastConns {
-		if err := c.writeJSON(message); err != nil {
-			p.loggerWrapper.GetLogger(instanceID).LogError("Erro ao enviar mensagem broadcast websocket: %v", err)
-			c.conn.Close()
-			continue
+		if !c.enqueue(frame) {
+			p.loggerWrapper.GetLogger(instanceID).LogError("Assinante broadcast websocket não acompanha os eventos (fila cheia ou conexão encerrada): desconectando")
+			c.close()
 		}
 	}
 
-	return firstErr
+	return nil
 }
 
 // CreateGlobalQueues não faz nada para websocket producer
