@@ -477,6 +477,10 @@ func (s *sendService) ensureClientConnected(instanceId string) (*whatsmeow.Clien
 	return utils.ClientProvider{Clients: s.clientPointer, Starter: s.whatsmeowService, Gate: true, RequirePaired: true}.Ensure(context.Background(), instanceId, s.loggerWrapper.GetLogger(instanceId))
 }
 
+// reconnectRetryStep is the pause between two attempts to get a connected client (times the
+// attempt number). A variable so that the tests do not wait for it.
+var reconnectRetryStep = 2 * time.Second
+
 // ensureClientConnectedWithRetry attempts to ensure client connection with automatic reconnection and retry
 func (s *sendService) ensureClientConnectedWithRetry(instanceId string, maxRetries int) (*whatsmeow.Client, error) {
 	for attempt := 1; attempt <= maxRetries; attempt++ {
@@ -491,12 +495,10 @@ func (s *sendService) ensureClientConnectedWithRetry(instanceId string, maxRetri
 		if isDisconnectionError(err) {
 			s.loggerWrapper.GetLogger(instanceId).LogWarn("[%s] Client disconnected on attempt %d/%d, attempting reconnection...", instanceId, attempt, maxRetries)
 
-			// Attempt to reconnect the client
-			reconnectErr := s.whatsmeowService.ReconnectClient(instanceId)
-			if reconnectErr != nil {
-				s.loggerWrapper.GetLogger(instanceId).LogError("[%s] Failed to reconnect client on attempt %d: %v", instanceId, attempt, reconnectErr)
-			} else {
-				s.loggerWrapper.GetLogger(instanceId).LogInfo("[%s] Reconnection initiated on attempt %d, waiting for the connection...", instanceId, attempt)
+			// Ask for the reconnection through the backoff of the automatic ones (a request
+			// used to force ReconnectClient itself, which is not paced) and wait for it.
+			if s.whatsmeowService.RequestReconnect(instanceId) {
+				s.loggerWrapper.GetLogger(instanceId).LogInfo("[%s] Reconnection requested on attempt %d, waiting for the connection...", instanceId, attempt)
 				// Wait for the connection itself instead of a fixed 3 s: when it is
 				// back, retry at once; otherwise fall through to the backoff below.
 				if c := utils.WaitForClient(func() *whatsmeow.Client { return s.clientPointer.Get(instanceId) }, utils.InstanceStartTimeout); c != nil && c.IsConnected() {
@@ -506,7 +508,7 @@ func (s *sendService) ensureClientConnectedWithRetry(instanceId string, maxRetri
 
 			// If this is not the last attempt, continue to retry
 			if attempt < maxRetries {
-				waitTime := time.Duration(attempt*2) * time.Second // Progressive backoff
+				waitTime := time.Duration(attempt) * reconnectRetryStep // Progressive backoff
 				s.loggerWrapper.GetLogger(instanceId).LogInfo("[%s] Waiting %v before retry attempt %d", instanceId, waitTime, attempt+1)
 				time.Sleep(waitTime)
 				continue

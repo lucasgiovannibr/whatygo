@@ -70,6 +70,11 @@ type WhatsmeowService interface {
 	// not: an instance disconnected through the API stays off until it is connected again.
 	CanAutoStart(instanceId string) error
 	ReconnectClient(instanceId string) error
+	// RequestReconnect asks, on behalf of a request that found the instance disconnected, for
+	// it to be reconnected. It goes through the same backoff as the reconnections the process
+	// starts by itself, and joins one that is already scheduled. It reports whether the
+	// instance has a runtime that will do it; the caller waits for the connection.
+	RequestReconnect(instanceId string) bool
 	ClearInstanceCache(instanceId string, token string) error
 	PurgeInstanceData(instanceId string, jid string) error
 	CallWebhook(instance *instance_model.Instance, queueName string, jsonData []byte)
@@ -447,6 +452,22 @@ func (w whatsmeowService) ReconnectClient(instanceId string) error {
 	// Passo 5: Iniciar nova instância como se fosse a primeira vez
 	w.loggerWrapper.GetLogger(instanceId).LogInfo("[%s] Starting fresh instance", instanceId)
 	return w.StartInstance(instanceId)
+}
+
+// RequestReconnect is how a request that found its instance disconnected gets it
+// reconnected. It used to call ReconnectClient itself, which is not paced: with traffic
+// arriving, an instance that WhatsApp keeps dropping (banned, replaced, bad proxy) was
+// disconnected, cleaned up and started again every ~15 s, the pattern the backoff of the
+// automatic reconnections exists to avoid. Here it is one more reason for the same paced
+// reconnection (the first is immediate, then 5 s, 10 s, 20 s... up to the maximum), and it
+// joins one already scheduled.
+func (w whatsmeowService) RequestReconnect(instanceId string) bool {
+	mycli, ok := w.myClientPointer.Lookup(instanceId)
+	if !ok || mycli == nil {
+		return false
+	}
+	mycli.scheduleAutoReconnect("a request found the instance disconnected")
+	return true
 }
 
 func (w whatsmeowService) ForceUpdateJid(instanceId string, number string) error {
