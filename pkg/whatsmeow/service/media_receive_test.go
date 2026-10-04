@@ -1,10 +1,17 @@
 package whatsmeow_service
 
 import (
+	"context"
+	"encoding/base64"
+	"runtime"
 	"testing"
 
+	"go.mau.fi/whatsmeow"
 	"go.mau.fi/whatsmeow/proto/waE2E"
 	"google.golang.org/protobuf/proto"
+
+	"github.com/lucasgiovannibr/whatygo/pkg/config"
+	"github.com/lucasgiovannibr/whatygo/pkg/utils"
 )
 
 func TestPickMediaDescribesEachKind(t *testing.T) {
@@ -66,5 +73,63 @@ func TestPickMediaNothing(t *testing.T) {
 		if _, ok := pickMedia(m); ok {
 			t.Fatalf("%+v has no media", m)
 		}
+	}
+}
+
+// A file announced above MAX_RECEIVED_MEDIA_MB is not downloaded (the WhatsApp client is not even
+// touched: it is nil here), and the event says why the file is missing.
+func TestAttachMediaSkipsAFileOverTheLimit(t *testing.T) {
+	t.Setenv("MAX_RECEIVED_MEDIA_MB", "1")
+	mycli, _ := newHandlerClient(t, &config.Config{})
+	evt := privateMessage("BIG", "")
+	evt.Message = &waE2E.Message{DocumentMessage: &waE2E.DocumentMessage{
+		Mimetype:   proto.String("application/pdf"),
+		FileLength: proto.Uint64(2 << 30), // the 2 GB a document may have
+	}}
+
+	data := map[string]interface{}{}
+	mycli.attachMedia(evt, data)
+
+	msg, ok := data["Message"].(map[string]interface{})
+	if !ok {
+		t.Fatalf("the event must carry a Message section: %#v", data)
+	}
+	if msg["mediaSkipped"] != "too_large" || msg["mediaSize"] != int64(2<<30) || msg["mediaLimit"] != int64(1<<20) {
+		t.Fatalf("unexpected: %#v", msg)
+	}
+	if _, has := msg["base64"]; has {
+		t.Fatal("no file may be attached")
+	}
+}
+
+// Encoding the downloaded file allocates the encoded string and little else: the old path made
+// a copy of the raw bytes, an encoded buffer and the string.
+func TestBase64OfAMediaFileAllocatesOnlyTheString(t *testing.T) {
+	const size = 24 << 20
+	raw := make([]byte, size)
+	for i := range raw {
+		raw[i] = byte(i)
+	}
+	file, err := utils.DownloadMedia(context.Background(), size, 2*size, func(_ context.Context, f whatsmeow.File) error {
+		_, err := f.Write(raw)
+		return err
+	})
+	if err != nil {
+		t.Fatal(err)
+	}
+	defer file.Close()
+
+	var before, after runtime.MemStats
+	runtime.ReadMemStats(&before)
+	enc, err := file.Base64()
+	runtime.ReadMemStats(&after)
+	if err != nil {
+		t.Fatal(err)
+	}
+	if got, want := len(enc), base64.StdEncoding.EncodedLen(size); got != want {
+		t.Fatalf("encoded length %d, want %d", got, want)
+	}
+	if allocated := after.TotalAlloc - before.TotalAlloc; allocated > uint64(len(enc))*12/10 {
+		t.Fatalf("allocated %d bytes to encode a %d byte string: more than the string itself", allocated, len(enc))
 	}
 }
