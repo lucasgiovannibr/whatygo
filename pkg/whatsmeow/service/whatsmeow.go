@@ -1282,14 +1282,21 @@ func (mycli *MyClient) teardownQR(reason string, forceLogout bool) {
 		mycli.loggerWrapper.GetLogger(instanceID).LogError("[%s] Error updating instance: %s", instanceID, err)
 	}
 
-	if reason != "" {
-		if err := mycli.instanceRepository.UpdateConnected(instanceID, false, reason); err != nil {
+	// With a QR limit the instance gives up (below); without one (QRCODE_MAX_COUNT=0) it keeps
+	// restarting for new codes, as it always did.
+	giveUp := mycli.config.QrcodeMaxCount > 0
+	if giveUp && reason == "" {
+		reason = instance_repository.QRTimeoutReason
+	}
+	storedReason := reason
+	if reason != "" || giveUp {
+		if err := mycli.instanceRepository.UpdateConnected(instanceID, false, storedReason); err != nil {
 			mycli.loggerWrapper.GetLogger(instanceID).LogError("[%s] Error updating instance status: %v", instanceID, err)
 		}
 	}
 
 	data := map[string]interface{}{}
-	if reason != "" {
+	if reason != "" && reason != instance_repository.QRTimeoutReason {
 		data["reason"] = reason
 		data["qrcount"] = mycli.qrcodeCount.Load()
 		data["maxCount"] = mycli.config.QrcodeMaxCount
@@ -1308,6 +1315,18 @@ func (mycli *MyClient) teardownQR(reason string, forceLogout bool) {
 		if mycli.config.AmqpGlobalEnabled || mycli.config.NatsGlobalEnabled {
 			go mycli.service.SendToGlobalQueues("QRTimeout", values, instanceID)
 		}
+	}
+
+	if giveUp {
+		// The QR codes ran out unscanned: stop for good. The kill channel used to be sent
+		// `true`, which means "restart": the supervisor reported a LoggedOut that never happened
+		// and started a new client with a new QR, and the code counter started again at #1, so
+		// QRCODE_MAX_COUNT never gave up and every ~140 s the instance reconnected to WhatsApp and
+		// told the webhook it had been logged out, for ever. Now the runtime ends (closing the
+		// kill channel) and the instance stays off until someone connects it again.
+		mycli.loggerWrapper.GetLogger(instanceID).LogWarn("[%s] QR codes ran out: stopping the instance until it is connected again", instanceID)
+		_ = mycli.service.ClearInstanceCache(instanceID, mycli.token)
+		return
 	}
 
 	// Signal StartClient's select loop to disconnect and clean up the shared
@@ -2156,6 +2175,11 @@ func (w whatsmeowService) CanAutoStart(instanceId string) error {
 	}
 	if !instance.Connected && instance.DisconnectReason == instance_repository.DisconnectedByAPIReason {
 		return utils.ErrDisconnectedByUser
+	}
+	// No paired device (never paired, QR codes that ran out, logged out from the phone): a
+	// request cannot use it, and starting it would only begin a new round of QR codes.
+	if !instance.Connected && instance.Jid == "" {
+		return utils.ErrNotLoggedIn
 	}
 	return nil
 }

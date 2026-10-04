@@ -2,9 +2,6 @@ package whatsmeow_service
 
 import (
 	"encoding/json"
-	"fmt"
-	"strings"
-	"time"
 
 	"github.com/lucasgiovannibr/whatygo/pkg/utils"
 	"github.com/patrickmn/go-cache"
@@ -127,36 +124,18 @@ func (mycli *MyClient) handleLoggedOut(evt *events.LoggedOut, postMap map[string
 
 	dataMap["reason"] = evt.Reason.String()
 
-	// Enviar evento LoggedOut para webhook/RabbitMQ ANTES de matar o canal
-	mycli.config.AddInstanceToken(postMap, mycli.inst().Token)
-	postMap["instanceId"] = mycli.userID
-	postMap["instanceName"] = mycli.inst().Name
-
-	values, err := json.Marshal(postMap)
-	if err != nil {
-		mycli.loggerWrapper.GetLogger(mycli.userID).LogError("[%s] Failed to marshal JSON for LoggedOut event", mycli.userID)
-	} else {
-		var queueName string
-		if _, ok := postMap["event"]; ok {
-			queueName = strings.ToLower(fmt.Sprintf("%s.%s", mycli.userID, postMap["event"]))
-		}
-
-		mycli.loggerWrapper.GetLogger(mycli.userID).LogInfo("[%s] ===== DISPATCHING LOGGEDOUT EVENT ===== Queue: %s", mycli.userID, queueName)
-
-		// Enviar para webhook/RabbitMQ
-		go mycli.service.CallWebhook(mycli.inst(), queueName, values)
-
-		if mycli.config.AmqpGlobalEnabled || mycli.config.NatsGlobalEnabled {
-			mycli.loggerWrapper.GetLogger(mycli.userID).LogInfo("[%s] Sending LoggedOut to global queues - AMQP: %v, NATS: %v", mycli.userID, mycli.config.AmqpGlobalEnabled, mycli.config.NatsGlobalEnabled)
-			go mycli.service.SendToGlobalQueues(postMap["event"].(string), values, mycli.userID)
-		}
+	// The event goes out once, from handleEvent, like every other (this handler used to dispatch
+	// it itself as well, so a webhook received every LoggedOut twice).
+	// The device is gone from the phone's list and from the store: the instance has none now.
+	if err := mycli.instanceRepository.UpdateJid(mycli.userID, ""); err != nil {
+		mycli.loggerWrapper.GetLogger(mycli.userID).LogError("[%s] Error clearing the jid: %v", mycli.userID, err)
 	}
 
-	// Agora mata o canal DEPOIS de enviar o evento
-	select {
-	case mycli.killChannel.Get(mycli.userID) <- true:
-	case <-time.After(10 * time.Second):
-		mycli.loggerWrapper.GetLogger(mycli.userID).LogWarn("[%s] Kill signal after LoggedOut not received (runtime already ended?)", mycli.userID)
-	}
+	// Stop the runtime for good, after the event is out. The kill channel used to be sent
+	// `true` ("restart"), which started a new client for the account that had just been logged
+	// out, with a new QR code, and kept the instance in QR cycles until someone noticed; it
+	// also held this event handler for up to 10 s waiting for the supervisor. Connecting the
+	// instance again (or opening its QR code) starts it.
+	_ = mycli.service.ClearInstanceCache(mycli.userID, mycli.token)
 	return true, eventChat
 }

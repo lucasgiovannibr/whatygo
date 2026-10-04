@@ -142,6 +142,10 @@ func (i *instanceRepository) UpdateConnectSettings(instanceId string, updates ma
 // only by an explicit connect.
 const DisconnectedByAPIReason = "Disconnected by API"
 
+// QRTimeoutReason is the disconnect_reason of an instance whose QR codes ran out unscanned.
+// It stays off until someone connects it again (POST /instance/connect, or opening its QR code).
+const QRTimeoutReason = "QR code timeout"
+
 // ReconnectingReason is the disconnect_reason written while an instance is being
 // restarted by ReconnectClient.
 const ReconnectingReason = "Reconnecting"
