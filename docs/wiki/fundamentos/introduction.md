@@ -230,11 +230,11 @@ O servidor estará disponível em `http://localhost:4000` com documentação Swa
 Apache License 2.0 com as condições adicionais do projeto original (Evolution Go, da Evolution Foundation), em [LICENSE](../../../LICENSE):
 
 1. Os avisos de copyright do projeto original não podem ser removidos das interfaces
-2. O uso do Evolution Go (base deste fork) deve ser notificado/creditado no sistema que o utiliza
+2. O uso do Evolution Go (base do WhatyGo) deve ser notificado/creditado no sistema que o utiliza
 
 Como o WhatyGo cumpre isso: [Avisos legais e créditos](../../guia/11-avisos-legais-e-creditos.md). Texto da Apache 2.0: [apache.org/licenses/LICENSE-2.0](http://www.apache.org/licenses/LICENSE-2.0)
 
 ---
 
 **Versão**: 1.0.0
-**Mantido por**: mantenedores do fork WhatyGo (baseado no Evolution Go)
+**Mantido por**: mantenedores do WhatyGo (baseado no Evolution Go)

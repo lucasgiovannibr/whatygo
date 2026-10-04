@@ -294,4 +294,4 @@ func (h *InstanceHandler) GetInstance(c *gin.Context) {
 
 **Obrigado por contribuir!** 🎉
 
-**Mantido por**: mantenedores do fork WhatyGo (baseado no Evolution Go)
+**Mantido por**: mantenedores do WhatyGo (baseado no Evolution Go)

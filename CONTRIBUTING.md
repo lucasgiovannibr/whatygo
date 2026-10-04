@@ -1,6 +1,6 @@
 # Como contribuir com o WhatyGo
 
-Obrigado por querer ajudar! O WhatyGo é um fork do [Evolution Go](https://github.com/evolution-foundation/evolution-go) que existe para **corrigir, melhorar e ajustar** o projeto. Este guia diz como relatar problemas e enviar mudanças.
+Obrigado por querer ajudar! O WhatyGo é baseado no [Evolution Go](https://github.com/evolution-foundation/evolution-go) que existe para **corrigir, melhorar e ajustar** o projeto. Este guia diz como relatar problemas e enviar mudanças.
 
 Se você só quer **usar** o WhatyGo, veja o [Guia do WhatyGo](./docs/guia/README.md) e os [Problemas comuns](./docs/guia/09-problemas-comuns.md) antes de abrir uma *issue*.
 
@@ -79,7 +79,7 @@ Todo *pull request* roda estas verificações; rode-as antes de enviar:
 6. Mensagens de commit curtas e no imperativo, com o tipo na frente: `fix(manager): ...`, `feat(calls): ...`, `docs: ...`, `test: ...`.
 7. Preencha o modelo do *pull request*. Descreva **o motivo** da mudança, não só o que mudou, e diga como você testou, de preferência com um número real quando mexer no envio ou na conexão.
 
-Os PRs são enviados **para este repositório** (o fork). Não abra PRs no repositório do projeto original a partir dele sem combinar antes.
+Os PRs são enviados **para este repositório**. Não abra PRs no repositório do projeto original a partir dele sem combinar antes.
 
 ## Regras que valem para todo mundo
 

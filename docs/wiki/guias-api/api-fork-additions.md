@@ -1,4 +1,4 @@
-# Endpoints e opções adicionados no fork
+# Endpoints e opções adicionados em relação ao Evolution Go
 
 Complementos à API do upstream (v0.7.2). Todos usam o header `apikey` da instância, exceto `GET /instance/proxy/{instanceId}`, que exige a **chave global**.
 

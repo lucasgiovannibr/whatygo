@@ -31,7 +31,7 @@ Fora do escopo daqui, relate a quem mantém:
 
 | Problema em... | Relate a... |
 |---|---|
-| Código herdado do projeto original que o fork não alterou | A [Evolution Foundation](https://github.com/evolution-foundation/evolution-go) (e avise-nos também, para tratarmos no fork) |
+| Código herdado do projeto original que o WhatyGo não alterou | A [Evolution Foundation](https://github.com/evolution-foundation/evolution-go) (e avise-nos também, para tratarmos no WhatyGo) |
 | A biblioteca [whatsmeow](https://github.com/tulir/whatsmeow) | Aos mantenedores dela |
 | A biblioteca de chamadas [meowcaller](https://github.com/purpshell/meowcaller) | Aos mantenedores dela |
 | O próprio WhatsApp | À Meta |
@@ -41,7 +41,7 @@ Ataques que exigem acesso à máquina do servidor, ao arquivo `.env` ou à `GLOB
 
 ## Como o projeto se protege
 
-O fork já faz, entre outras coisas: recusa chaves de exemplo, roda o contêiner sem privilégios de administrador, aceita URLs de mídia só para endereços públicos, mantém o MinIO privado (links temporários), não envia o token da instância nos eventos e limita o tamanho das requisições. A lista e o que cabe a **quem instala** (HTTPS, firewall, backup, guarda da chave global) estão em [Configuração e segurança](./docs/guia/08-configuracao-e-seguranca.md).
+O WhatyGo já faz, entre outras coisas: recusa chaves de exemplo, roda o contêiner sem privilégios de administrador, aceita URLs de mídia só para endereços públicos, mantém o MinIO privado (links temporários), não envia o token da instância nos eventos e limita o tamanho das requisições. A lista e o que cabe a **quem instala** (HTTPS, firewall, backup, guarda da chave global) estão em [Configuração e segurança](./docs/guia/08-configuracao-e-seguranca.md).
 
 ## Boas práticas para quem hospeda
 

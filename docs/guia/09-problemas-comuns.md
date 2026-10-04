@@ -18,7 +18,7 @@ O arquivo `.env` não existe ou está vazio. Copie o `.env.example` para `.env` 
 Mude `HTTP_PORT=4001` no `.env` e rode `docker compose up -d` de novo; depois acesse `http://localhost:4001/manager`.
 
 ### A API responde `503` com `LICENSE_REQUIRED`
-Essa resposta vem de uma versão **antiga** (a do projeto original, ou deste fork antes de a ativação de licença ser removida). A versão atual não tem mais essa barreira: atualize a imagem ([Atualizar para uma versão nova](./02-instalacao.md#atualizar-para-uma-versão-nova)) e a API responde normalmente, sem registrar nada ([Instalação](./02-instalacao.md#não-há-ativação-de-licença)).
+Essa resposta vem de uma versão **antiga** (a do projeto original, ou do WhatyGo antes de a ativação de licença ser removida). A versão atual não tem mais essa barreira: atualize a imagem ([Atualizar para uma versão nova](./02-instalacao.md#atualizar-para-uma-versão-nova)) e a API responde normalmente, sem registrar nada ([Instalação](./02-instalacao.md#não-há-ativação-de-licença)).
 
 ### Uma integração que chamava `/license/status` recebe `404`
 As rotas `/license/status`, `/license/register` e `/license/activate` foram removidas junto com a ativação. Tire essa verificação da integração: use `GET /server/ok` (o servidor está de pé) ou `GET /health` (os bancos respondem).
@@ -40,7 +40,7 @@ Vale cerca de 40 s e se renova até `QRCODE_MAX_COUNT` vezes. Clique em conectar
 ### Conectei e a instância "caiu" sozinha
 - Se o celular ficou sem internet por muito tempo ou o aparelho foi removido em *Aparelhos conectados*, a sessão acaba e é preciso ler o QR de novo.
 - O servidor tenta reconectar sozinho, esperando mais a cada falha (até 5 min). Veja o motivo em `GET /instance/{id}/runtime` (campo de avisos).
-- `405 / client outdated` nos logs: o WhatsApp recusou a versão do cliente. O fork descarta a versão guardada e pega a atual na próxima tentativa; aguarde a reconexão.
+- `405 / client outdated` nos logs: o WhatsApp recusou a versão do cliente. O WhatyGo descarta a versão guardada e pega a atual na próxima tentativa; aguarde a reconexão.
 
 ### Depois de reiniciar o servidor os números não voltam
 Confira `CONNECT_ON_STARTUP=true` (a instalação simples já liga). Instância que você **desconectou pela API** não volta sozinha de propósito: use **Conectar**.
@@ -82,7 +82,7 @@ O WhatsApp não aceita lista de aparelho vinculado; o servidor a manda como **bo
 O destino ficou fora do ar, e o servidor entrou em modo de tentativa com espera crescente. Quando ele voltar, a fila é esvaziada. Se ela estourou (1000 eventos), os mais antigos foram descartados.
 
 ### Não recebo mais o `instanceToken` no webhook
-É uma mudança de segurança do fork. `WEBHOOK_INCLUDE_TOKEN=true` o traz de volta.
+É uma mudança de segurança do WhatyGo. `WEBHOOK_INCLUDE_TOKEN=true` o traz de volta.
 
 ## Chamadas
 
@@ -108,6 +108,6 @@ A tabela de mensagens (`DATABASE_SAVE_MESSAGES=true`) só cresce. Desligue se n�
 
 ## Ainda com problema?
 
-Abra uma *issue* no repositório do fork com: o que você fez, o que esperava, o que aconteceu, e as últimas linhas do log. **Antes de colar logs, apague chaves, tokens e números de telefone.**
+Abra uma *issue* no repositório do WhatyGo com: o que você fez, o que esperava, o que aconteceu, e as últimas linhas do log. **Antes de colar logs, apague chaves, tokens e números de telefone.**
 
 Se for uma falha de segurança, **não** abra issue pública: veja o [SECURITY.md](../../SECURITY.md).

@@ -1,6 +1,6 @@
 # 2. Instalação
 
-O caminho mais fácil: **Docker Compose**. Em cerca de 10 minutos você tem o servidor, o banco de dados e o painel funcionando. Foi testado com a imagem publicada do fork: o banco é criado sozinho, o painel abre e a API responde.
+O caminho mais fácil: **Docker Compose**. Em cerca de 10 minutos você tem o servidor, o banco de dados e o painel funcionando. Foi testado com a imagem publicada do WhatyGo: o banco é criado sozinho, o painel abre e a API responde.
 
 ## Antes de começar
 
@@ -94,7 +94,7 @@ O projeto original exigia que cada servidor fosse **registrado** num serviço da
 
 - O servidor **não envia nada** a nenhum serviço de licenciamento: nem chave, nem identificador da máquina, nem contagem de uso.
 - A `GLOBAL_API_KEY` volta a ser só a chave de administração do seu servidor.
-- Se o seu banco veio do projeto original (ou de uma versão anterior deste fork), **nada muda**: instâncias, tokens e sessões continuam os mesmos. A tabela `runtime_configs` fica no banco sem uso. Ela guarda a chave de licença do original em texto puro; quando não precisar mais voltar para a versão anterior, faça um backup e apague-a com `DROP TABLE runtime_configs;`.
+- Se o seu banco veio do projeto original (ou de uma versão anterior do WhatyGo), **nada muda**: instâncias, tokens e sessões continuam os mesmos. A tabela `runtime_configs` fica no banco sem uso. Ela guarda a chave de licença do original em texto puro; quando não precisar mais voltar para a versão anterior, faça um backup e apague-a com `DROP TABLE runtime_configs;`.
 - Isso não muda a licença do **código** (Apache 2.0 com condições adicionais): veja [Avisos legais](./11-avisos-legais-e-creditos.md). Os detalhes técnicos da remoção estão em [`docs/LICENCA-ANALISE.md`](../LICENCA-ANALISE.md).
 
 ## Atualizar para uma versão nova
@@ -113,7 +113,7 @@ docker compose exec postgres pg_dump -U postgres whatygo_auth > backup-whatygo_a
 docker compose exec postgres pg_dump -U postgres whatygo_users > backup-whatygo_users.sql
 ```
 
-> **Importante:** este fork atualizou a biblioteca do WhatsApp, e as migrações do banco só andam para frente. Quem volta para a imagem do projeto original depois de usar o fork **não consegue** reabrir o mesmo banco. Por isso, o backup antes de trocar.
+> **Importante:** o WhatyGo atualizou a biblioteca do WhatsApp, e as migrações do banco só andam para frente. Quem volta para a imagem do projeto original depois de usar o WhatyGo **não consegue** reabrir o mesmo banco. Por isso, o backup antes de trocar.
 
 ## Parar, ligar e apagar
 
@@ -145,6 +145,6 @@ Mais sobre isso em [Configuração e segurança](./08-configuracao-e-seguranca.m
 | Docker Swarm | Vários servidores | `docker/examples/docker-compose.swarm.yml` |
 | Compilar do código (Go) | Desenvolvedores | [Guia de desenvolvimento](../wiki/desenvolvimento/development-guide.md) |
 
-> Os exemplos de `docker/examples/` também usam a imagem do WhatyGo (`ghcr.io/lucasgiovannibr/whatygo`). Quem tiver um arquivo antigo apontando para `evoapicloud/whatygo` está usando a imagem do projeto original, **sem** as correções deste fork.
+> Os exemplos de `docker/examples/` também usam a imagem do WhatyGo (`ghcr.io/lucasgiovannibr/whatygo`). Quem tiver um arquivo antigo apontando para `evoapicloud/evolution-go` está usando a imagem do projeto original, **sem** as correções do WhatyGo.
 
 Próximo passo: [3. Primeiros passos](./03-primeiros-passos.md).

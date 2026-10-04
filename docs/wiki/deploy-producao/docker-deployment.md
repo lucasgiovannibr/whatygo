@@ -54,7 +54,7 @@ Guia de deploy do WhatyGo usando Docker, Docker Compose, Swarm e Kubernetes.
 - **Healthcheck**: `GET /server/ok` (liveness); `GET /health` é a prontidão (bancos e saturação do pool)
 - **Tamanho**: ~50MB (compactada)
 - **Arquiteturas**: amd64, arm64
-- **Fork**: as imagens do fork são publicadas em `ghcr.io/<dono>/<repo>` pelo workflow do repositório
+- **Publicação**: as imagens são publicadas em `ghcr.io/<dono>/<repo>` pelo workflow do repositório
 
 ### Parada, réplicas e métricas
 

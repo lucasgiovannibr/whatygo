@@ -164,7 +164,7 @@ Consulta rápida para desenvolvedores.
 
 <div align="center">
 
-**Mantido pelos mantenedores do fork WhatyGo (baseado no Evolution Go)** • **Versão da Documentação: 1.0.0**
+**Mantido pelos mantenedores do WhatyGo (baseado no Evolution Go)** • **Versão da Documentação: 1.0.0**
 
 [⬆️ Voltar ao topo](#-documentação-evolution-go)
 

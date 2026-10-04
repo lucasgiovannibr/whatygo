@@ -1,10 +1,8 @@
 name: Build and Publish Docker Image
 
-# Fork version: publishes to the owner's GitHub Container Registry as
-# ghcr.io/<owner>/whatygo using the built-in GITHUB_TOKEN. The image name is fixed
-# here (it does not follow the repository name) so it can differ from the upstream
-# project's name. The upstream workflow pushed to Docker Hub with secrets that do
-# not exist in a fork.
+# Publishes to the owner's GitHub Container Registry as ghcr.io/<owner>/whatygo
+# using the built-in GITHUB_TOKEN. The image name is fixed here (it does not follow
+# the repository name).
 #
 # The first publish creates the package as private: make it public once in
 # GitHub > Packages > whatygo > Package settings.

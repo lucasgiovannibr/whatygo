@@ -8212,7 +8212,7 @@ definitions:
     - ParticipantChangeDemote
 info:
   contact: {}
-  description: WhatyGo (fork do Evolution Go) - whatsmeow
+  description: WhatyGo (baseado no Evolution Go) - whatsmeow
   title: WhatyGo
   version: "1.0"
 paths:

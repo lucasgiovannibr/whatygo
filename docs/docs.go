@@ -17160,7 +17160,7 @@ var SwaggerInfo = &swag.Spec{
 	BasePath:         "",
 	Schemes:          []string{},
 	Title:            "WhatyGo",
-	Description:      "WhatyGo (fork do Evolution Go) - whatsmeow",
+	Description:      "WhatyGo (baseado no Evolution Go) - whatsmeow",
 	InfoInstanceName: "swagger",
 	SwaggerTemplate:  docTemplate,
 	LeftDelim:        "{{",

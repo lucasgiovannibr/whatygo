@@ -38,7 +38,7 @@ services:
       CONNECT_ON_STARTUP: "true"
       WADEBUG: INFO
       LOGTYPE: console
-      OS_NAME: Fork Test
+      OS_NAME: WhatyGo Test
       PASSKEY_PUBLIC_URL: http://localhost:8100
       ENABLE_PPROF: "true"
       # media storage is not used in this test (values are only required to boot)

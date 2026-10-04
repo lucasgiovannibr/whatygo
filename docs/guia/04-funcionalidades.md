@@ -2,7 +2,7 @@
 
 Tudo o que o WhatyGo faz, organizado por assunto. Em cada tabela, a coluna **Situação** usa as marcas explicadas no [índice](./README.md#como-ler-as-marcas-de-maturidade): ✅ testado com número real, 🟡 parcial, 🧪 experimental, ⬜ herdado do projeto original e não retestado.
 
-**Novo neste fork** aparece como 🆕. As rotas citadas (`/send/text` etc.) são os endereços da API, para quem programa; quem usa só o painel pode ignorá-las.
+**Novo no WhatyGo** aparece como 🆕. As rotas citadas (`/send/text` etc.) são os endereços da API, para quem programa; quem usa só o painel pode ignorá-las.
 
 ## Índice
 
@@ -49,7 +49,7 @@ Tudo o que o WhatyGo faz, organizado por assunto. Em cada tabela, a coluna **Sit
 | **Link com pré-visualização** | Título, descrição e imagem do cartão. | ⬜ |
 | **Imagem, vídeo, áudio, documento** | Por link ou por envio de arquivo. Áudio vai como mensagem de voz. | ✅ |
 | **"Ver uma vez"** | `viewOnce` em imagem, vídeo e áudio. | ✅ 🆕 |
-| **Figurinha (sticker)** | Inclusive animada (correção do fork). | 🟡 🆕 |
+| **Figurinha (sticker)** | Inclusive animada (correção do WhatyGo). | 🟡 🆕 |
 | **Localização** | Nome, endereço e coordenadas. | ⬜ |
 | **Contato (vCard)** | Cartão de contato. | ⬜ |
 | **Enquete** | Com várias opções; resultado em `/polls/{id}/results`. Os votos de quem aparece só por LID passam a guardar o telefone real. | ✅ |
