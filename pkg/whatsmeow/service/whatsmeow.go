@@ -2333,7 +2333,7 @@ func fetchWhatsAppWebVersion() (*clientVersion, error) {
 		return cachedWebVersion, nil
 	}
 
-	resp, err := utils.QuickClient.Get("https://web.whatsapp.com/sw.js")
+	resp, err := utils.FixedURLClient.Get("https://web.whatsapp.com/sw.js")
 	if err != nil {
 		return nil, fmt.Errorf("failed to fetch WhatsApp Web version: %v", err)
 	}

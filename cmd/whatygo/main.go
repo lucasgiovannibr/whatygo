@@ -68,6 +68,7 @@ import (
 	minio_storage "github.com/lucasgiovannibr/whatygo/pkg/storage/minio"
 	user_handler "github.com/lucasgiovannibr/whatygo/pkg/user/handler"
 	user_service "github.com/lucasgiovannibr/whatygo/pkg/user/service"
+	"github.com/lucasgiovannibr/whatygo/pkg/utils"
 	whatsmeow_service "github.com/lucasgiovannibr/whatygo/pkg/whatsmeow/service"
 	amqp "github.com/rabbitmq/amqp091-go"
 )
@@ -451,6 +452,7 @@ func main() {
 	}
 
 	logger.LogInfo("Starting WhatyGo version %s", version)
+	utils.WarnIfEnvProxyIgnored(logger.LogWarn)
 
 	db, err := cfg.CreateUsersDB()
 	if err != nil {
