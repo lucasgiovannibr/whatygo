@@ -1,6 +1,10 @@
-# Isolated test stack for the fork image (does NOT touch any other stack/volume).
-# Usage:  docker compose -f docker/fork-test/docker-compose.yml up -d
-# Manager: http://localhost:8100/manager   (global key is in docker/fork-test/.env)
+# Isolated test stack for WhatyGo (does NOT touch any other stack/volume).
+# Needs a local image tagged whatygo:test (see README.md) and a .env next to this file.
+# Usage:  docker compose -f docker/test-stack/docker-compose.yml up -d
+# Manager: http://localhost:8100/manager   (global key is in docker/test-stack/.env)
+#
+# The project name below is kept on purpose: the volumes (and any paired WhatsApp number)
+# are named after it, so changing it would start from an empty stack.
 name: evofork-test
 
 services:
@@ -19,7 +23,7 @@ services:
       retries: 10
 
   evolution-go:
-    image: evolution-go-fork:test
+    image: whatygo:test
     restart: unless-stopped
     stop_grace_period: 30s
     depends_on:

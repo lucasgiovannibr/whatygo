@@ -211,7 +211,7 @@ make dev
 
 Ou:
 ```bash
-go run cmd/evolution-go/main.go -dev
+go run cmd/whatygo/main.go -dev
 ```
 
 **Build produção:**

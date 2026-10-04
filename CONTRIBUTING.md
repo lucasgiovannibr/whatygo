@@ -31,7 +31,7 @@ cd whatygo
 git checkout -b minha-correcao
 ```
 
-Os comandos do dia a dia estão em [COMMANDS.md](./COMMANDS.md) (`make help` lista todos). Uma pilha de testes isolada, com banco novo, está em `docker/fork-test/`.
+Os comandos do dia a dia estão em [COMMANDS.md](./COMMANDS.md) (`make help` lista todos). Uma pilha de testes isolada, com banco novo, está em [`docker/test-stack/`](./docker/test-stack/README.md).
 
 ### Servidor (Go)
 
@@ -71,7 +71,7 @@ Todo *pull request* roda estas verificações; rode-as antes de enviar:
 4. Se mudar uma rota ou o formato de uma resposta, **regenere o Swagger**:
 
    ```bash
-   swag init -g cmd/evolution-go/main.go -d ./ --parseDependency --parseInternal -o ./docs
+   swag init -g cmd/whatygo/main.go -d ./ --parseDependency --parseInternal -o ./docs
    ```
 
    (`swag` v1.16.3; pode ser rodado no Docker.)

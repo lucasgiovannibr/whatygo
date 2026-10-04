@@ -6,6 +6,14 @@ Fixes and hardening on top of upstream v0.7.2. Full triage of the upstream issue
 and pull requests in `FORK-TRIAGE.md`.
 
 ### Upgrade notes
+- **Repository layout.** The entry point moved from `cmd/evolution-go` to `cmd/whatygo`, so
+  `go build ./cmd/whatygo`, `go run cmd/whatygo/main.go` and `swag init -g cmd/whatygo/main.go`
+  replace the old paths (the `Makefile` and the `Dockerfile` already use them; the binary
+  built by `make build` is now `build/whatygo`). In `docker/`, `fork-test/` became
+  `test-stack/` (now with a README and a `.env.example`; the Compose project name is unchanged,
+  so existing test volumes are kept) and `stack-evocrm.yml` was removed: it pulled a
+  third-party image (`intrategica/evg:1`) and carried someone else's database credentials.
+  The local test image is now tagged `whatygo:test`. No behaviour of the server changed.
 - **The product is now called WhatyGo** (a fork of Evolution Go; the original's name, logo and
   colours are no longer used as this project's identity, see `TRADEMARKS.md` and
   `docs/guia/11-avisos-legais-e-creditos.md`). What changes for you:

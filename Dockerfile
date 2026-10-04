@@ -16,7 +16,7 @@ COPY . .
 
 ARG VERSION=dev
 # -trimpath and -s -w: no build paths in the binary, no symbol/debug tables (a smaller image).
-RUN CGO_ENABLED=1 go build -trimpath -ldflags "-s -w -X main.version=${VERSION}" -o server ./cmd/evolution-go
+RUN CGO_ENABLED=1 go build -trimpath -ldflags "-s -w -X main.version=${VERSION}" -o server ./cmd/whatygo
 
 # The runtime stage uses the same Alpine release as the build stage: the binary links to the
 # jpeg and webp libraries of the system.

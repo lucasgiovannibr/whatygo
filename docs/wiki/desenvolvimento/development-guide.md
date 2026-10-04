@@ -162,7 +162,7 @@ go version
 go mod verify
 
 # Compilar (teste)
-go build ./cmd/evolution-go
+go build ./cmd/whatygo
 ```
 
 ---
@@ -265,7 +265,7 @@ Cada módulo segue o padrão **Handler → Service → Repository**:
 make dev
 
 # Ou diretamente
-go run cmd/evolution-go/main.go -dev
+go run cmd/whatygo/main.go -dev
 ```
 
 **Saída esperada**:
@@ -477,7 +477,7 @@ Salvar em `.vscode/tasks.json`.
       "type": "go",
       "request": "launch",
       "mode": "debug",
-      "program": "${workspaceFolder}/cmd/evolution-go",
+      "program": "${workspaceFolder}/cmd/whatygo",
       "args": ["-dev"],
       "env": {
         "WADEBUG": "DEBUG"
@@ -499,7 +499,7 @@ Salvar em `.vscode/launch.json`.
 3. Configurar:
    - **Name**: WhatyGo Dev
    - **Run kind**: Directory
-   - **Directory**: `cmd/evolution-go`
+   - **Directory**: `cmd/whatygo`
    - **Program arguments**: `-dev`
    - **Environment**: `WADEBUG=DEBUG`
    - **Working directory**: Raiz do projeto

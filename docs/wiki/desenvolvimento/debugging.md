@@ -220,7 +220,7 @@ docker-compose logs -f evolution-go
       "type": "go",
       "request": "launch",
       "mode": "debug",
-      "program": "${workspaceFolder}/cmd/evolution-go",
+      "program": "${workspaceFolder}/cmd/whatygo",
       "args": ["-dev"],
       "showLog": true
     }
@@ -242,7 +242,7 @@ docker-compose logs -f evolution-go
 
 ```bash
 # Executar com pprof
-go run cmd/evolution-go/main.go -dev &
+go run cmd/whatygo/main.go -dev &
 PID=$!
 
 # Gerar CPU profile (30 segundos)
@@ -358,7 +358,7 @@ sudo tcpdump -i any -A 'port 4000'
 go install github.com/go-delve/delve/cmd/dlv@latest
 
 # Debug
-dlv debug cmd/evolution-go/main.go -- -dev
+dlv debug cmd/whatygo/main.go -- -dev
 
 # Comandos:
 # break main.main - Breakpoint

@@ -519,7 +519,7 @@ Validado ao vivo (02/10/2026, navegador de desktop, número real e iPhone): aten
 
 ## Teste ao vivo
 
-O repositório traz um script que exercita tudo isso com uma chamada real: `docker/fork-test/call-stream-test.py` (precisa de `pip install websockets`). Ele atende (ou disca), grava o áudio recebido em WAV e o vídeo em `.h264` (mais um `.orient` com a rotação de cada quadro), devolve o áudio em eco e pode mandar um arquivo H.264 de teste. `--help` mostra as opções e o comando de `ffmpeg` para gerar o vídeo de teste.
+O repositório traz um script que exercita tudo isso com uma chamada real: `docker/test-stack/call-stream-test.py` (precisa de `pip install websockets`). Ele atende (ou disca), grava o áudio recebido em WAV e o vídeo em `.h264` (mais um `.orient` com a rotação de cada quadro), devolve o áudio em eco e pode mandar um arquivo H.264 de teste. `--help` mostra as opções e o comando de `ffmpeg` para gerar o vídeo de teste.
 
 ```bash
 python call-stream-test.py --apikey TOKEN --echo                     # espera uma chamada, atende e devolve o áudio
