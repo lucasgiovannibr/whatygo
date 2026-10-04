@@ -48,7 +48,7 @@ src/
   (no `npm run dev`, a origem é `localhost:5173`).
 - **Estado de servidor** vive no React Query; formulários editam uma cópia (`useDraft`) que só é
   substituída por dados novos quando não há edição pendente.
-- O login preserva o fluxo de licença (`/license/status` → `/license/register` → `/manager/license/callback`
-  → `/license/activate`) (a sessão fica em `whatygo-auth`, no `sessionStorage`).
+- O login só valida a chave no servidor (`/instance/all`): não há etapa de licença (o fluxo herdado do upstream
+  foi removido, ver `docs/LICENCA-ANALISE.md`). A sessão fica em `whatygo-auth`, no `sessionStorage`.
 
 As fontes (Inter e JetBrains Mono, licença OFL) ficam em `src/assets/fonts`.

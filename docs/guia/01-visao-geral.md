@@ -47,7 +47,6 @@ O WhatyGo é um **servidor que conecta o WhatsApp a outros sistemas**. Você lig
 - Um computador ou servidor (Windows, Mac ou Linux) com **Docker** instalado. Para uso real, um servidor (VPS) com pelo menos **1 GB de memória e 2 GB de disco**.
 - Um **número de WhatsApp** (de preferência um chip dedicado ao projeto, não o seu pessoal).
 - Um navegador moderno (Chrome, Edge ou Safari recentes).
-- **Registrar a licença do servidor** na primeira vez (é uma regra herdada do projeto original; explicada em [Instalação](./02-instalacao.md#ativar-a-licença)).
 
 ## O que ele **não** é
 

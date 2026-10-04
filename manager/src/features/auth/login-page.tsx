@@ -1,9 +1,9 @@
 import { useState, type FormEvent } from 'react';
 import { Navigate, useNavigate } from 'react-router-dom';
 import { ArrowRight, Eye, EyeOff, KeyRound, Server } from 'lucide-react';
-import { ApiError, EXPIRED_FLAG } from '@/lib/http';
+import { EXPIRED_FLAG } from '@/lib/http';
 import { hostOf, isHttpUrl } from '@/lib/format';
-import { fetchLicenseStatus, startLicenseRegistration, verifyApiKey } from '@/api/session';
+import { verifyApiKey } from '@/api/session';
 import { isSignedIn, useAuth } from '@/stores/auth';
 import { useDocumentTitle } from '@/hooks/use-document-title';
 import { Button } from '@/components/ui/button';
@@ -23,13 +23,13 @@ export function LoginPage() {
   const [key, setKey] = useState(savedKey);
   const [showKey, setShowKey] = useState(false);
   const [editServer, setEditServer] = useState(false);
-  const [busy, setBusy] = useState<'license' | 'auth' | null>(null);
+  const [busy, setBusy] = useState(false);
   const [error, setError] = useState('');
   const [notice] = useState(() => {
     try {
       const v = sessionStorage.getItem(EXPIRED_FLAG);
       sessionStorage.removeItem(EXPIRED_FLAG);
-      return v === 'license' ? 'A licença do servidor precisa ser verificada novamente. Entre para continuar.' : v ? 'Sua sessão expirou ou a chave não é mais válida. Entre novamente.' : '';
+      return v ? 'Sua sessão expirou ou a chave não é mais válida. Entre novamente.' : '';
     } catch {
       return '';
     }
@@ -49,28 +49,14 @@ export function LoginPage() {
     if (!apikey) return setError('Informe a API Key.');
 
     try {
-      setBusy('license');
-      const license = await fetchLicenseStatus(base, apikey).catch((err) => {
-        if (err instanceof ApiError && err.status === 0) throw err;
-        return { status: 'inactive' as const };
-      });
-
-      if (license.status !== 'active') {
-        const reg = await startLicenseRegistration(base, apikey, `${window.location.origin}/manager/license/callback`);
-        if (!reg.register_url) throw new Error(reg.message || 'Falha ao iniciar o registro da licença.');
-        setSession({ apiUrl: base, apiKey: apikey });
-        window.location.assign(reg.register_url);
-        return;
-      }
-
-      setBusy('auth');
+      setBusy(true);
       await verifyApiKey(base, apikey);
-      setSession({ apiUrl: base, apiKey: apikey, isAuthenticated: true, licenseState: 'licensed' });
+      setSession({ apiUrl: base, apiKey: apikey, isAuthenticated: true });
       navigate('/manager', { replace: true });
     } catch (err) {
       setError(err instanceof Error ? err.message : 'Erro ao conectar.');
     } finally {
-      setBusy(null);
+      setBusy(false);
     }
   };
 
@@ -120,8 +106,8 @@ export function LoginPage() {
           </p>
         )}
 
-        <Button type="submit" variant="primary" size="lg" className="w-full" loading={busy !== null}>
-          {busy === 'license' ? 'Verificando licença…' : busy === 'auth' ? 'Entrando…' : (
+        <Button type="submit" variant="primary" size="lg" className="w-full" loading={busy}>
+          {busy ? 'Entrando…' : (
             <>
               Entrar
               <ArrowRight className="size-4" />

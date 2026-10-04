@@ -1,14 +1,11 @@
 import { create } from 'zustand';
 import { createJSONStorage, persist } from 'zustand/middleware';
 
-export type LicenseState = 'unchecked' | 'licensed' | 'unlicensed';
-
 interface AuthState {
   apiUrl: string;
   apiKey: string;
   isAuthenticated: boolean;
-  licenseState: LicenseState;
-  setSession: (s: Partial<Pick<AuthState, 'apiUrl' | 'apiKey' | 'isAuthenticated' | 'licenseState'>>) => void;
+  setSession: (s: Partial<Pick<AuthState, 'apiUrl' | 'apiKey' | 'isAuthenticated'>>) => void;
   clear: () => void;
 }
 
@@ -33,9 +30,8 @@ export const useAuth = create<AuthState>()(
       apiUrl: defaultUrl(),
       apiKey: '',
       isAuthenticated: false,
-      licenseState: 'unchecked',
       setSession: (s) => set(s),
-      clear: () => set({ apiUrl: defaultUrl(), apiKey: '', isAuthenticated: false, licenseState: 'unchecked' }),
+      clear: () => set({ apiUrl: defaultUrl(), apiKey: '', isAuthenticated: false }),
     }),
     {
       name: 'whatygo-auth',
@@ -44,11 +40,9 @@ export const useAuth = create<AuthState>()(
         apiUrl: s.apiUrl,
         apiKey: s.apiKey,
         isAuthenticated: s.isAuthenticated,
-        licenseState: s.licenseState,
       }),
     },
   ),
 );
 
-export const isSignedIn = (s: Pick<AuthState, 'isAuthenticated' | 'licenseState'>) =>
-  s.isAuthenticated && s.licenseState === 'licensed';
+export const isSignedIn = (s: Pick<AuthState, 'isAuthenticated'>) => s.isAuthenticated;

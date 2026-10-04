@@ -12,7 +12,7 @@ Foco do fork: **corrigir, melhorar e ajustar**. O que é funcionalidade nova est
 - O upstream tinha **61 issues + 61 PRs abertos** (todos analisados aqui).
 - A branch `upstream/develop` está *atrás* da `main` (VERSION `0.7.1`) — vários PRs abertos apontam para ela (#90, #132, #150, #159–#163, #177, #198) e por isso estão desalinhados com a `main`.
 - Os commits da `main` pública são `sync: 0.7.x from main`, feitos por um bot — ela é um **espelho** de um repositório interno. O GitHub não lista nenhum PR como *merged*; os PRs #33 e #91 (AlwaysOnline) foram apenas **fechados** em 03/07 e a correção chegou à `main` por outro caminho. **O fork é o lugar prático para integrar correções.**
-- A `main` exige **ativação de licença** (o servidor responde 503 `LICENSE_REQUIRED` até registrar). É um mecanismo do upstream e o fork depende dele.
+- A `main` do upstream exige **ativação de licença** (o servidor responde 503 `LICENSE_REQUIRED` até registrar). **Este fork removeu esse mecanismo** (ver `docs/LICENCA-ANALISE.md`).
 
 ## 2. O que foi entregue
 

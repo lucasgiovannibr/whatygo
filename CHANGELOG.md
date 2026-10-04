@@ -20,6 +20,18 @@ and pull requests in `FORK-TRIAGE.md`.
     metric names and the `evolution` container user.
 - **New files**: `CONTRIBUTING.md`, `SECURITY.md`, `docs/guia/` (a beginner's guide) and
   `docker/instalacao-simples/` (a ready Docker Compose).
+- **The license gate is gone.** The server no longer answers `503 LICENSE_REQUIRED`, the
+  manager no longer asks for a registration, and **nothing is sent** to the upstream's
+  licensing service (no activation, no 30-minute heartbeat, no deactivation, no use of
+  `GLOBAL_API_KEY` as a license key). `pkg/core` was removed and so were the routes
+  `/license/status`, `/license/register` and `/license/activate` (they now answer 404), and
+  the variable `EVOLUTION_OPERATOR_EMAIL` is ignored. Nothing else depended on the licence:
+  instance tokens and sessions are not derived from it, so **existing instances keep the same
+  tokens and sessions**. The table `runtime_configs` is no longer created or read; an existing
+  one is left untouched (the previous image can still use it), and it holds the upstream's
+  license key in clear text, so drop it when you no longer need to go back:
+  `DROP TABLE runtime_configs;`. Analysis, options and legal review in
+  `docs/LICENCA-ANALISE.md`.
 - **whatsmeow updated** (30/06 → 29/09/2026, 72 commits) and **Go 1.26** is now
   required (Dockerfile updated). The whatsmeow schema moves from **v14 to v16**;
   the migrations are forward-only, so **back up `evogo_auth` before deploying** —
@@ -492,9 +504,8 @@ they do not understand). Details and the method in `FORK-TRIAGE.md` §3.
 ### Documentation
 - `docs/swagger.*` regenerated with swag v1.16.3 (`--parseDependency`; it had not been
   regenerated since the 0.7.2 sync): 28 routes added (calls, `/instance/{id}/integrations`,
-  diagnostics, `/send/pollVote`, newsletters, etc.), none removed. The `/license/*` routes,
-  registered with inline handlers that swag cannot annotate, are declared in
-  `pkg/core/license_swagger.go` so they stay documented.
+  diagnostics, `/send/pollVote`, newsletters, etc.), none removed. (The `/license/*` routes
+  that were declared in `pkg/core/license_swagger.go` were removed later, with the license gate.)
 - A test that read `CallEnded` right after the call's `Done` channel closed could run
   before the event was published (and panic on the empty log); it now waits for the event.
 

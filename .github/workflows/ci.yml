@@ -44,10 +44,9 @@ jobs:
         with:
           go-version-file: go.mod
 
-      # pkg/core is the license runtime and is left as it is.
       - name: gofmt
         run: |
-          files=$(gofmt -l $(git ls-files '*.go' | grep -v '^pkg/core/'))
+          files=$(gofmt -l $(git ls-files '*.go'))
           if [ -n "$files" ]; then echo "not gofmt-formatted:"; echo "$files"; exit 1; fi
 
       - run: go build ./...

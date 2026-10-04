@@ -40,17 +40,15 @@ const LOGIN_PATH = '/manager/login';
 export const EXPIRED_FLAG = 'whatygo-session-expired';
 let redirecting = false;
 
-function expireSession(licenseLost: boolean) {
+function expireSession() {
   if (redirecting) return;
   redirecting = true;
   try {
-    sessionStorage.setItem(EXPIRED_FLAG, licenseLost ? 'license' : 'session');
+    sessionStorage.setItem(EXPIRED_FLAG, 'session');
   } catch {
     /* the login page simply will not show the notice */
   }
-  const { clear, setSession } = useAuth.getState();
-  if (licenseLost) setSession({ licenseState: 'unlicensed', isAuthenticated: false });
-  else clear();
+  useAuth.getState().clear();
   window.location.assign(LOGIN_PATH);
 }
 
@@ -123,7 +121,7 @@ function errorMessage(data: unknown, fallback: string): string {
   return fallback;
 }
 
-/** Typed JSON call that throws ApiError and handles session/license expiry globally. */
+/** Typed JSON call that throws ApiError and handles session expiry globally. */
 export async function api<T = unknown>(path: string, opts: RequestOptions = {}): Promise<T> {
   let res: RawResponse;
   try {
@@ -145,11 +143,6 @@ export async function api<T = unknown>(path: string, opts: RequestOptions = {}):
   // made with another key (an instance token) report their own error without logging the admin out.
   const usesSession = opts.baseUrl === undefined && opts.apikey === undefined;
 
-  if (usesSession) {
-    if (res.status === 401) expireSession(false);
-    if ((res.status === 403 && (codeStr === 'LICENSE_INVALID' || codeStr === 'LICENSE_EXPIRED')) || codeStr === 'LICENSE_REQUIRED') {
-      expireSession(true);
-    }
-  }
+  if (usesSession && res.status === 401) expireSession();
   throw new ApiError(errorMessage(res.data, `Erro ${res.status}`), res.status, codeStr, res.data);
 }

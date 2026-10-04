@@ -93,7 +93,7 @@ Não entraram na rodada de endurecimento (ver [CHANGELOG](CHANGELOG.md)); cada u
 
 | # | Ideia | Por quê | Esforço | Recomendação |
 |---|---|---|---|---|
-| 42 | **Licença sem reaproveitar a `GLOBAL_API_KEY`** | O runtime de licença (`pkg/core`, ofuscado, do upstream) usa a chave global como chave para o servidor de licença e a guarda em claro em `runtime_configs`. Mexer nisso é mexer no mecanismo do fornecedor | — | ✖ decisão sua / do upstream |
+| 42 | **Licença sem reaproveitar a `GLOBAL_API_KEY`** | O runtime de licença (`pkg/core`, ofuscado, do upstream) usa a chave global como chave para o servidor de licença e a guarda em claro em `runtime_configs`. Mexer nisso é mexer no mecanismo do fornecedor | — | ✅ resolvido: o runtime de licença foi removido (ver `docs/LICENCA-ANALISE.md`) |
 | 43 | **TTL e limite de tamanho nas filas RabbitMQ** | Fila sem consumidor cresce até o broker reagir. Mudar os argumentos de uma fila existente faz o broker recusar a declaração; precisa de opt-in e nota de migração (ou *policy* no broker) | M | ◐ |
 | 44 | **Criptografar o proxy (e outros segredos) no banco** | Hoje fica em claro na coluna `instances.proxy`; a API já não o devolve | M | ◐ |
 | 45 | **Migrações versionadas** (goose/golang-migrate) com lock | `AutoMigrate` roda a cada partida em todas as réplicas | M | ◐ |

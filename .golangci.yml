@@ -14,6 +14,3 @@ linters:
     staticcheck:
       # Bugs and deprecated APIs only: the style checks (ST*, QF*) would be noise on this code base.
       checks: ["SA*"]
-  exclusions:
-    paths:
-      - pkg/core # the license runtime: not ours to reformat or lint

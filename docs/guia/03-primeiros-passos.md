@@ -1,6 +1,6 @@
 # 3. Primeiros passos
 
-Neste capítulo você vai conectar um número de WhatsApp e mandar a primeira mensagem, **tudo pelo painel**, sem programar. Pré-requisito: o servidor instalado e a licença ativada ([Instalação](./02-instalacao.md)).
+Neste capítulo você vai conectar um número de WhatsApp e mandar a primeira mensagem, **tudo pelo painel**, sem programar. Pré-requisito: o servidor instalado ([Instalação](./02-instalacao.md)).
 
 ## 1. Entrar no painel
 

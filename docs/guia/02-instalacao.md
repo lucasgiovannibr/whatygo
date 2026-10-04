@@ -84,20 +84,18 @@ No navegador: **http://localhost:4000/manager**
 
 Se você mudou `HTTP_PORT` no `.env`, troque o `4000` pela porta escolhida.
 
-### 5. Ative a licença
+### 5. Entre com a chave global
 
-Veja a próxima seção.
+Informe a **chave global** (`GLOBAL_API_KEY`) e clique em **Entrar**. Pronto: não há registro nem ativação (veja a próxima seção).
 
-## Ativar a licença
+## Não há ativação de licença
 
-O projeto original exige que cada servidor seja **registrado** antes de funcionar. Este fork mantém esse mecanismo, porque ele faz parte do código herdado. Até registrar, a API responde `503` com `LICENSE_REQUIRED` (isso é normal na primeira vez).
+O projeto original exigia que cada servidor fosse **registrado** num serviço da Evolution Foundation antes de funcionar (até lá, a API respondia `503` com `LICENSE_REQUIRED`). **O WhatyGo removeu esse mecanismo.** Assim que o servidor sobe e você entra no painel com a chave global, a API funciona, inclusive numa instalação nova e **sem internet**.
 
-1. Abra `http://localhost:4000/manager`.
-2. Informe a **chave global** (`GLOBAL_API_KEY`) e clique em **Entrar**.
-3. O painel leva você a uma página de registro, mantida pela Evolution Foundation. Complete o registro lá.
-4. Você volta ao painel e a API passa a funcionar. O estado da licença fica salvo no banco de dados, e o servidor renova a ativação sozinho de tempos em tempos.
-
-> O registro conversa com um serviço de terceiros (a Evolution Foundation). Se esse serviço estiver fora do ar, a ativação inicial pode falhar; tente de novo mais tarde.
+- O servidor **não envia nada** a nenhum serviço de licenciamento: nem chave, nem identificador da máquina, nem contagem de uso.
+- A `GLOBAL_API_KEY` volta a ser só a chave de administração do seu servidor.
+- Se o seu banco veio do projeto original (ou de uma versão anterior deste fork), **nada muda**: instâncias, tokens e sessões continuam os mesmos. A tabela `runtime_configs` fica no banco sem uso. Ela guarda a chave de licença do original em texto puro; quando não precisar mais voltar para a versão anterior, faça um backup e apague-a com `DROP TABLE runtime_configs;`.
+- Isso não muda a licença do **código** (Apache 2.0 com condições adicionais): veja [Avisos legais](./11-avisos-legais-e-creditos.md). Os detalhes técnicos da remoção estão em [`docs/LICENCA-ANALISE.md`](../LICENCA-ANALISE.md).
 
 ## Atualizar para uma versão nova
 

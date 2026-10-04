@@ -7,7 +7,6 @@ import { isSignedIn, useAuth } from '@/stores/auth';
 import { useUi } from '@/stores/ui';
 import { AppShell } from '@/components/layout/app-shell';
 import { Spinner } from '@/components/ui/feedback';
-import { LicenseCallbackPage } from '@/features/auth/license-callback-page';
 import { LoginPage } from '@/features/auth/login-page';
 import { InstanceActionsProvider } from '@/features/instances/actions';
 import { InstancesPage } from '@/features/instances/instances-page';
@@ -77,7 +76,6 @@ export function App() {
         <Routes>
           <Route path="/" element={<Navigate to="/manager" replace />} />
           <Route path="/manager/login" element={<LoginPage />} />
-          <Route path="/manager/license/callback" element={<LicenseCallbackPage />} />
 
           <Route path="/manager" element={<RequireAuth />}>
             <Route element={<AppShell />}>

@@ -33,7 +33,6 @@ import (
 	community_handler "github.com/evolution-foundation/evolution-go/pkg/community/handler"
 	community_service "github.com/evolution-foundation/evolution-go/pkg/community/service"
 	config "github.com/evolution-foundation/evolution-go/pkg/config"
-	"github.com/evolution-foundation/evolution-go/pkg/core"
 	producer_interfaces "github.com/evolution-foundation/evolution-go/pkg/events/interfaces"
 	nats_producer "github.com/evolution-foundation/evolution-go/pkg/events/nats"
 	rabbitmq_producer "github.com/evolution-foundation/evolution-go/pkg/events/rabbitmq"
@@ -89,7 +88,7 @@ func init() {
 	}
 }
 
-func setupRouter(db *gorm.DB, authDB *sql.DB, sqliteDB *sql.DB, config *config.Config, conn *amqp.Connection, exPath string, runtimeCtx *core.RuntimeContext, messageRepository message_repository.MessageRepository) (*gin.Engine, func(context.Context)) {
+func setupRouter(db *gorm.DB, authDB *sql.DB, sqliteDB *sql.DB, config *config.Config, conn *amqp.Connection, exPath string, messageRepository message_repository.MessageRepository) (*gin.Engine, func(context.Context)) {
 	killChannel := safemap.New[chan bool]()
 	clientPointer := safemap.New[*whatsmeow.Client]()
 
@@ -237,11 +236,6 @@ func setupRouter(db *gorm.DB, authDB *sql.DB, sqliteDB *sql.DB, config *config.C
 
 	// No request may make the process buffer an unbounded body.
 	r.Use(auth_middleware.LimitBody(config.MaxBodyBytes, config.MaxMediaBodyBytes))
-
-	r.Use(core.GateMiddleware(runtimeCtx))
-
-	// License routes (always accessible, even without license)
-	core.LicenseRoutes(r, runtimeCtx)
 
 	// Passkey ceremony routes — PUBLIC (called by the browser extension from the
 	// web.whatsapp.com origin, gated only by an opaque ephemeral token).
@@ -458,8 +452,6 @@ func main() {
 
 	logger.LogInfo("Starting WhatyGo version %s", version)
 
-	startTime := time.Now()
-
 	db, err := cfg.CreateUsersDB()
 	if err != nil {
 		log.Fatal(err)
@@ -484,14 +476,6 @@ func main() {
 	}
 
 	migrate(db, cfg.CallHistory)
-
-	// Initialize core DB + license runtime
-	core.SetDB(db)
-	if err := core.MigrateDB(); err != nil {
-		log.Fatal("Failed to migrate runtime_configs: ", err)
-	}
-	tier := "evolution-go"
-	runtimeCtx := core.InitializeRuntime(tier, version, cfg.GlobalApiKey)
 
 	var conn *amqp.Connection
 
@@ -524,13 +508,7 @@ func main() {
 	// Owns the background writer that batches message persistence; closed on shutdown.
 	messageRepository := message_repository.NewMessageRepository(db)
 
-	r, stopServices := setupRouter(db, authDB, sqliteDB, cfg, conn, exPath, runtimeCtx, messageRepository)
-
-	// Graceful shutdown with heartbeat
-	heartbeatCtx, heartbeatCancel := context.WithCancel(context.Background())
-	defer heartbeatCancel()
-
-	core.StartHeartbeat(heartbeatCtx, runtimeCtx, startTime)
+	r, stopServices := setupRouter(db, authDB, sqliteDB, cfg, conn, exPath, messageRepository)
 
 	// Without these a client could hold a connection forever by sending its headers or
 	// body one byte at a time. There is no WriteTimeout on purpose: sends with a typing
@@ -555,11 +533,6 @@ func main() {
 
 	<-quit
 	logger.LogInfo("[SHUTDOWN] Signal received, shutting down...")
-
-	// Stop heartbeat loop
-	heartbeatCancel()
-
-	core.Shutdown(runtimeCtx)
 
 	shutdownCtx, shutdownCancel := context.WithTimeout(context.Background(), 10*time.Second)
 	defer shutdownCancel()

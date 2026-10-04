@@ -166,7 +166,7 @@ pacote** → selecionar a pasta `passkey-helper`.
 
 O backend já libera a origem `https://web.whatsapp.com` (o CORS atual usa `*`,
 que cobre chamadas não-credenciadas da extensão). As rotas `/passkey-ceremony/*`
-também estão isentas do gate de licença.
+são públicas (só o token efêmero da cerimônia as protege).
 
 ---
 

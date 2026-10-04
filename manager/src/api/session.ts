@@ -1,29 +1,7 @@
 import { api, ApiError, rawRequest } from '@/lib/http';
 import type { HealthStatus } from './types';
 
-/** Session + license calls. They run before the store is populated, so they pass url/key explicitly. */
-
-export interface LicenseStatus {
-  status: 'active' | 'inactive';
-  instance_id?: string;
-  api_key?: string;
-}
-
-export async function fetchLicenseStatus(baseUrl: string, apikey: string): Promise<LicenseStatus> {
-  return api<LicenseStatus>('/license/status', { baseUrl, apikey });
-}
-
-export async function startLicenseRegistration(baseUrl: string, apikey: string, redirectUri: string) {
-  return api<{ register_url?: string; message?: string }>('/license/register', {
-    baseUrl,
-    apikey,
-    query: { redirect_uri: redirectUri },
-  });
-}
-
-export async function activateLicense(baseUrl: string, apikey: string, code: string) {
-  return api<{ status?: string; message?: string }>('/license/activate', { baseUrl, apikey, query: { code } });
-}
+/** Session calls. They run before the store is populated, so they pass url/key explicitly. */
 
 /** Validates the key against an authenticated endpoint. */
 export async function verifyApiKey(baseUrl: string, apikey: string): Promise<void> {

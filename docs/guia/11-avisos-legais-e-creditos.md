@@ -19,6 +19,8 @@ O código é licenciado sob **Apache 2.0**, com **duas condições adicionais** 
 | **1(a)** Não remover o copyright do console (painel) | O painel deve continuar mostrando a autoria do original. | O painel mostra *"Baseado no Evolution Go · © 2026 Evolution Foundation · Apache 2.0"* no menu e na tela de entrada. |
 | **1(b)** Avisar que o Evolution Go está sendo usado | Um aviso visível ao administrador, acessível pela documentação ou pela tela de configurações. | O aviso do painel, o README e este capítulo. |
 
+**E a ativação de licença do original?** Ela era um recurso técnico do programa (um registro num serviço da Evolution Foundation), e **não uma condição do `LICENSE`**: nem o `LICENSE`, nem o `NOTICE`, nem o `TRADEMARKS.md` mandam usá-la, e a Apache 2.0 permite modificar o programa e trocar esse recurso. O WhatyGo a removeu, por isso **não envia nenhum dado** a esse serviço. Continuam valendo tudo o que está na tabela acima. Quem se registrou no serviço do original no passado continua sujeito aos termos que aceitou lá; isso não depende do WhatyGo. A análise completa está em [`docs/LICENCA-ANALISE.md`](../LICENCA-ANALISE.md).
+
 ## O que a marca permite (nome e visual)
 
 A política de marcas ([`TRADEMARKS.md`](../../TRADEMARKS.md)) é separada da licença do código. Ela protege os nomes **"Evolution Foundation", "Evolution" e "Evolution Go"**, o logotipo e a identidade visual (paleta de cores, tipografia, raio de borda e a linha de copyright).

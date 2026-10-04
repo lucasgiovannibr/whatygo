@@ -18,7 +18,10 @@ O arquivo `.env` não existe ou está vazio. Copie o `.env.example` para `.env` 
 Mude `HTTP_PORT=4001` no `.env` e rode `docker compose up -d` de novo; depois acesse `http://localhost:4001/manager`.
 
 ### A API responde `503` com `LICENSE_REQUIRED`
-Normal na primeira vez: a licença ainda não foi ativada. Abra o `/manager`, entre com a chave global e complete o registro ([Instalação](./02-instalacao.md#ativar-a-licença)). Se o painel pedir a licença de novo, entre outra vez.
+Essa resposta vem de uma versão **antiga** (a do projeto original, ou deste fork antes de a ativação de licença ser removida). A versão atual não tem mais essa barreira: atualize a imagem ([Atualizar para uma versão nova](./02-instalacao.md#atualizar-para-uma-versão-nova)) e a API responde normalmente, sem registrar nada ([Instalação](./02-instalacao.md#não-há-ativação-de-licença)).
+
+### Uma integração que chamava `/license/status` recebe `404`
+As rotas `/license/status`, `/license/register` e `/license/activate` foram removidas junto com a ativação. Tire essa verificação da integração: use `GET /server/ok` (o servidor está de pé) ou `GET /health` (os bancos respondem).
 
 ### O painel abre, mas "não foi possível carregar os dados"
 O painel não alcança a API. Confira se o servidor está de pé (`curl http://localhost:4000/health`) e, se o painel e a API estão em endereços diferentes, use **Alterar** na tela de entrada para informar o endereço da API.

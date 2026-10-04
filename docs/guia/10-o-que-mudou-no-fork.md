@@ -14,6 +14,7 @@ O repositório público do original é um **espelho** de um repositório interno
 | **Reconexão** | Pouco previsível; reconexões duplicadas; instâncias presas no meio da reconexão. | Uma execução por instância, reconexão com espera crescente, restauração ao iniciar. |
 | **Biblioteca do WhatsApp** | whatsmeow de junho/2026. | Atualizada (setembro/2026, 72 commits) e Go 1.26. |
 | **Erros da API** | `500` para quase tudo. | Status certo e um `code` estável (`503`, `409`, `429`, `404`...). |
+| **Ativação de licença** | Exigia registro num serviço da Evolution Foundation (a API ficava em `503` até lá) e enviava um sinal periódico a ele. | Removida: o servidor funciona ao subir, sem registro e sem enviar nada a terceiros ([Instalação](./02-instalacao.md#não-há-ativação-de-licença)). |
 | **Painel `/manager`** | Sem código-fonte no repositório; só o arquivo compilado. 12 de 16 eventos. | Refeito do zero, com código aberto na pasta `manager/`, tema claro/escuro, 16 eventos, teste de 12 tipos de envio, telefone no navegador. |
 | **Botões e carrossel** | Erros `405`/`473`; carrossel sumia no iPhone. | Funcionam (iPhone e Web, conta Business). Lista vira botões de resposta. |
 | **Chamadas** | Só rejeitar. | Atender, ligar, vídeo e áudio por WebSocket 🧪. |
@@ -52,7 +53,6 @@ Se você usava o original e vai trocar, leia:
 
 ## O que **não** mudou
 
-- O mecanismo de **ativação de licença** do original continua exigido (veja [Instalação](./02-instalacao.md#ativar-a-licença)). Ele é um componente do projeto original, e este fork depende dele.
 - A API continua compatível: as rotas do original seguem existindo (as novas são adições).
 - A licença do código (Apache 2.0) e os créditos ao projeto original ([Avisos legais](./11-avisos-legais-e-creditos.md)).
 

@@ -53,8 +53,7 @@ func (s *serverHandler) ServerOk(ctx *gin.Context) {
 //     connections run out (issue #175: the health check was blind exactly when the
 //     Postgres connections were exhausted).
 //
-// It only reports states, no counts or identifiers, because it is public (exempt
-// from the license gate, like /server/ok). Per-instance details are in
+// It only reports states, no counts or identifiers, because it is public, like /server/ok. Per-instance details are in
 // GET /instance/runtimes (global key).
 func (s *serverHandler) Health(ctx *gin.Context) {
 	// Checks run in parallel so the whole probe stays within one ping timeout even

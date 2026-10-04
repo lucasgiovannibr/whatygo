@@ -42,7 +42,7 @@ cp .env.example .env     # preencha POSTGRES_PASSWORD e GLOBAL_API_KEY (veja o g
 docker compose up -d
 ```
 
-Depois abra **http://localhost:4000/manager**, entre com a sua `GLOBAL_API_KEY` e ative a licença (o servidor responde `503` até lá). Passo a passo, com explicações e solução de problemas, em [Instalação](./docs/guia/02-instalacao.md).
+Depois abra **http://localhost:4000/manager**, entre com a sua `GLOBAL_API_KEY`. **Não há registro nem ativação de licença**: o servidor funciona assim que sobe. Passo a passo, com explicações e solução de problemas, em [Instalação](./docs/guia/02-instalacao.md).
 
 A imagem pronta é pública: `ghcr.io/lucasgiovannibr/whatygo`.
 
@@ -53,6 +53,7 @@ O fork nasceu para **corrigir, melhorar e ajustar** o Evolution Go v0.7.2. Em re
 - **Estabilidade:** corrigidas as quedas do servidor (`concurrent map writes`, escrita concorrente em WebSocket), o vazamento de conexões do banco e a reconexão das instâncias.
 - **Painel refeito do zero** (`/manager`, com código-fonte em [`manager/`](./manager/README.md)): tema claro e escuro, 16 tipos de evento, teste de 12 tipos de envio, telefone no navegador.
 - **Botões e carrossel** funcionando (verificados em iPhone e WhatsApp Web); lista reenviada como botões de resposta, porque o WhatsApp não aceita lista de aparelho vinculado.
+- **Sem ativação de licença:** o mecanismo herdado do original (registro num serviço de terceiros, com a chave global enviada para fora) foi removido; nada é enviado a nenhum serviço de licenciamento.
 - **Chamadas** de voz e vídeo: atender, ligar e levar o áudio e o vídeo a outro sistema 🧪.
 - **Segurança:** recusa chave de exemplo, contêiner sem administrador, mídia por links temporários, token fora dos eventos, links de mídia só para endereços públicos.
 - **Operação:** `/health`, diagnóstico por instância, `/metrics` (Prometheus), erros com status e `code` estáveis, fila de webhook com tentativas.
@@ -95,7 +96,7 @@ Correções e melhorias são bem-vindas, por *issue* ou *pull request* neste rep
 
 ## Licença, marca e créditos
 
-- O código é licenciado sob a **Apache License 2.0, com as condições adicionais do projeto original** (manter o logotipo e o copyright no painel e avisar que o Evolution Go é usado). Veja [LICENSE](./LICENSE).
+- O código é licenciado sob a **Apache License 2.0, com as condições adicionais do projeto original** (manter os avisos de copyright no painel e avisar que o Evolution Go é usado). Veja [LICENSE](./LICENSE).
 - **Este projeto é um fork do [Evolution Go](https://github.com/evolution-foundation/evolution-go)**, © 2026 Evolution Foundation, e não é afiliado nem endossado por ela. "Evolution Foundation", "Evolution" e "Evolution Go" são marcas da Evolution Foundation ([TRADEMARKS.md](./TRADEMARKS.md)); aqui aparecem apenas para indicar a origem.
 - Créditos de terceiros (incluindo o whatsmeow, de Tulir Asokan) em [NOTICE](./NOTICE).
 - Como o fork cumpre cada regra, e o que ainda está pendente: [Avisos legais e créditos](./docs/guia/11-avisos-legais-e-creditos.md).
