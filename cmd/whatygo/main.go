@@ -2,7 +2,6 @@ package main
 
 import (
 	"context"
-	"crypto/subtle"
 	"database/sql"
 	"flag"
 	"fmt"
@@ -225,6 +224,15 @@ func setupRouter(db *gorm.DB, authDB *sql.DB, sqliteDB *sql.DB, config *config.C
 	// gin.Default() prints the query string as it came, which put credentials such as
 	// /ws?token=<GLOBAL_API_KEY> in the access log; AccessLog redacts them.
 	r := gin.New()
+
+	// gin used to believe X-Forwarded-For from anyone, so a client could appear to come from any
+	// address (the access log, the failed-authentication limit). Now no proxy is trusted unless
+	// TRUSTED_PROXIES lists it.
+	if err := r.SetTrustedProxies(config.TrustedProxies); err != nil {
+		log.Fatalf("TRUSTED_PROXIES: %v", err)
+	}
+	authMW := auth_middleware.NewMiddleware(config, instanceService)
+
 	r.Use(auth_middleware.RequestID(), metrics.Middleware(), auth_middleware.AccessLog(), gin.Recovery())
 
 	// Files above this size are kept on disk while a multipart body is parsed, not in memory.
@@ -246,7 +254,7 @@ func setupRouter(db *gorm.DB, authDB *sql.DB, sqliteDB *sql.DB, config *config.C
 	call_stream.RegisterRoutes(r, whatsmeowService.CallEngine(), callTickets, call_stream.Config{AllowedOrigins: config.CallStreamOrigins})
 
 	routes.NewRouter(
-		auth_middleware.NewMiddleware(config, instanceService),
+		authMW,
 		instance_handler.NewInstanceHandler(instanceService, config),
 		user_handler.NewUserHandler(userService),
 		send_handler.NewSendHandler(sendMessageService),
@@ -276,11 +284,11 @@ func setupRouter(db *gorm.DB, authDB *sql.DB, sqliteDB *sql.DB, config *config.C
 	metrics.RegisterInstances(clientPointer)
 	metrics.RegisterWebhookQueues(whatsmeowService.WebhookStats)
 	metrics.Registry.MustRegister(whatsmeowService.CallEngine().Collectors()...)
-	r.GET("/metrics", auth_middleware.NewMiddleware(config, instanceService).AuthAdmin, metrics.Handler())
+	r.GET("/metrics", authMW.AuthAdmin, metrics.Handler())
 
 	if config.PprofEnabled {
 		logger.LogWarn("ENABLE_PPROF is set: /debug/pprof is exposed behind the global API key")
-		pp := r.Group("/debug/pprof", auth_middleware.NewMiddleware(config, instanceService).AuthAdmin)
+		pp := r.Group("/debug/pprof", authMW.AuthAdmin)
 		pp.GET("/", gin.WrapF(pprof.Index))
 		pp.GET("/cmdline", gin.WrapF(pprof.Cmdline))
 		pp.GET("/profile", gin.WrapF(pprof.Profile))
@@ -295,11 +303,13 @@ func setupRouter(db *gorm.DB, authDB *sql.DB, sqliteDB *sql.DB, config *config.C
 		token := c.Query("token")
 		instanceId := c.Query("instanceId")
 
-		// Constant-time compare, and never log the token that was sent: it may be a
-		// near-miss of the real global key.
-		if subtle.ConstantTimeCompare([]byte(token), []byte(config.GlobalApiKey)) != 1 {
-			logger.LogError("Token inválido na conexão WebSocket")
-			c.JSON(http.StatusUnauthorized, gin.H{"error": "Token inválido"})
+		// Constant-time compare, counted against the failed-authentication limit, and never log
+		// the token that was sent: it may be a near-miss of the real global key.
+		if !authMW.AdminTokenValid(c, token) {
+			if !c.IsAborted() { // not already refused with 429
+				logger.LogError("Token inválido na conexão WebSocket")
+				c.JSON(http.StatusUnauthorized, gin.H{"error": "Token inválido"})
+			}
 			return
 		}
 

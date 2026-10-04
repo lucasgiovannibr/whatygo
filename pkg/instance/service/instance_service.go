@@ -146,6 +146,12 @@ func (i instances) Create(data *CreateStruct) (*instance_model.Instance, error) 
 		return nil, apierror.Conflict("instance already exists")
 	}
 
+	// The token identifies the instance on every request; the column is unique, and the
+	// database would answer a duplicate with a 500.
+	if sameToken, _ := i.instanceRepository.GetInstanceByToken(data.Token); sameToken != nil {
+		return nil, apierror.Conflict("token already in use by another instance")
+	}
+
 	instance := instance_model.Instance{
 		Id:         data.InstanceId,
 		Name:       data.Name,

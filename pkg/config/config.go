@@ -3,6 +3,7 @@ package config
 import (
 	"database/sql"
 	"fmt"
+	"net"
 	"net/url"
 	"os"
 	"strconv"
@@ -61,6 +62,17 @@ type Config struct {
 	// CorsOrigins are the browser origins allowed to call the API (CORS_ORIGINS, comma
 	// separated). Empty or "*" allows every origin.
 	CorsOrigins []string
+	// TrustedProxies are the proxies (addresses or CIDRs, TRUSTED_PROXIES, comma separated)
+	// whose X-Forwarded-For / X-Real-IP headers are believed. Empty, the default, trusts no
+	// one: the client address is the connection's own. gin used to trust every sender, so any
+	// client could make itself appear to come from any address.
+	TrustedProxies []string
+	// AuthFailLimit is how many failed authentications one client address may make per
+	// minute before it is refused with 429 (AUTH_FAIL_LIMIT, default 30, 0 turns it off).
+	AuthFailLimit int
+	// MinTokenLength is the shortest token POST /instance/create accepts
+	// (MIN_INSTANCE_TOKEN_LENGTH, default 16). The token is the credential of the instance.
+	MinTokenLength int
 	// MaxBodyBytes bounds a request body (MAX_BODY_MB, default 4); routes that receive a
 	// file get MaxMediaBodyBytes (MAX_MEDIA_BODY_MB, default 150: 100 MB of media is
 	// ~134 MB as base64).
@@ -469,8 +481,16 @@ func Load() *Config {
 		}
 	}
 
+	trustedProxies, err := parseTrustedProxies(os.Getenv(config_env.TRUSTED_PROXIES))
+	if err != nil {
+		logger.LogFatal("[CONFIG] TRUSTED_PROXIES: %v", err)
+	}
+
 	config := &Config{
 		CorsOrigins:          corsOrigins,
+		TrustedProxies:       trustedProxies,
+		AuthFailLimit:        envNonNegative(config_env.AUTH_FAIL_LIMIT, 30),
+		MinTokenLength:       envNonNegative(config_env.MIN_INSTANCE_TOKEN_LEN, 16),
 		MaxBodyBytes:         envMB(config_env.MAX_BODY_MB, 4),
 		MaxMediaBodyBytes:    envMB(config_env.MAX_MEDIA_BODY_MB, 150),
 		PostgresAuthDB:       postgresAuthDB,
@@ -560,6 +580,30 @@ func checkUserCacheTTL() time.Duration {
 		return 12 * time.Hour
 	}
 	return time.Duration(minutes) * time.Minute
+}
+
+// parseTrustedProxies reads a comma separated list of addresses and CIDRs.
+func parseTrustedProxies(raw string) ([]string, error) {
+	var out []string
+	for _, entry := range strings.Split(raw, ",") {
+		entry = strings.TrimSpace(entry)
+		if entry == "" {
+			continue
+		}
+		if _, _, err := net.ParseCIDR(entry); err != nil && net.ParseIP(entry) == nil {
+			return nil, fmt.Errorf("%q is neither an IP address nor a CIDR", entry)
+		}
+		out = append(out, entry)
+	}
+	return out, nil
+}
+
+// envNonNegative reads a whole number >= 0 from the environment; absent or invalid gives def.
+func envNonNegative(name string, def int) int {
+	if v, err := strconv.Atoi(strings.TrimSpace(os.Getenv(name))); err == nil && v >= 0 {
+		return v
+	}
+	return def
 }
 
 func envMB(name string, def int64) int64 {

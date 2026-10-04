@@ -2,6 +2,7 @@ package instance_handler
 
 import (
 	"errors"
+	"fmt"
 	"net/http"
 	"time"
 
@@ -69,8 +70,13 @@ func (i *instanceHandler) Create(ctx *gin.Context) {
 		return
 	}
 
+	// The token is the credential of the instance. One is made when none is given, and a
+	// short one (a token of "a" used to be accepted) is refused: with nothing slowing down
+	// who guesses it, a weak token is the weakest link of the API.
 	if data.Token == "" {
-		apierror.Fail(ctx, http.StatusBadRequest, "token is required")
+		data.Token = uuid.NewString()
+	} else if min := i.config.MinTokenLength; len(data.Token) < min {
+		apierror.Fail(ctx, http.StatusBadRequest, fmt.Sprintf("token must have at least %d characters (leave it out to get a generated one)", min))
 		return
 	}
 
