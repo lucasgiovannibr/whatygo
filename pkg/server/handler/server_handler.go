@@ -8,11 +8,17 @@ import (
 	"time"
 
 	"github.com/gin-gonic/gin"
+
+	producer_interfaces "github.com/lucasgiovannibr/whatygo/pkg/events/interfaces"
+	"github.com/lucasgiovannibr/whatygo/pkg/metrics"
+	"github.com/lucasgiovannibr/whatygo/pkg/safemap"
+	"go.mau.fi/whatsmeow"
 )
 
 type ServerHandler interface {
 	ServerOk(ctx *gin.Context)
 	Health(ctx *gin.Context)
+	HealthMetrics(ctx *gin.Context)
 }
 
 // HealthCheck is one database the service depends on.
@@ -22,7 +28,9 @@ type HealthCheck struct {
 }
 
 type serverHandler struct {
-	checks []HealthCheck
+	checks       []HealthCheck
+	clients      interface{} // Will hold *safemap.Map[*whatsmeow.Client] cast later
+	webhookStats interface{} // Will hold func() *producer_interfaces.WebhookStats
 }
 
 // healthPingTimeout bounds each database ping so the probe itself never hangs
@@ -119,4 +127,39 @@ func NewServerHandler(checks ...HealthCheck) ServerHandler {
 		}
 	}
 	return &serverHandler{checks: valid}
+}
+
+// SetMetricsSources allows injecting dependencies needed for HealthMetrics.
+// This is a workaround to avoid circular imports or heavy coupling in constructor.
+func (s *serverHandler) SetMetricsSources(clients interface{}, webhookStats interface{}) {
+	s.clients = clients
+	s.webhookStats = webhookStats
+}
+
+// HealthMetrics returns operational metrics for the Manager dashboard.
+func (s *serverHandler) HealthMetrics(ctx *gin.Context) {
+	// Type assertions are safe here as they are set by the main initialization logic.
+	clients, ok := s.clients.(*safemap.Map[*whatsmeow.Client])
+	if !ok {
+		ctx.JSON(500, gin.H{"error": "clients map not configured"})
+		return
+	}
+	statsFn, ok := s.webhookStats.(func() *producer_interfaces.WebhookStats)
+	if !ok {
+		statsFn = func() *producer_interfaces.WebhookStats { return nil }
+	}
+
+	m := metrics.GetDashboardMetrics(clients, statsFn)
+	ctx.JSON(200, m)
+}
+
+// Ensure nil safety for WebhookStats in case of uninitialized producer
+func (s *serverHandler) ensureWebhookStats(statsFn func() *producer_interfaces.WebhookStats) func() *producer_interfaces.WebhookStats {
+	return func() *producer_interfaces.WebhookStats {
+		stats := statsFn()
+		if stats == nil {
+			return &producer_interfaces.WebhookStats{}
+		}
+		return stats
+	}
 }

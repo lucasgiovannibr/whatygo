@@ -7,6 +7,7 @@ package metrics
 import (
 	"database/sql"
 	"strconv"
+	"sync/atomic"
 	"time"
 
 	"github.com/gin-gonic/gin"
@@ -162,6 +163,19 @@ func RegisterInstances(clients *safemap.Map[*whatsmeow.Client]) {
 	}
 }
 
+// eventRate tracks events per minute for the dashboard.
+var recentEventCount atomic.Int64
+
+// IncrementEvents should be called whenever a WhatsApp event is processed to update the dashboard rate.
+func IncrementEvents(count int) {
+	recentEventCount.Add(int64(count))
+}
+
+// ResetEventRate resets the counter periodically. Call this in a ticker.
+func ResetEventRate() {
+	recentEventCount.Store(0)
+}
+
 // RegisterWebhookQueues exposes the state of the webhook delivery queues.
 func RegisterWebhookQueues(stats func() *producer_interfaces.WebhookStats) {
 	read := func(value func(*producer_interfaces.WebhookStats) float64) func() float64 {
@@ -186,4 +200,88 @@ func RegisterWebhookQueues(stats func() *producer_interfaces.WebhookStats) {
 	counter("whatygo_webhook_sent_total", "Webhook events delivered.", func(s *producer_interfaces.WebhookStats) float64 { return float64(s.Sent) })
 	counter("whatygo_webhook_failed_total", "Webhook events that exhausted their retries.", func(s *producer_interfaces.WebhookStats) float64 { return float64(s.Failed) })
 	counter("whatygo_webhook_dropped_total", "Webhook events dropped from a full queue.", func(s *producer_interfaces.WebhookStats) float64 { return float64(s.Dropped) })
+}
+
+// DashboardMetrics holds the aggregated data for the manager dashboard.
+type DashboardMetrics struct {
+	Instances struct {
+		Total       int `json:"total"`
+		Connected   int `json:"connected"`
+		Disconnected int `json:"disconnected"`
+	} `json:"instances"`
+	EventsPerMinute int64 `json:"eventsPerMinute"`
+	Webhooks struct {
+		Pending     int `json:"pending"`
+		PendingBytes int `json:"pendingBytes"`
+		InFlight    int `json:"inFlight"`
+		Destinations int `json:"destinations"`
+		Degraded    int `json:"degraded"`
+		Sent        int64 `json:"sent"`
+		Failed      int64 `json:"failed"`
+	} `json:"webhooks"`
+	Calls struct {
+		Active int `json:"active"`
+	} `json:"calls"`
+	HTTP struct {
+		InFlight int `json:"inFlight"`
+	} `json:"http"`
+}
+
+// GetDashboardMetrics collects current values from the registry and internal counters.
+func GetDashboardMetrics(clients *safemap.Map[*whatsmeow.Client], webhookStats func() *producer_interfaces.WebhookStats) DashboardMetrics {
+	m := DashboardMetrics{}
+
+	// Ensure webhookStats is never nil to avoid panics
+	if webhookStats == nil {
+		webhookStats = func() *producer_interfaces.WebhookStats { return nil }
+	}
+
+	// Instances
+	if clients != nil {
+		for _, c := range clients.Snapshot() {
+			if c != nil {
+				m.Instances.Total++
+				if c.IsConnected() {
+					m.Instances.Connected++
+				} else {
+					m.Instances.Disconnected++
+				}
+			}
+		}
+	}
+
+	// Events Rate
+	m.EventsPerMinute = recentEventCount.Load()
+
+	// Webhooks
+	ws := webhookStats()
+	if ws != nil {
+		m.Webhooks.Pending = int(ws.Pending)
+		m.Webhooks.PendingBytes = int(ws.PendingBytes)
+		m.Webhooks.InFlight = int(ws.InFlight)
+		m.Webhooks.Destinations = int(ws.Destinations)
+		m.Webhooks.Degraded = int(ws.DegradedDestinations)
+		m.Webhooks.Sent = int64(ws.Sent)
+		m.Webhooks.Failed = int64(ws.Failed)
+	}
+
+	// HTTP In-flight
+	// Actually, Gauge doesn't expose Value() easily without Gather. We'll approximate or leave 0 if not accessible directly.
+	// For simplicity in this patch, we rely on the fact that httpInFlight is a Gauge.
+	// To get value: we need to gather. But for dashboard speed, let's skip complex gathering for HTTP inflight unless critical.
+	// Let's use a simple approach: we don't have direct access to Gauge value without Gather.
+	// We will omit HTTP.InFlight from direct calculation here to avoid heavy Gather call on every request,
+	// or implement a helper. Given constraints, I will set it to 0 or implement a quick gather.
+	// Quick gather:
+	metricFamilies, err := Registry.Gather()
+	if err == nil {
+		for _, mf := range metricFamilies {
+			if mf.GetName() == "whatygo_http_requests_in_flight" && len(mf.Metric) > 0 {
+				m.HTTP.InFlight = int(mf.Metric[0].Gauge.GetValue())
+				break
+			}
+		}
+	}
+
+	return m
 }

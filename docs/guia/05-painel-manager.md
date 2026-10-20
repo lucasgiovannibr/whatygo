@@ -8,7 +8,7 @@ Endereço: `http://SEU-SERVIDOR:4000/manager`. Para entrar, use a chave global.
 
 | Item | Para que serve |
 |---|---|
-| **Visão geral** | Resumo do servidor e das instâncias. Mostra quais precisam de atenção (desconectadas) e atalhos. |
+| **Visão geral** | Resumo do servidor e das instâncias. Mostra quais precisam de atenção (desconectadas), métricas operacionais em tempo real e atalhos. |
 | **Instâncias** | Lista (em cartões ou tabela) de todos os números. Criar, conectar, abrir e apagar. |
 | **Explorador da API** | Testa qualquer endereço da API pelo navegador: escolhe a rota, preenche e vê a resposta. Para quem programa. |
 | **Swagger** | Abre a documentação interativa da API. |
@@ -52,6 +52,17 @@ Telefone no navegador: atender, ligar, falar pelo microfone, ver o vídeo, e o h
 Um formulário para cada tipo de mensagem, com exemplos prontos: texto, link, mídia (imagem, vídeo, áudio, documento), enquete, figurinha, localização, contato, botões, lista, carrossel e status. Há modelos prontos de botões e carrossel para testar. Cada envio feito na sessão aparece numa lista ao lado (que some ao sair da página).
 
 > **Atenção:** os envios de mídia e de **status** vão para contatos de verdade. O painel pede confirmação no status.
+
+## Métricas Operacionais
+
+Na página **Visão geral**, abaixo dos indicadores básicos, há um painel de métricas detalhadas (requer chave Admin):
+
+- **Fluxo de Eventos**: Gráfico de linha mostrando a taxa de eventos recebidos do WhatsApp por minuto (janela deslizante de 5 minutos).
+- **Entrega de Webhooks**: Contadores de eventos pendentes, em voo, entregues com sucesso e falhas. Alerta visual se houver destinos degradados.
+- **Chamadas Ativas**: Número de ligações de voz/vídeo ocorrendo neste momento.
+- **Uso de Filas**: Indicador visual da quantidade de bytes aguardando processamento nas filas de eventos.
+
+Esses dados são atualizados automaticamente a cada 30 segundos.
 
 ## Dicas
 

@@ -268,10 +268,7 @@ func setupRouter(db *gorm.DB, authDB *sql.DB, sqliteDB *sql.DB, config *config.C
 		label_handler.NewLabelHandler(labelService),
 		newsletter_handler.NewNewsletterHandler(newsletterService),
 		pollHandler,
-		server_handler.NewServerHandler(
-			server_handler.HealthCheck{Name: "usersDb", DB: usersSQLDB(db)},
-			server_handler.HealthCheck{Name: "authDb", DB: firstSQLDB(authDB, sqliteDB)},
-		),
+		newMetricsReadyHandler(clientPointer, whatsmeowService.WebhookStats, usersSQLDB(db), firstSQLDB(authDB, sqliteDB)),
 	).AssignRoutes(r)
 
 	if config.ConnectOnStartup {
@@ -595,4 +592,16 @@ func callPeerPhone(clients *safemap.Map[*whatsmeow.Client]) call_history.PhoneRe
 		}
 		return call_history.PhoneOf(pn.ToNonAD().String())
 	}
+}
+
+// newMetricsReadyHandler wires live sources into the dashboard handler.
+func newMetricsReadyHandler(clients *safemap.Map[*whatsmeow.Client], webhookStats func() *producer_interfaces.WebhookStats, usersDB, authDB *sql.DB) server_handler.ServerHandler {
+    handler := server_handler.NewServerHandler(
+        server_handler.HealthCheck{Name: "usersDb", DB: usersDB},
+        server_handler.HealthCheck{Name: "authDb", DB: authDB},
+    )
+    if setter, ok := handler.(interface{ SetMetricsSources(interface{}, interface{}) }); ok {
+        setter.SetMetricsSources(clients, webhookStats)
+    }
+    return handler
 }

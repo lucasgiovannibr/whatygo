@@ -1,11 +1,24 @@
 import { useQuery } from '@tanstack/react-query';
 import { fetchHealth } from '@/api/session';
-import type { HealthStatus } from '@/api/types';
+import { fetchHealthMetrics } from '@/api/health';
+import type { HealthStatus, HealthMetricsResponse } from '@/api/types';
+
+// Re-export HealthMetricsResponse type for convenience
+export type { HealthMetricsResponse };
 
 export function useHealth() {
   return useQuery({
     queryKey: ['health'],
     queryFn: ({ signal }) => fetchHealth(signal),
+    refetchInterval: 30_000,
+    staleTime: 15_000,
+  });
+}
+
+export function useHealthMetrics() {
+  return useQuery<HealthMetricsResponse>({
+    queryKey: ['health-metrics'],
+    queryFn: ({ signal }) => fetchHealthMetrics(signal),
     refetchInterval: 30_000,
     staleTime: 15_000,
   });

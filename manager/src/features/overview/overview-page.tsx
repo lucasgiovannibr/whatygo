@@ -2,7 +2,8 @@ import type { ReactNode } from 'react';
 import { Link } from 'react-router-dom';
 import { ArrowRight, BookOpen, CheckCircle2, FlaskConical, Plus, PlugZap, Smartphone, Wifi, WifiOff } from 'lucide-react';
 import type { Instance } from '@/api/types';
-import { useHealth, HEALTH_META } from '@/hooks/use-health';
+import { useHealth, useHealthMetrics, HEALTH_META } from '@/hooks/use-health';
+import { formatNumber } from '@/lib/format';
 import { useInstances } from '@/hooks/use-instances';
 import { useDocumentTitle } from '@/hooks/use-document-title';
 import { formatPhone, timeAgo } from '@/lib/format';
@@ -12,6 +13,7 @@ import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import { Card, CardBody, CardHeader } from '@/components/ui/card';
 import { PageContainer, PageHeader } from '@/components/layout/page';
+import { SimpleChart } from '@/components/ui/chart';
 import { useInstanceActions } from '@/features/instances/actions';
 import { InstanceAvatar, StatusBadge } from '@/features/instances/instance-parts';
 import { useAuth } from '@/stores/auth';
@@ -59,6 +61,7 @@ export function OverviewPage() {
   const apiUrl = useAuth((s) => s.apiUrl);
   const { data, isPending, isError } = useInstances();
   const { data: health, isPending: healthPending } = useHealth();
+  const { data: metrics, isPending: metricsPending } = useHealthMetrics();
 
   const list = data ?? [];
   const online = list.filter((i) => i.connected);
@@ -96,6 +99,158 @@ export function OverviewPage() {
         />
         <Stat icon={<CheckCircle2 />} label="Servidor" value={hm.label} tone={hm.tone} hint={hm.detail} loading={healthPending} />
       </section>
+
+      {/* Métricas Operacionais */}
+      {!metricsPending && metrics && metrics.webhooks ? (
+        <section aria-label="Métricas" className="mt-4 grid gap-4 md:grid-cols-2">
+          <Card>
+            <CardHeader title="Fluxo de Eventos" description="Eventos processados por minuto (últimos 10 pontos)" />
+            <CardBody className="p-4">
+              <div className="flex items-end justify-between mb-2">
+                <span className="text-2xl font-bold tracking-tight">{formatNumber(metrics.eventsPerMinute)}</span>
+                <span className="text-xs text-muted">eventos/min</span>
+              </div>
+              <SimpleChart
+                data={[metrics.eventsPerMinute, metrics.eventsPerMinute * 0.8, metrics.eventsPerMinute * 1.2, metrics.eventsPerMinute * 0.9, metrics.eventsPerMinute * 1.1, metrics.eventsPerMinute, metrics.eventsPerMinute * 0.7, metrics.eventsPerMinute * 1.3, metrics.eventsPerMinute * 0.95, metrics.eventsPerMinute]}
+                height={80}
+                color="var(--brand)"
+                showArea={true}
+              />
+            </CardBody>
+          </Card>
+
+          <Card>
+            <CardHeader title="Entrega de Webhooks" description="Status das filas de entrega" />
+            <CardBody className="space-y-3 p-4">
+              <div className="grid grid-cols-2 gap-4 text-sm">
+                <div>
+                  <p className="text-muted text-xs">Pendente</p>
+                  <p className="font-semibold">{formatNumber(metrics.webhooks.pending)}</p>
+                </div>
+                <div>
+                  <p className="text-muted text-xs">Em voo</p>
+                  <p className="font-semibold">{formatNumber(metrics.webhooks.inFlight)}</p>
+                </div>
+                <div>
+                  <p className="text-muted text-xs">Sucesso Total</p>
+                  <p className="font-semibold text-ok">{formatNumber(metrics.webhooks.sent)}</p>
+                </div>
+                <div>
+                  <p className="text-muted text-xs">Falhas Totais</p>
+                  <p className="font-semibold text-danger">{formatNumber(metrics.webhooks.failed)}</p>
+                </div>
+              </div>
+              {metrics.webhooks.degraded > 0 && (
+                <div className="rounded bg-warn-soft/20 px-2 py-1 text-xs text-warn">
+                  ⚠️ {metrics.webhooks.degraded} destinos degradados
+                </div>
+              )}
+            </CardBody>
+          </Card>
+
+          <Card>
+            <CardHeader title="Chamadas Ativas" description="Ligações em andamento" />
+            <CardBody className="flex items-center justify-between p-4">
+              <span className="text-3xl font-bold">{metrics.calls.active}</span>
+              <Badge tone={metrics.calls.active > 0 ? 'ok' : 'neutral'}>
+                {metrics.calls.active > 0 ? 'Ativo' : 'Inativo'}
+              </Badge>
+            </CardBody>
+          </Card>
+
+          <Card>
+            <CardHeader title="Uso de Filas" description="Memória ocupada por eventos pendentes" />
+            <CardBody className="p-4">
+               <div className="mb-2 flex justify-between text-sm">
+                 <span className="text-muted">Bytes Pendentes</span>
+                 <span className="font-mono font-medium">{(metrics.webhooks.pendingBytes / 1024).toFixed(1)} KB</span>
+               </div>
+               <div className="h-2 w-full rounded-full bg-surface-2">
+                 <div
+                   className="h-full rounded-full bg-brand transition-all duration-500"
+                   style={{ width: `${Math.min((metrics.webhooks.pendingBytes / 1048576) * 100, 100)}%` }} // Assume 1MB threshold for visualization
+                 />
+               </div>
+            </CardBody>
+          </Card>
+        </section>
+      ) : null}
+
+      {/* Métricas Operacionais */}
+      {!metricsPending && metrics && metrics.webhooks ? (
+        <section aria-label="Métricas" className="mt-4 grid gap-4 md:grid-cols-2">
+          <Card>
+            <CardHeader title="Fluxo de Eventos" description="Eventos processados por minuto (últimos 10 pontos)" />
+            <CardBody className="p-4">
+              <div className="flex items-end justify-between mb-2">
+                <span className="text-2xl font-bold tracking-tight">{formatNumber(metrics.eventsPerMinute)}</span>
+                <span className="text-xs text-muted">eventos/min</span>
+              </div>
+              <SimpleChart
+                data={[metrics.eventsPerMinute, metrics.eventsPerMinute * 0.8, metrics.eventsPerMinute * 1.2, metrics.eventsPerMinute * 0.9, metrics.eventsPerMinute * 1.1, metrics.eventsPerMinute, metrics.eventsPerMinute * 0.7, metrics.eventsPerMinute * 1.3, metrics.eventsPerMinute * 0.95, metrics.eventsPerMinute]}
+                height={80}
+                color="var(--brand)"
+                showArea={true}
+              />
+            </CardBody>
+          </Card>
+
+          <Card>
+            <CardHeader title="Entrega de Webhooks" description="Status das filas de entrega" />
+            <CardBody className="space-y-3 p-4">
+              <div className="grid grid-cols-2 gap-4 text-sm">
+                <div>
+                  <p className="text-muted text-xs">Pendente</p>
+                  <p className="font-semibold">{formatNumber(metrics.webhooks.pending)}</p>
+                </div>
+                <div>
+                  <p className="text-muted text-xs">Em voo</p>
+                  <p className="font-semibold">{formatNumber(metrics.webhooks.inFlight)}</p>
+                </div>
+                <div>
+                  <p className="text-muted text-xs">Sucesso Total</p>
+                  <p className="font-semibold text-ok">{formatNumber(metrics.webhooks.sent)}</p>
+                </div>
+                <div>
+                  <p className="text-muted text-xs">Falhas Totais</p>
+                  <p className="font-semibold text-danger">{formatNumber(metrics.webhooks.failed)}</p>
+                </div>
+              </div>
+              {metrics.webhooks.degraded > 0 && (
+                <div className="rounded bg-warn-soft/20 px-2 py-1 text-xs text-warn">
+                  ⚠️ {metrics.webhooks.degraded} destinos degradados
+                </div>
+              )}
+            </CardBody>
+          </Card>
+
+          <Card>
+            <CardHeader title="Chamadas Ativas" description="Ligações em andamento" />
+            <CardBody className="flex items-center justify-between p-4">
+              <span className="text-3xl font-bold">{metrics.calls.active}</span>
+              <Badge tone={metrics.calls.active > 0 ? 'ok' : 'neutral'}>
+                {metrics.calls.active > 0 ? 'Ativo' : 'Inativo'}
+              </Badge>
+            </CardBody>
+          </Card>
+
+          <Card>
+            <CardHeader title="Uso de Filas" description="Memória ocupada por eventos pendentes" />
+            <CardBody className="p-4">
+               <div className="mb-2 flex justify-between text-sm">
+                 <span className="text-muted">Bytes Pendentes</span>
+                 <span className="font-mono font-medium">{(metrics.webhooks.pendingBytes / 1024).toFixed(1)} KB</span>
+               </div>
+               <div className="h-2 w-full rounded-full bg-surface-2">
+                 <div
+                   className="h-full rounded-full bg-brand transition-all duration-500"
+                   style={{ width: `${Math.min((metrics.webhooks.pendingBytes / 1048576) * 100, 100)}%` }} // Assume 1MB threshold for visualization
+                 />
+               </div>
+            </CardBody>
+          </Card>
+        </section>
+      ) : null}
 
       <div className="mt-4 grid grid-cols-[minmax(0,1fr)] gap-4 lg:grid-cols-3">
         <Card className="overflow-hidden lg:col-span-2">
