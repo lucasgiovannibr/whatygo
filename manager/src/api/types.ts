@@ -122,3 +122,18 @@ export interface QrInfo {
 }
 
 export type HealthStatus = 'ok' | 'degraded' | 'unavailable' | 'unreachable';
+
+export interface WebhookStats {
+  pending: number;
+  pendingBytes: number;
+  inFlight: number;
+  destinations: number;
+  degraded: number;
+  sent: number;
+  failed: number;
+}
+
+export interface HealthMetricsResponse {
+  instances: { total: number; connected: number; disconnected: number };
+  webhooks: WebhookStats;
+}

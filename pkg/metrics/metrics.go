@@ -187,3 +187,57 @@ func RegisterWebhookQueues(stats func() *producer_interfaces.WebhookStats) {
 	counter("whatygo_webhook_failed_total", "Webhook events that exhausted their retries.", func(s *producer_interfaces.WebhookStats) float64 { return float64(s.Failed) })
 	counter("whatygo_webhook_dropped_total", "Webhook events dropped from a full queue.", func(s *producer_interfaces.WebhookStats) float64 { return float64(s.Dropped) })
 }
+
+// DashboardMetrics holds the real operational data exposed to the Manager.
+type DashboardMetrics struct {
+	Instances struct {
+		Total        int `json:"total"`
+		Connected    int `json:"connected"`
+		Disconnected int `json:"disconnected"`
+	} `json:"instances"`
+	Webhooks struct {
+		Pending      int   `json:"pending"`
+		PendingBytes int   `json:"pendingBytes"`
+		InFlight     int   `json:"inFlight"`
+		Destinations int   `json:"destinations"`
+		Degraded     int   `json:"degraded"`
+		Sent         int64 `json:"sent"`
+		Failed       int64 `json:"failed"`
+	} `json:"webhooks"`
+}
+
+// GetDashboardMetrics collects only values backed by live sources. Nil sources are
+// valid during tests/startup and produce zero-valued metrics instead of a 500.
+func GetDashboardMetrics(clients *safemap.Map[*whatsmeow.Client], webhookStats func() *producer_interfaces.WebhookStats) DashboardMetrics {
+	m := DashboardMetrics{}
+
+	if clients != nil {
+		for _, c := range clients.Snapshot() {
+			if c == nil {
+				continue
+			}
+			m.Instances.Total++
+			if c.IsConnected() {
+				m.Instances.Connected++
+			} else {
+				m.Instances.Disconnected++
+			}
+		}
+	}
+
+	if webhookStats == nil {
+		return m
+	}
+	ws := webhookStats()
+	if ws == nil {
+		return m
+	}
+	m.Webhooks.Pending = int(ws.Pending)
+	m.Webhooks.PendingBytes = int(ws.PendingBytes)
+	m.Webhooks.InFlight = int(ws.InFlight)
+	m.Webhooks.Destinations = int(ws.Destinations)
+	m.Webhooks.Degraded = int(ws.DegradedDestinations)
+	m.Webhooks.Sent = int64(ws.Sent)
+	m.Webhooks.Failed = int64(ws.Failed)
+	return m
+}

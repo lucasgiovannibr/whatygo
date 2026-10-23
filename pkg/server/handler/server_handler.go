@@ -8,11 +8,17 @@ import (
 	"time"
 
 	"github.com/gin-gonic/gin"
+
+	producer_interfaces "github.com/lucasgiovannibr/whatygo/pkg/events/interfaces"
+	"github.com/lucasgiovannibr/whatygo/pkg/metrics"
+	"github.com/lucasgiovannibr/whatygo/pkg/safemap"
+	"go.mau.fi/whatsmeow"
 )
 
 type ServerHandler interface {
 	ServerOk(ctx *gin.Context)
 	Health(ctx *gin.Context)
+	HealthMetrics(ctx *gin.Context)
 }
 
 // HealthCheck is one database the service depends on.
@@ -22,7 +28,9 @@ type HealthCheck struct {
 }
 
 type serverHandler struct {
-	checks []HealthCheck
+	checks       []HealthCheck
+	clients      *safemap.Map[*whatsmeow.Client]
+	webhookStats func() *producer_interfaces.WebhookStats
 }
 
 // healthPingTimeout bounds each database ping so the probe itself never hangs
@@ -111,12 +119,26 @@ func checkDB(parent context.Context, db *sql.DB) string {
 }
 
 func NewServerHandler(checks ...HealthCheck) ServerHandler {
-	// Drop checks without a database (e.g. the Postgres auth DB in SQLite mode).
+	return NewServerHandlerWithMetrics(nil, nil, checks...)
+}
+
+// NewServerHandlerWithMetrics injects the typed live sources used by the
+// admin-only dashboard endpoint.
+func NewServerHandlerWithMetrics(
+	clients *safemap.Map[*whatsmeow.Client],
+	webhookStats func() *producer_interfaces.WebhookStats,
+	checks ...HealthCheck,
+) ServerHandler {
 	valid := make([]HealthCheck, 0, len(checks))
 	for _, c := range checks {
 		if c.DB != nil {
 			valid = append(valid, c)
 		}
 	}
-	return &serverHandler{checks: valid}
+	return &serverHandler{checks: valid, clients: clients, webhookStats: webhookStats}
+}
+
+// HealthMetrics returns operational metrics for the Manager dashboard.
+func (s *serverHandler) HealthMetrics(ctx *gin.Context) {
+	ctx.JSON(http.StatusOK, metrics.GetDashboardMetrics(s.clients, s.webhookStats))
 }

@@ -64,6 +64,9 @@ func (r *Routes) AssignRoutes(eng *gin.Engine) {
 	eng.GET("/server/ok", r.serverHandler.ServerOk)
 	eng.GET("/health", r.serverHandler.Health) // readiness: databases + pool saturation
 
+	// Dashboard Metrics (Admin only)
+	eng.GET("/health/metrics", r.authMiddleware.AuthAdmin, r.serverHandler.HealthMetrics)
+
 	routes := eng.Group("/instance")
 	{
 		routes.Use(r.authMiddleware.AuthAdmin, auth_middleware.ValidInstanceID())

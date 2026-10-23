@@ -8,7 +8,7 @@ Endereço: `http://SEU-SERVIDOR:4000/manager`. Para entrar, use a chave global.
 
 | Item | Para que serve |
 |---|---|
-| **Visão geral** | Resumo do servidor e das instâncias. Mostra quais precisam de atenção (desconectadas) e atalhos. |
+| **Visão geral** | Resumo do servidor e das instâncias. Mostra quais precisam de atenção (desconectadas), métricas operacionais de webhooks e atalhos. |
 | **Instâncias** | Lista (em cartões ou tabela) de todos os números. Criar, conectar, abrir e apagar. |
 | **Explorador da API** | Testa qualquer endereço da API pelo navegador: escolhe a rota, preenche e vê a resposta. Para quem programa. |
 | **Swagger** | Abre a documentação interativa da API. |
@@ -52,6 +52,15 @@ Telefone no navegador: atender, ligar, falar pelo microfone, ver o vídeo, e o h
 Um formulário para cada tipo de mensagem, com exemplos prontos: texto, link, mídia (imagem, vídeo, áudio, documento), enquete, figurinha, localização, contato, botões, lista, carrossel e status. Há modelos prontos de botões e carrossel para testar. Cada envio feito na sessão aparece numa lista ao lado (que some ao sair da página).
 
 > **Atenção:** os envios de mídia e de **status** vão para contatos de verdade. O painel pede confirmação no status.
+
+## Métricas Operacionais
+
+Na página **Visão geral**, abaixo dos indicadores básicos, o Manager mostra métricas operacionais de webhooks (requer chave Admin):
+
+- **Entrega de Webhooks**: eventos pendentes, em voo, entregues e falhas, além de alerta para destinos degradados.
+- **Fila de Webhooks**: quantidade de eventos, bytes pendentes, destinos e entregas em processamento. Os valores são exibidos diretamente; não há percentual de ocupação sem um limite real configurado.
+
+Esses dados vêm de `WebhookStats` e são atualizados automaticamente a cada 30 segundos.
 
 ## Dicas
 

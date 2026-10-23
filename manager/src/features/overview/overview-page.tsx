@@ -2,10 +2,10 @@ import type { ReactNode } from 'react';
 import { Link } from 'react-router-dom';
 import { ArrowRight, BookOpen, CheckCircle2, FlaskConical, Plus, PlugZap, Smartphone, Wifi, WifiOff } from 'lucide-react';
 import type { Instance } from '@/api/types';
-import { useHealth, HEALTH_META } from '@/hooks/use-health';
+import { useHealth, useHealthMetrics, HEALTH_META } from '@/hooks/use-health';
 import { useInstances } from '@/hooks/use-instances';
 import { useDocumentTitle } from '@/hooks/use-document-title';
-import { formatPhone, timeAgo } from '@/lib/format';
+import { formatNumber, formatPhone, timeAgo } from '@/lib/format';
 import { cn } from '@/lib/cn';
 import { Alert, EmptyState, Skeleton } from '@/components/ui/feedback';
 import { Badge } from '@/components/ui/badge';
@@ -59,6 +59,7 @@ export function OverviewPage() {
   const apiUrl = useAuth((s) => s.apiUrl);
   const { data, isPending, isError } = useInstances();
   const { data: health, isPending: healthPending } = useHealth();
+  const { data: metrics, isPending: metricsPending } = useHealthMetrics();
 
   const list = data ?? [];
   const online = list.filter((i) => i.connected);
@@ -96,6 +97,38 @@ export function OverviewPage() {
         />
         <Stat icon={<CheckCircle2 />} label="Servidor" value={hm.label} tone={hm.tone} hint={hm.detail} loading={healthPending} />
       </section>
+
+      {/* Métricas Operacionais — somente fontes reais */}
+      {!metricsPending && metrics?.webhooks ? (
+        <section aria-label="Métricas operacionais" className="mt-4 grid gap-4 md:grid-cols-2">
+          <Card>
+            <CardHeader title="Entrega de Webhooks" description="Estado real das filas de entrega" />
+            <CardBody className="space-y-3 p-4">
+              <div className="grid grid-cols-2 gap-4 text-sm">
+                <div><p className="text-muted text-xs">Pendentes</p><p className="font-semibold">{formatNumber(metrics.webhooks.pending)}</p></div>
+                <div><p className="text-muted text-xs">Em voo</p><p className="font-semibold">{formatNumber(metrics.webhooks.inFlight)}</p></div>
+                <div><p className="text-muted text-xs">Entregues</p><p className="font-semibold text-ok">{formatNumber(metrics.webhooks.sent)}</p></div>
+                <div><p className="text-muted text-xs">Falhas</p><p className="font-semibold text-danger">{formatNumber(metrics.webhooks.failed)}</p></div>
+              </div>
+              {metrics.webhooks.degraded > 0 ? (
+                <div className="rounded bg-warn-soft/20 px-2 py-1 text-xs text-warn">
+                  ⚠️ {metrics.webhooks.degraded} destino(s) degradado(s)
+                </div>
+              ) : null}
+            </CardBody>
+          </Card>
+
+          <Card>
+            <CardHeader title="Fila de Webhooks" description="Volume real aguardando processamento" />
+            <CardBody className="grid grid-cols-2 gap-4 p-4 text-sm">
+              <div><p className="text-muted text-xs">Eventos pendentes</p><p className="font-semibold">{formatNumber(metrics.webhooks.pending)}</p></div>
+              <div><p className="text-muted text-xs">Bytes pendentes</p><p className="font-mono font-medium">{formatNumber(metrics.webhooks.pendingBytes)} B</p></div>
+              <div><p className="text-muted text-xs">Destinos</p><p className="font-semibold">{formatNumber(metrics.webhooks.destinations)}</p></div>
+              <div><p className="text-muted text-xs">Em processamento</p><p className="font-semibold">{formatNumber(metrics.webhooks.inFlight)}</p></div>
+            </CardBody>
+          </Card>
+        </section>
+      ) : null}
 
       <div className="mt-4 grid grid-cols-[minmax(0,1fr)] gap-4 lg:grid-cols-3">
         <Card className="overflow-hidden lg:col-span-2">

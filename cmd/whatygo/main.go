@@ -268,7 +268,9 @@ func setupRouter(db *gorm.DB, authDB *sql.DB, sqliteDB *sql.DB, config *config.C
 		label_handler.NewLabelHandler(labelService),
 		newsletter_handler.NewNewsletterHandler(newsletterService),
 		pollHandler,
-		server_handler.NewServerHandler(
+		server_handler.NewServerHandlerWithMetrics(
+			clientPointer,
+			whatsmeowService.WebhookStats,
 			server_handler.HealthCheck{Name: "usersDb", DB: usersSQLDB(db)},
 			server_handler.HealthCheck{Name: "authDb", DB: firstSQLDB(authDB, sqliteDB)},
 		),
