@@ -8,7 +8,7 @@ Endereço: `http://SEU-SERVIDOR:4000/manager`. Para entrar, use a chave global.
 
 | Item | Para que serve |
 |---|---|
-| **Visão geral** | Resumo do servidor e das instâncias. Mostra quais precisam de atenção (desconectadas), métricas operacionais em tempo real e atalhos. |
+| **Visão geral** | Resumo do servidor e das instâncias. Mostra quais precisam de atenção (desconectadas), métricas operacionais de webhooks e atalhos. |
 | **Instâncias** | Lista (em cartões ou tabela) de todos os números. Criar, conectar, abrir e apagar. |
 | **Explorador da API** | Testa qualquer endereço da API pelo navegador: escolhe a rota, preenche e vê a resposta. Para quem programa. |
 | **Swagger** | Abre a documentação interativa da API. |
@@ -55,14 +55,12 @@ Um formulário para cada tipo de mensagem, com exemplos prontos: texto, link, m�
 
 ## Métricas Operacionais
 
-Na página **Visão geral**, abaixo dos indicadores básicos, há um painel de métricas detalhadas (requer chave Admin):
+Na página **Visão geral**, abaixo dos indicadores básicos, o Manager mostra métricas operacionais de webhooks (requer chave Admin):
 
-- **Fluxo de Eventos**: Gráfico de linha mostrando a taxa de eventos recebidos do WhatsApp por minuto (janela deslizante de 5 minutos).
-- **Entrega de Webhooks**: Contadores de eventos pendentes, em voo, entregues com sucesso e falhas. Alerta visual se houver destinos degradados.
-- **Chamadas Ativas**: Número de ligações de voz/vídeo ocorrendo neste momento.
-- **Uso de Filas**: Indicador visual da quantidade de bytes aguardando processamento nas filas de eventos.
+- **Entrega de Webhooks**: eventos pendentes, em voo, entregues e falhas, além de alerta para destinos degradados.
+- **Fila de Webhooks**: quantidade de eventos, bytes pendentes, destinos e entregas em processamento. Os valores são exibidos diretamente; não há percentual de ocupação sem um limite real configurado.
 
-Esses dados são atualizados automaticamente a cada 30 segundos.
+Esses dados vêm de `WebhookStats` e são atualizados automaticamente a cada 30 segundos.
 
 ## Dicas
 

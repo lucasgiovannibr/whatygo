@@ -10,6 +10,9 @@ import (
 
 	"github.com/DATA-DOG/go-sqlmock"
 	"github.com/gin-gonic/gin"
+
+	"github.com/lucasgiovannibr/whatygo/pkg/config"
+	auth_middleware "github.com/lucasgiovannibr/whatygo/pkg/middleware"
 )
 
 func serve(t *testing.T, h ServerHandler) (int, map[string]interface{}) {
@@ -84,5 +87,43 @@ func TestHealthSkipsMissingDatabases(t *testing.T) {
 	}
 	if _, present := body["checks"].(map[string]interface{})["authDb"]; present {
 		t.Fatal("a missing database must not be reported")
+	}
+}
+
+func TestHealthMetricsRequiresAdminKeyAndReturnsShape(t *testing.T) {
+	gin.SetMode(gin.TestMode)
+	h := NewServerHandlerWithMetrics(nil, nil)
+	auth := auth_middleware.NewMiddleware(&config.Config{GlobalApiKey: "secret", AuthFailLimit: 30}, nil)
+	r := gin.New()
+	r.GET("/health/metrics", auth.AuthAdmin, h.HealthMetrics)
+
+	withoutKey := httptest.NewRecorder()
+	r.ServeHTTP(withoutKey, httptest.NewRequest(http.MethodGet, "/health/metrics", nil))
+	if withoutKey.Code != http.StatusUnauthorized {
+		t.Fatalf("without admin key: got %d, want 401", withoutKey.Code)
+	}
+
+	req := httptest.NewRequest(http.MethodGet, "/health/metrics", nil)
+	req.Header.Set("apikey", "secret")
+	withKey := httptest.NewRecorder()
+	r.ServeHTTP(withKey, req)
+	if withKey.Code != http.StatusOK {
+		t.Fatalf("with admin key: got %d, body=%s", withKey.Code, withKey.Body.String())
+	}
+	var body map[string]interface{}
+	if err := json.Unmarshal(withKey.Body.Bytes(), &body); err != nil {
+		t.Fatalf("bad json: %v", err)
+	}
+	if _, ok := body["instances"].(map[string]interface{}); !ok {
+		t.Fatalf("missing instances object: %v", body)
+	}
+	webhooks, ok := body["webhooks"].(map[string]interface{})
+	if !ok {
+		t.Fatalf("missing webhooks object: %v", body)
+	}
+	for _, key := range []string{"pending", "pendingBytes", "inFlight", "destinations", "degraded", "sent", "failed"} {
+		if _, ok := webhooks[key]; !ok {
+			t.Fatalf("missing webhooks.%s: %v", key, webhooks)
+		}
 	}
 }

@@ -29,8 +29,8 @@ type HealthCheck struct {
 
 type serverHandler struct {
 	checks       []HealthCheck
-	clients      interface{} // Will hold *safemap.Map[*whatsmeow.Client] cast later
-	webhookStats interface{} // Will hold func() *producer_interfaces.WebhookStats
+	clients      *safemap.Map[*whatsmeow.Client]
+	webhookStats func() *producer_interfaces.WebhookStats
 }
 
 // healthPingTimeout bounds each database ping so the probe itself never hangs
@@ -119,47 +119,26 @@ func checkDB(parent context.Context, db *sql.DB) string {
 }
 
 func NewServerHandler(checks ...HealthCheck) ServerHandler {
-	// Drop checks without a database (e.g. the Postgres auth DB in SQLite mode).
+	return NewServerHandlerWithMetrics(nil, nil, checks...)
+}
+
+// NewServerHandlerWithMetrics injects the typed live sources used by the
+// admin-only dashboard endpoint.
+func NewServerHandlerWithMetrics(
+	clients *safemap.Map[*whatsmeow.Client],
+	webhookStats func() *producer_interfaces.WebhookStats,
+	checks ...HealthCheck,
+) ServerHandler {
 	valid := make([]HealthCheck, 0, len(checks))
 	for _, c := range checks {
 		if c.DB != nil {
 			valid = append(valid, c)
 		}
 	}
-	return &serverHandler{checks: valid}
-}
-
-// SetMetricsSources allows injecting dependencies needed for HealthMetrics.
-// This is a workaround to avoid circular imports or heavy coupling in constructor.
-func (s *serverHandler) SetMetricsSources(clients interface{}, webhookStats interface{}) {
-	s.clients = clients
-	s.webhookStats = webhookStats
+	return &serverHandler{checks: valid, clients: clients, webhookStats: webhookStats}
 }
 
 // HealthMetrics returns operational metrics for the Manager dashboard.
 func (s *serverHandler) HealthMetrics(ctx *gin.Context) {
-	// Type assertions are safe here as they are set by the main initialization logic.
-	clients, ok := s.clients.(*safemap.Map[*whatsmeow.Client])
-	if !ok {
-		ctx.JSON(500, gin.H{"error": "clients map not configured"})
-		return
-	}
-	statsFn, ok := s.webhookStats.(func() *producer_interfaces.WebhookStats)
-	if !ok {
-		statsFn = func() *producer_interfaces.WebhookStats { return nil }
-	}
-
-	m := metrics.GetDashboardMetrics(clients, statsFn)
-	ctx.JSON(200, m)
-}
-
-// Ensure nil safety for WebhookStats in case of uninitialized producer
-func (s *serverHandler) ensureWebhookStats(statsFn func() *producer_interfaces.WebhookStats) func() *producer_interfaces.WebhookStats {
-	return func() *producer_interfaces.WebhookStats {
-		stats := statsFn()
-		if stats == nil {
-			return &producer_interfaces.WebhookStats{}
-		}
-		return stats
-	}
+	ctx.JSON(http.StatusOK, metrics.GetDashboardMetrics(s.clients, s.webhookStats))
 }

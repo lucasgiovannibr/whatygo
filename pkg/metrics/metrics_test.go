@@ -135,3 +135,13 @@ func TestCallEngineMetricsRegisterAndAreServed(t *testing.T) {
 		}
 	}
 }
+
+func TestGetDashboardMetricsNilSources(t *testing.T) {
+	got := GetDashboardMetrics(nil, nil)
+	if got.Instances.Total != 0 || got.Instances.Connected != 0 || got.Instances.Disconnected != 0 {
+		t.Fatalf("unexpected instance metrics: %+v", got.Instances)
+	}
+	if got.Webhooks.Pending != 0 || got.Webhooks.PendingBytes != 0 || got.Webhooks.InFlight != 0 || got.Webhooks.Destinations != 0 || got.Webhooks.Degraded != 0 || got.Webhooks.Sent != 0 || got.Webhooks.Failed != 0 {
+		t.Fatalf("unexpected webhook metrics: %+v", got.Webhooks)
+	}
+}
